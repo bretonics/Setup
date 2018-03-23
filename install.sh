@@ -1,10 +1,18 @@
 #!/usr/bin/env bash
 
+echo "INFO: This script will automate a lot of processes."
+echo "Press ctrl-c to stop now. "
+sleep 5
+echo "Though not recommended to interrupt, exit this script at any time with ctrl-c."
+sleep 5
+echo "Starting automation...."
+
+
 #-------------------------------------------------------------------------------
 # System Setup
 printf "\n\nInstalling Homebrew\n"
 printf "================================================================================\n\n"
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" </dev/null
 printf "\n\nDone installing Homebrew.\n\n"
 sleep 2
 
