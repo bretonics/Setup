@@ -119,6 +119,11 @@ done
 printf "\n\nDone installing Mac App Store apps.\n\n\n"
 sleep 2
 
+
+printf "================================================================================\n"
+echo "Setup has FINISHED"
+printf "================================================================================\n"
+
 # progress bar
 # chars="/-\|"
 #
