@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "INFO: This script will automate a lot of processes."
+printf "\nINFO: This script will automate a lot of processes.\n"
 echo "Press ctrl-c to stop now. "
 sleep 5
 echo "Though not recommended to interrupt, exit this script at any time with ctrl-c."
@@ -13,13 +13,13 @@ echo "Starting automation...."
 printf "\n\nInstalling Homebrew\n"
 printf "================================================================================\n\n"
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" </dev/null
-printf "\n\nDone installing Homebrew.\n\n"
+printf "\n\nDone installing Homebrew.\n\n\n"
 sleep 2
 
-printf "\n\nInstalling Xcode developer tools\n"
+echo "Installing Xcode developer tools"
 printf "================================================================================\n\n"
 xcode-select --install
-printf "\n\nDone installing Xcode developer tools.\n\n"
+printf "\n\nDone installing Xcode developer tools.\n\n\n"
 sleep 2
 
 #-------------------------------------------------------------------------------
@@ -34,7 +34,7 @@ do
     brew install $formula
 done
 
-printf "\n\nDone installing formulas.\n\n"
+printf "\n\nDone installing formulas.\n\n\n"
 sleep 2
 
 #-------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ do
     brew cask install $cask
 done
 
-printf "\n\nDone installing casks.\n\n"
+printf "\n\nDone installing casks.\n\n\n"
 sleep 2
 
 #-------------------------------------------------------------------------------
@@ -64,7 +64,7 @@ printf "========================================================================
 echo "Updating Atom"
 apm upgrade -c false
 
-printf "\n\nDone running updates.\n\n"
+printf "\n\nDone running updates.\n\n\n"
 sleep 2
 
 #-------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ echo "Cleaning up Homebrew downloads and caches"
 brew cleanup -s # remove older versions in cellar + old downloads-cache
 rm -rf $(brew --cache) # delete all
 
-printf "\n\nDone cleaning up.\n\n"
+printf "\n\nDone cleaning up.\n\n\n"
 sleep 2
 
 #-------------------------------------------------------------------------------
@@ -116,7 +116,7 @@ do
     mas install $app
 done
 
-printf "\n\nDone installing Mac App Store apps.\n\n"
+printf "\n\nDone installing Mac App Store apps.\n\n\n"
 sleep 2
 
 # progress bar
