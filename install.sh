@@ -10,7 +10,7 @@ sleep 2
 # Install All Desired Formulae
 echo "Installing formulas..."
 
-fomulae="asciinema mas python3 ruby git-lfs tree rename glances hugo imagemagick openssl ssh-copy-id sratoolkit pandoc pandoc-citeproc r seqtk speedtest-cli xz"
+formulae="asciinema bcftools blast bowtie2 dos2unix gcc git-lfs glances htop hugo imagemagick mas mongodb mysql neofetch openssl rename ssh-copy-id pandoc pandoc-citeproc pkg-config python3 r rbenv readline rename ruby samtools seqtk speedtest-cli sratoolkit tree vcftools xz"
 
 for formula in $formulae
 do
@@ -24,7 +24,7 @@ sleep 2
 # Install All Desired Casks (3rd Party Apps)
 echo "Installing casks..."
 
-casks="dropbox atom alfred rstudio flux brackets mactext java gitify google-chrome google-drive-file-stream igv spotify virtualbox xquartz"
+casks="atom alfred dropbox rstudio flux brackets mactext java gitify google-backup-and-sync google-chrome google-drive-file-stream igv spotify virtualbox xquartz"
 
 for cask in $casks
 do
@@ -35,21 +35,23 @@ echo "Done installing casks."
 sleep 2
 
 #-------------------------------------------------------------------------------
+# Personalized Setup
+# echo "Symlinking Atom config directory"
+# ln -sf ~/Dropbox/Apps/Atom/ ~/.atom
+
+#-------------------------------------------------------------------------------
 # Updates
 echo "Updating Atom..."
 apm upgrade -c false
 
-
 echo "Done with updates."
 sleep 2
+
 #-------------------------------------------------------------------------------
 # Cleanup
 echo "Cleaning up Homebrew downloads and caches..."
-brew cleanup -s
-rm -rf $(brew --cache)
-
-# Symlink Atom config directory
-# ln -sf ~/Dropbox/Apps/Atom/ ~/.atom
+brew cleanup -s # remove older versions in cellar + old downloads-cache
+rm -rf $(brew --cache) # delete all
 
 echo "Done cleanup."
 sleep 2
