@@ -42,7 +42,7 @@ sleep 2
 echo "Installing casks"
 printf "================================================================================\n\n"
 
-casks="atom alfred dropbox rstudio flux brackets mactext java gitify google-backup-and-sync google-chrome google-drive-file-stream igv spotify virtualbox xquartz"
+casks="atom alfred dropbox rstudio flux brackets mactex java gitify google-backup-and-sync google-chrome google-drive-file-stream igv spotify virtualbox xquartz"
 
 for cask in $casks
 do
