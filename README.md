@@ -3,7 +3,6 @@
 Automate setting up a new Mac.
 
 ```
-git clone https://github.com/bretonics/Setup.git
-cd Setup
+curl -O https://raw.githubusercontent.com/bretonics/Setup/master/install.sh
 sh install.sh
 ```
