@@ -2,13 +2,22 @@
 
 #-------------------------------------------------------------------------------
 # System Setup
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" # Install Homebrew
-xcode-select --install # Install Xcode dev tools
+printf "\n\nInstalling Homebrew\n"
+printf "================================================================================\n\n"
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+printf "\n\nDone installing Homebrew.\n\n"
+sleep 2
+
+printf "\n\nInstalling Xcode developer tools\n"
+printf "================================================================================\n\n"
+xcode-select --install
+printf "\n\nDone installing Xcode developer tools.\n\n"
 sleep 2
 
 #-------------------------------------------------------------------------------
 # Install All Desired Formulae
-echo "Installing formulas..."
+echo "Installing formulas"
+printf "================================================================================\n\n"
 
 formulae="asciinema bcftools blast bowtie2 dos2unix gcc git-lfs glances htop hugo imagemagick mas mongodb mysql neofetch openssl rename ssh-copy-id pandoc pandoc-citeproc pkg-config python3 r rbenv readline rename ruby samtools seqtk speedtest-cli sratoolkit tree vcftools xz"
 
@@ -17,12 +26,13 @@ do
     brew install $formula
 done
 
-echo "Done installing formulas."
+printf "\n\nDone installing formulas.\n\n"
 sleep 2
 
 #-------------------------------------------------------------------------------
 # Install All Desired Casks (3rd Party Apps)
-echo "Installing casks..."
+echo "Installing casks"
+printf "================================================================================\n\n"
 
 casks="atom alfred dropbox rstudio flux brackets mactext java gitify google-backup-and-sync google-chrome google-drive-file-stream igv spotify virtualbox xquartz"
 
@@ -31,7 +41,7 @@ do
     brew install $cask
 done
 
-echo "Done installing casks."
+printf "\n\nDone installing casks.\n\n"
 sleep 2
 
 #-------------------------------------------------------------------------------
@@ -41,24 +51,29 @@ sleep 2
 
 #-------------------------------------------------------------------------------
 # Updates
-echo "Updating Atom..."
+echo "Running updates"
+printf "================================================================================\n\n"
+echo "Updating Atom"
 apm upgrade -c false
 
-echo "Done with updates."
+printf "\n\nDone running updates.\n\n"
 sleep 2
 
 #-------------------------------------------------------------------------------
 # Cleanup
-echo "Cleaning up Homebrew downloads and caches..."
+echo "Cleaning up"
+printf "================================================================================\n\n"
+echo "Cleaning up Homebrew downloads and caches"
 brew cleanup -s # remove older versions in cellar + old downloads-cache
 rm -rf $(brew --cache) # delete all
 
-echo "Done cleanup."
+printf "\n\nDone cleaning up.\n\n"
 sleep 2
 
 #-------------------------------------------------------------------------------
 # Install Mac Apps
-echo "Installing apps from Mac App Store..."
+echo "Installing apps from Mac App Store"
+printf "================================================================================\n\n"
 apps=""
 # 414528154 ScreenFloat
 # 530461386 Yummy FTP Watcher
@@ -93,7 +108,7 @@ do
     mas install $app
 done
 
-echo "Done installing Mac App Store apps..."
+printf "\n\nDone installing Mac App Store apps.\n\n"
 sleep 2
 
 # progress bar
