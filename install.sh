@@ -47,6 +47,14 @@ casks="atom alfred dropbox rstudio flux brackets mactex java gitify google-backu
 for cask in $casks
 do
     brew cask install $cask
+    if [ "$cask" == "virtualbox" ]; then
+        echo "HOLDING to handle $cask prompt...."
+        sleep 30
+        echo "30 seconds to act on prompt for $cask..."
+        sleep 30
+        echo "Trying `brew cask install $cask` again..."
+        brew cask install $cask
+    fi
 done
 
 printf "\n\nDone installing casks.\n\n\n"
