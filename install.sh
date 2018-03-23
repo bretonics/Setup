@@ -38,7 +38,7 @@ casks="atom alfred dropbox rstudio flux brackets mactext java gitify google-back
 
 for cask in $casks
 do
-    brew install $cask
+    brew cask install $cask
 done
 
 printf "\n\nDone installing casks.\n\n"
