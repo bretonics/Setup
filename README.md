@@ -9,4 +9,12 @@ sh install.sh
 
 Customize
 ---
-You should add the Mac App Store product identifiers to line `85` (`apps=""`) that you want to install before running script, `sh install.sh`
+Add the Mac App Store product identifiers to `apps=""` (separated by a space) that you want to install before running `sh install.sh`. The [apps.txt](https://github.com/bretonics/Setup/blob/master/apps.txt) file contains a list of apps and their respective Mac App Store product identifiers.
+
+Secondary
+---
+Secondary install sets up personalized Mac settings, and is run after `sh install.sh`.
+
+```
+sh secondary.sh
+```
