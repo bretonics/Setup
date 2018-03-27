@@ -43,13 +43,12 @@ sleep 2
 echo "Installing formulae"
 printf "================================================================================\n\n"
 
-formulae="asciinema bcftools blast bowtie2 dos2unix gcc git-lfs glances htop hugo imagemagick mas mongodb mysql neofetch openssl rename ssh-copy-id pandoc pandoc-citeproc pkg-config python3 r rbenv readline rename ruby samtools seqtk speedtest-cli sratoolkit tree vcftools xz"
-
-for formula in $formulae
-do
-    printf "\nInstalling $formula\n"
+formulae="src/formulae.txt"
+while read -r formula; do
+    echo "Installing $formula"
     brew install $formula
-done
+    echo ""
+done < "$formulae"
 
 printf "\n\nDone installing formulas.\n\n\n"
 sleep 2
@@ -59,11 +58,9 @@ sleep 2
 echo "Installing casks"
 printf "================================================================================\n\n"
 
-casks="atom alfred dropbox rstudio flux brackets mactex java gitify google-backup-and-sync google-chrome google-drive-file-stream igv spotify virtualbox xquartz"
-
-for cask in $casks
-do
-    printf "\nInstalling $cask\n"
+casks="src/casks.txt"
+while read -r cask; do
+    echo "Installing $cask"
     brew cask install $cask
     # Handle apps requiring authentication step
     if [ "$cask" == "virtualbox" ]; then
@@ -74,7 +71,8 @@ do
         echo "Trying `brew cask install $cask` again..."
         brew cask install $cask
     fi
-done
+    echo ""
+done < "$casks"
 
 printf "\n\nDone installing casks.\n\n\n"
 sleep 2
@@ -99,12 +97,13 @@ sleep 2
 echo "Installing apps from Mac App Store"
 printf "================================================================================\n\n"
 
-apps=""
-for app in $apps
-do
-    printf "\nInstalling $app\n"
+apps="src/apps.txt"
+while read -r line; do
+    app=$(echo $line | cut -f1 -d" ")
+    echo "Installing $app"
     mas install $app
-done
+    echo ""
+done < "$apps"
 
 printf "\n\nDone installing Mac App Store apps.\n\n\n"
 sleep 2
