@@ -13,6 +13,7 @@ echo "==========================================================================
 echo "Script: $0"
 echo "Run by: `whoami`"
 echo "On: `date`"
+echo "PWD: `pwd`"
 echo "PID: $$"
 echo "================================================================================"
 echo ""
@@ -40,7 +41,7 @@ sleep 2
 #--------------------------------------------------------------------------------
 # INSTALL ALL DESIRED FORMULAE
 echo "Installing formulae"
-printf "================================================================================\n"
+printf "================================================================================\n\n"
 
 formulae="asciinema bcftools blast bowtie2 dos2unix gcc git-lfs glances htop hugo imagemagick mas mongodb mysql neofetch openssl rename ssh-copy-id pandoc pandoc-citeproc pkg-config python3 r rbenv readline rename ruby samtools seqtk speedtest-cli sratoolkit tree vcftools xz"
 
@@ -56,7 +57,7 @@ sleep 2
 #--------------------------------------------------------------------------------
 # INSTALL ALL DESIRED CASKS (3RD PARTY APPS)
 echo "Installing casks"
-printf "================================================================================\n"
+printf "================================================================================\n\n"
 
 casks="atom alfred dropbox rstudio flux brackets mactex java gitify google-backup-and-sync google-chrome google-drive-file-stream igv spotify virtualbox xquartz"
 
@@ -96,7 +97,7 @@ sleep 2
 #--------------------------------------------------------------------------------
 # INSTALL MAC APPS
 echo "Installing apps from Mac App Store"
-printf "================================================================================\n"
+printf "================================================================================\n\n"
 
 apps=""
 for app in $apps
