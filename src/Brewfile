@@ -1,0 +1,199 @@
+tap "caskroom/cask"
+tap "homebrew/bundle"
+tap "homebrew/core"
+tap "homebrew/science"
+cask "java"
+brew "openssl"
+brew "readline"
+brew "xz"
+brew "python"
+brew "asciinema"
+brew "autoconf"
+brew "autoconf@2.64"
+brew "automake"
+brew "htslib"
+brew "bcftools"
+brew "blast"
+brew "bowtie2"
+brew "dos2unix"
+brew "doxygen"
+brew "fontconfig"
+brew "gcc"
+brew "gengetopt"
+brew "gettext"
+brew "git-lfs"
+brew "glances"
+brew "gnuplot"
+brew "graphviz", link: false
+brew "hdf5"
+brew "help2man"
+brew "htop"
+brew "hugo"
+brew "imagemagick"
+brew "libmagic"
+brew "libxml2"
+brew "libyaml", args: ["universal"]
+brew "makedepend"
+brew "mas"
+brew "mongodb"
+brew "mummer"
+brew "mysql"
+brew "neofetch"
+brew "ninja"
+brew "pandoc"
+brew "pandoc-citeproc"
+brew "pkg-config"
+brew "r"
+brew "rbenv"
+brew "rename"
+brew "ruby"
+brew "samtools"
+brew "seqtk"
+brew "speedtest-cli"
+brew "sratoolkit"
+brew "ssh-copy-id"
+brew "swig"
+brew "tree"
+brew "unison"
+brew "vcftools"
+brew "wget"
+cask "alfred"
+cask "eclipse-java"
+cask "gitify"
+cask "google-backup-and-sync"
+cask "google-drive-file-stream"
+cask "iterm2"
+cask "libreoffice"
+cask "mactex"
+cask "mysqlworkbench"
+cask "rstudio"
+cask "virtualbox"
+mas "1000 OpenType Fonts", id: 664501556
+mas "1Password", id: 443987910
+mas "AdBlock Master", id: 1080937753
+mas "Amphetamine", id: 937984704
+mas "Annotate", id: 918207447
+mas "AppGenome", id: 1076004595
+mas "Armadillo", id: 532223938
+mas "Arriving 2", id: 1015999125
+mas "Art Text 2", id: 404180306
+mas "Better Rename 9", id: 414209656
+mas "Big Mean Folder Machine 2", id: 402440280
+mas "Blackmagic Disk Speed Test", id: 425264550
+mas "Blogo", id: 902111700
+mas "Caffeine", id: 411246225
+mas "Calendar 366 II", id: 1265895169
+mas "Chronicle", id: 402355593
+mas "CloudMounter", id: 1130254674
+mas "Code Collector Pro", id: 587612662
+mas "CodeBox", id: 412536790
+mas "ColorStrokes", id: 459413843
+mas "Commander One PRO", id: 1035237815
+mas "Compartments", id: 402352687
+mas "Degrees", id: 430173763
+mas "DesiGN Books Author Templates", id: 501641097
+mas "DesiGN Certificates Templates", id: 1148881950
+mas "Diagrammix", id: 418534796
+mas "Disk Diag", id: 672206759
+mas "DropKey", id: 511169782
+mas "Droplr", id: 498672703
+mas "Dropzone 3", id: 695406827
+mas "Due", id: 524373870
+mas "EasyBatchPhoto", id: 432029334
+mas "EverFont", id: 586170998
+mas "Evernote", id: 406056744
+mas "Everyday", id: 446089664
+mas "FilePane", id: 847515307
+mas "ForkLift", id: 412448059
+mas "Free Fonts", id: 647697434
+mas "Free Fonts - Christmas Collection", id: 760246983
+mas "FreeSpace Tab", id: 478867587
+mas "GarageBand", id: 682658836
+mas "GarageBand 6.0.5", id: 408980954
+mas "Gelatin", id: 468374949
+mas "GIPHY CAPTURE", id: 668208984
+mas "Glui", id: 601359958
+mas "Graphics", id: 895042945
+mas "Halloween Fonts", id: 700757313
+mas "Home Inventory", id: 413564952
+mas "iBooks Author", id: 490152466
+mas "iMovie", id: 408981434
+mas "Infographics Lab for Keynote", id: 577411683
+mas "Install OS X Mavericks", id: 675248567
+mas "Install OS X Mountain Lion", id: 537386512
+mas "Inventor Fusion", id: 529580720
+mas "iPhoto", id: 408981381
+mas "iStudiez Pro", id: 402989379
+mas "iTeleport", id: 489094439
+mas "Keynote", id: 409183694
+mas "LiveQuartz", id: 402387626
+mas "Logo Lab for iWork - Templates", id: 1218759300
+mas "Logo Pop Free", id: 919007298
+mas "MacFonts - Free Fonts Collection", id: 604108855
+mas "macOS High Sierra", id: Install
+mas "Mactracker", id: 430255202
+mas "Magnet", id: 441258766
+mas "Markdown", id: 727484953
+mas "Markdown Pro", id: 465965038
+mas "Marked", id: 448925439
+mas "MenuMate", id: 518594271
+mas "Mini Design Bundle", id: 642385433
+mas "Monity", id: 915542151
+mas "Notability", id: 736189492
+mas "NuggitExpress", id: 436938594
+mas "Numbers", id: 409203825
+mas "Ordinatore Pro", id: 508503680
+mas "Overlays!", id: 868499627
+mas "Pages", id: 409201541
+mas "PandaBar", id: 459351174
+mas "Parcel", id: 639968404
+mas "PDF Toolkit", id: 405219581
+mas "PDFGenius", id: 522090209
+mas "Photo Movie + DVD Slideshow Pro", id: 901789111
+mas "Photos Duplicate Cleaner", id: 592704001
+mas "Pocket", id: 568494494
+mas "PopClip", id: 445189367
+mas "PopHub", id: 928494006
+mas "Premium Fonts", id: 642142422
+mas "Prepo", id: 476533227
+mas "Prices Drop Monitor", id: 473939551
+mas "PriceWatcher", id: 438371054
+mas "Producteev", id: 450283360
+mas "PullRequestMenu", id: 919797974
+mas "Resume Lab - Pages Templates", id: 1218255329
+mas "ScreenFloat", id: 414528154
+mas "Shade", id: 546881298
+mas "Sip", id: 507257563
+mas "skEditExpress", id: 414950773
+mas "SketchBookExpress", id: 404243625
+mas "Sketchpad", id: 528106921
+mas "Skitch", id: 425955336
+mas "Slack", id: 803453959
+mas "Snap", id: 418073146
+mas "Spark", id: 1176895641
+mas "Sparkbox", id: 488652149
+mas "SQLPro for SQLite", id: 586001240
+mas "Status Barred", id: 413853485
+mas "Stock + Pro", id: 534067900
+mas "Stock Icons - Cliparts by GN", id: 479510018
+mas "Super Vectorizer", id: 704139979
+mas "System Lens", id: 484868989
+mas "TaskBox", id: 1188351951
+mas "Templates for Photoshop by GN", id: 1204722354
+mas "TextWrangler", id: 404010395
+mas "The Duplicate Finder", id: 654667344
+mas "Timer Utility", id: 406187895
+mas "Trello", id: 1278508951
+mas "Trickster", id: 509641724
+mas "TweetDeck", id: 485812721
+mas "unDock", id: 402359583
+mas "Vectr", id: 1204645754
+mas "Visits", id: 462227149
+mas "Wallpaper Wizard", id: 410801088
+mas "WiFi Explorer", id: 494803304
+mas "Will It Fit", id: 521680466
+mas "Window Tidy", id: 456609775
+mas "Xcode", id: 497799835
+mas "Yoink", id: 457622435
+mas "Yummy FTP", id: 492068728
+mas "Zone", id: 415832062
