@@ -3,13 +3,15 @@
 Automate setting up a new Mac.
 
 ```
-curl -O https://raw.githubusercontent.com/bretonics/Setup/master/install.sh
+curl https://codeload.github.com/bretonics/Setup/zip/v2.0 -o Setup.zip
+unzip Setup.zip
+cd Setup
 sh install.sh
 ```
 
 Customize
 ---
-Add the Mac App Store product identifiers to `apps=""` (separated by a space) that you want to install before running `sh install.sh`. The [apps.txt](https://github.com/bretonics/Setup/blob/master/src/apps.txt) file contains a list of apps and their respective Mac App Store product identifiers. Use [formulae.txt](https://github.com/bretonics/Setup/blob/master/src/formulae.txt) and  [casks.txt](https://github.com/bretonics/Setup/blob/master/src/casks.txt) to do the same in `formulae=""` and `casks=""`, respectively.
+Files in [src](https://github.com/bretonics/Setup/tree/master/src) keep track of the programs to install. Modify the [apps.txt](https://github.com/bretonics/Setup/blob/master/src/apps.txt), [formulae.txt](https://github.com/bretonics/Setup/blob/master/src/formulae.txt), and  [casks.txt](https://github.com/bretonics/Setup/blob/master/src/casks.txt) files containing a list of apps and their respective Mac App Store product identifiers, formula, and casks that you want installed before running `sh install.sh`.
 
 Secondary
 ---
