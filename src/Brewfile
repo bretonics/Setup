@@ -1,7 +1,6 @@
 tap "caskroom/cask"
 tap "homebrew/bundle"
 tap "homebrew/core"
-tap "homebrew/science"
 cask "java"
 brew "openssl"
 brew "readline"
@@ -9,7 +8,7 @@ brew "xz"
 brew "python"
 brew "asciinema"
 brew "autoconf"
-brew "autoconf@2.64"
+brew "autoconf"
 brew "automake"
 brew "htslib"
 brew "bcftools"
@@ -48,6 +47,7 @@ brew "rbenv"
 brew "rename"
 brew "ruby"
 brew "samtools"
+brew "screenfetch"
 brew "seqtk"
 brew "speedtest-cli"
 brew "sratoolkit"
@@ -119,8 +119,6 @@ mas "Home Inventory", id: 413564952
 mas "iBooks Author", id: 490152466
 mas "iMovie", id: 408981434
 mas "Infographics Lab for Keynote", id: 577411683
-mas "Install OS X Mavericks", id: 675248567
-mas "Install OS X Mountain Lion", id: 537386512
 mas "Inventor Fusion", id: 529580720
 mas "iPhoto", id: 408981381
 mas "iStudiez Pro", id: 402989379
@@ -130,7 +128,6 @@ mas "LiveQuartz", id: 402387626
 mas "Logo Lab for iWork - Templates", id: 1218759300
 mas "Logo Pop Free", id: 919007298
 mas "MacFonts - Free Fonts Collection", id: 604108855
-mas "macOS High Sierra", id: Install
 mas "Mactracker", id: 430255202
 mas "Magnet", id: 441258766
 mas "Markdown", id: 727484953

@@ -1,12 +1,8 @@
 alfred
-eclipse-java
 gitify
 google-backup-and-sync
 google-drive-file-stream
-iterm2
 java
-libreoffice
 mactex
-mysqlworkbench
 rstudio
 virtualbox
