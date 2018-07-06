@@ -10,11 +10,11 @@ echo "Starting automation...."
 echo ""
 echo ""
 echo "================================================================================"
-echo "Script: $0"
-echo "Run by: `whoami`"
-echo "On: `date`"
-echo "PWD: `pwd`"
-echo "PID: $$"
+echo "| Script:    $0"
+echo "| Run by:    `whoami`"
+echo "| On:        `date`"
+echo "| PWD:       `pwd`"
+echo "| PID:        $$"
 echo "================================================================================"
 echo ""
 echo ""
@@ -26,6 +26,12 @@ echo "Installing Homebrew"
 printf "================================================================================\n\n"
 
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" </dev/null
+
+printf "\n\nAdding taps...\n\n"
+brew_taps=(brewsci/bio brewsci/science homebrew/bundle)
+for tap in ${brew_taps[@]}; do
+    brew tap $tap
+done
 
 printf "\n\nDone installing Homebrew.\n\n\n"
 sleep 2
@@ -62,15 +68,6 @@ casks="src/casks.txt"
 while read -r cask; do
     echo "Installing $cask"
     brew cask install $cask
-    # Handle apps requiring authentication step
-    if [ "$cask" == "virtualbox" ]; then
-        echo "HOLDING to handle $cask prompt...."
-        sleep 30
-        echo "30 seconds to act on prompt for $cask..."
-        sleep 30
-        echo "Trying `brew cask install $cask` again..."
-        brew cask install $cask
-    fi
     echo ""
 done < "$casks"
 
@@ -82,7 +79,7 @@ sleep 2
 echo "Cleaning up"
 printf "================================================================================\n\n"
 
-echo "Turn OFF sending brew analytics"
+echo "Turning OFF sending brew analytics"
 brew analytics off
 
 echo "Cleaning up Homebrew downloads and caches"
