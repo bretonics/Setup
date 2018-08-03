@@ -1,8 +1,12 @@
 alfred
+atom
+dropbox
 gitify
+google-chrome
 google-backup-and-sync
 google-drive-file-stream
 java
 mactex
 rstudio
+spotify
 virtualbox
