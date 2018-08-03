@@ -115,6 +115,6 @@ echo "Now go login to accounts (Dropbox, emails, etc...) and then run secondary 
 echo ""
 echo ""
 echo "================================================================================"
-echo "| Setup has FINISHED"
+echo "| Primary setup has FINISHED"
 echo "================================================================================"
 echo ""
