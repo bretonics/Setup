@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# The first line redirects and appends (-a) everything from the standard ouput stream to the logfile and prints it to the screen.
+# The second line redirects the standard error to standard output.
+exec 1> >(tee -a setup.log)
+exec 2>&1
+
 echo ""
 echo "INFO: This script will automate a lot of processes."
 echo "Though not recommended to interrupt, exit this script at any time with Ctrl-C."
@@ -22,6 +27,14 @@ echo ""
 
 #--------------------------------------------------------------------------------
 # SYSTEM SETUP
+echo "Installing Xcode developer tools"
+printf "================================================================================\n\n"
+
+xcode-select --install
+
+printf "\n\nDone installing Xcode developer tools.\n\n\n"
+sleep 2
+
 echo "Installing Homebrew"
 printf "================================================================================\n\n"
 
@@ -36,14 +49,6 @@ done
 printf "\n\nDone installing Homebrew.\n\n\n"
 sleep 2
 
-echo "Installing Xcode developer tools"
-printf "================================================================================\n\n"
-
-xcode-select --install
-
-printf "\n\nDone installing Xcode developer tools.\n\n\n"
-sleep 2
-
 #--------------------------------------------------------------------------------
 # INSTALL ALL DESIRED FORMULAE
 echo "Installing formulae"
@@ -54,7 +59,7 @@ while read -r formula; do
     echo "Installing $formula"
     brew install $formula
     echo ""
-done < "$formulae"
+done < $formulae
 
 printf "\n\nDone installing formulas.\n\n\n"
 sleep 2
@@ -69,7 +74,7 @@ while read -r cask; do
     echo "Installing $cask"
     brew cask install $cask
     echo ""
-done < "$casks"
+done < $casks
 
 printf "\n\nDone installing casks.\n\n\n"
 sleep 2
@@ -100,7 +105,7 @@ while read -r line; do
     echo "Installing $app"
     mas install $app
     echo ""
-done < "$apps"
+done < $apps
 
 printf "\n\nDone installing Mac App Store apps.\n\n\n"
 sleep 2
@@ -110,6 +115,6 @@ echo "Now go login to accounts (Dropbox, emails, etc...) and then run secondary 
 echo ""
 echo ""
 echo "================================================================================"
-echo "Setup has FINISHED"
+echo "| Setup has FINISHED"
 echo "================================================================================"
 echo ""
