@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 echo "================================================================================"
-echo "Script: $0"
-echo "Run by: `whoami`"
-echo "On: `date`"
-echo "PID: $$"
+echo "| Script:    $0"
+echo "| Run by:    `whoami`"
+echo "| On:        `date`"
+echo "| PID:       $$"
 echo "================================================================================"
 echo ""
 echo ""
@@ -46,6 +46,9 @@ ln -sf ~/Dropbox/Apps/Atom ~/.atom
 
 printf "\nReducing Dock autohide animation\n"
 defaults write com.apple.dock autohide-time-modifier -float 0.25; killall Dock
+
+printf "\nRemove Dock Delay for Auto-Hide & Auto-Show\n"
+defaults write com.apple.Dock autohide-delay -float 0 && killall Dock
 
 printf "\n\nDone running personalizations.\n\n\n"
 sleep 2
