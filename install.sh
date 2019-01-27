@@ -41,7 +41,7 @@ printf "========================================================================
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" </dev/null
 
 printf "\n\nAdding taps...\n\n"
-brew_taps=(brewsci/bio brewsci/science homebrew/bundle)
+brew_taps=(brewsci/bio brewsci/science homebrew/bundle caskroom/versions)
 for tap in ${brew_taps[@]}; do
     brew tap $tap
 done
