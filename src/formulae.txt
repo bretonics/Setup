@@ -13,7 +13,9 @@ gd
 gdbm
 gengetopt
 gettext
+git-flow
 git-lfs
+gpg
 glances
 gmp
 gnuplot
