@@ -50,6 +50,15 @@ defaults write com.apple.dock autohide-time-modifier -float 0.25; killall Dock
 printf "\nRemove Dock Delay for Auto-Hide & Auto-Show\n"
 defaults write com.apple.Dock autohide-delay -float 0 && killall Dock
 
+printf "\nCreating GPG Key\n"
+gpg --gen-key
+GPGkey=$(gpg --list-secret-keys --keyid-format LONG | sed -nE 's/sec.*rsa2048\/([a-zA-Z0-9]+).*/\1/p')
+
+printf "\nConfiguring GPG Key with resources\n"
+git config --global user.signingkey ${GPGkey}
+gpg --armor --export ${GPGkey} | pbcopy
+unset GPGkey
+
 printf "\n\nDone running personalizations.\n\n\n"
 sleep 2
 
