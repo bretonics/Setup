@@ -1,10 +1,6 @@
 asciinema
 autoconf
-autoconf@2.64
 automake
-bcftools
-blast
-bowtie2
 doxygen
 fontconfig
 freetype
@@ -13,7 +9,7 @@ gd
 gdbm
 gengetopt
 gettext
-git-flow
+git-flow-avh
 git-lfs
 gpg
 glances
@@ -23,9 +19,7 @@ graphviz
 gsl
 hdf5
 help2man
-hmmer
 htop
-htop-osx
 htslib
 hugo
 imagemagick
@@ -55,7 +49,6 @@ openssl@1.1
 pandoc
 pcre
 pkg-config
-python
 python3
 r
 rbenv
@@ -67,16 +60,13 @@ samtools
 screenresolution
 seqtk
 speedtest-cli
-speedtest_cli
 sqlite
-sratoolkit
 ssh-copy-id
 swig
 szip
 tbb
 tree
 unison
-vcftools
 webp
 wget
 xz
