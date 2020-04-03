@@ -1,16 +1,46 @@
 #!/usr/bin/env bash
 
-# The first line redirects and appends (-a) everything from the standard ouput stream to the logfile and prints it to the screen.
-# The second line redirects the standard error to standard output.
-exec 1> >(tee -a setup.log)
-exec 2>&1
+#--------------------------------------------------------------------------------
+# UTILS
+GREEN="\033[0;32m"
+RED="\033[0;31m"
+NC="\033[0m"  # Color reset
 
+# The first line redirects and appends (-a) everything from the standard ouput stream to the logfile and prints it to the screen.
+# The second line redirects the standard error to log file.
+exec 1> >(tee -a setup.log)
+exec 2> error.log
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Functions
+
+# Get Apple ID Username (email)
+getAccountId() {
+    defaults read MobileMeAccounts Accounts | sed -n -e 's/.*AccountID = \"\(.*\)\"\;/\1/p'
+}
+
+# Display Nicely Formatted Message
+message() {
+    if [ "$2" = "fail" ]; then
+        local msg="${RED}\n\n❌  ${1}${NC}\n\n\n"
+    elif [ "$2" = "error" ]; then
+        local msg="${RED}\n\n📛  ${1}${NC}\n\n\n"
+    else
+        local msg="${GREEN}\n\n✅  ${1}${NC}\n\n\n"
+    fi
+
+    shift
+    printf "${msg}"
+}
+
+#--------------------------------------------------------------------------------
+# START
 echo ""
 echo "INFO: This script will automate a lot of processes."
 echo "Though not recommended to interrupt, exit this script at any time with Ctrl-C."
-echo "Press Ctrl-C to STOP now."
+echo "Press Ctrl-C to STOP now. You have 5 seconds"
 sleep 5
-echo "Starting automation...."
+echo "Starting automated installs...."
 
 echo ""
 echo ""
@@ -32,7 +62,7 @@ printf "========================================================================
 
 xcode-select --install
 
-printf "\n\nDone installing Xcode developer tools.\n\n\n"
+message "Done installing Xcode developer tools."
 sleep 2
 
 echo "Installing Homebrew"
@@ -46,7 +76,7 @@ for tap in ${brew_taps[@]}; do
     brew tap $tap
 done
 
-printf "\n\nDone installing Homebrew.\n\n\n"
+message "Done installing Homebrew."
 sleep 2
 
 #--------------------------------------------------------------------------------
@@ -61,7 +91,7 @@ while read -r formula; do
     echo ""
 done < $formulae
 
-printf "\n\nDone installing formulas.\n\n\n"
+message "Done installing formulas."
 sleep 2
 
 #--------------------------------------------------------------------------------
@@ -76,8 +106,17 @@ while read -r cask; do
     echo ""
 done < $casks
 
-printf "\n\nDone installing casks.\n\n\n"
+message "Done installing casks."
 sleep 2
+
+#--------------------------------------------------------------------------------
+# INSTALL CORE APPLICATIONS
+echo "Installing core resources"
+printf "================================================================================\n\n"
+
+echo "Installing global NPM packages"
+# brew link --force node@10  # link keg-only package if installing node v10
+npm install -g @angular/cli bunyan eslint aws-azure-login
 
 #--------------------------------------------------------------------------------
 # CLEANUP
@@ -91,13 +130,15 @@ echo "Cleaning up Homebrew downloads and caches"
 brew cleanup -s # remove older versions in cellar + old downloads-cache
 rm -rf $(brew --cache) # delete all
 
-printf "\n\nDone cleaning up.\n\n\n"
+message "Done cleaning up."
 sleep 2
 
 #--------------------------------------------------------------------------------
 # INSTALL MAC APPS
 echo "Installing apps from Mac App Store"
 printf "================================================================================\n\n"
+
+mas signin --dialog $(getAccountId)
 
 apps="src/apps.txt"
 while read -r line; do
@@ -107,11 +148,11 @@ while read -r line; do
     echo ""
 done < $apps
 
-printf "\n\nDone installing Mac App Store apps.\n\n\n"
+message "Done installing Mac App Store apps."
 sleep 2
 
 
-echo "Now go login to accounts (Dropbox, emails, etc...) and then run secondary installs, `sh secondary.sh`."
+echo "Now go login to accounts (Dropbox, emails, etc...) and then run secondary installs, \`bash secondary\`."
 echo ""
 echo ""
 echo "================================================================================"
