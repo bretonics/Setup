@@ -79,10 +79,10 @@ getAccountId() {
 
 # Display Nicely Formatted Message
 message() {
-    if [ "$2" = "fail" ]; then
-        local msg="${RED}\n\n❌  ${1}${NC}\n\n\n"
-    elif [ "$2" = "error" ]; then
-        local msg="${RED}\n\n📛  ${1}${NC}\n\n\n"
+    if [ "$1" = "fail" ]; then
+        local msg="${RED}\n\n❌  ${2}${NC}\n\n\n"
+    elif [ "$1" = "error" ]; then
+        local msg="${RED}\n\n📛  ${2}${NC}\n\n\n"
     else
         local msg="${GREEN}\n\n✅  ${1}${NC}\n\n\n"
     fi
