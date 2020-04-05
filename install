@@ -15,6 +15,11 @@ exec 2> error.log
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # GLOBALS
 
+EMOJI_CHECKMARK="\xe2\x9c\x85"
+EMOJI_ERROR="\xe2\x9b\x94\xef\xb8\x8f"
+EMOJI_FAIL="\xe2\x9d\x8c"
+EMOJI_INFO="\xe2\x84\xb9\xef\xb8\x8f"
+EMOJI_WARNING="\xe2\x9b\x94\xef\xb8\x8f"
 BREW_CASKS="./src/casks.txt"
 BREW_FILE="./src/Brewfile"
 BREW_FORMULAE="./src/formulae.txt"
@@ -25,22 +30,34 @@ SETUP_TYPE="full"  # DEFAULT full setup: installS everything in Brewfile and sec
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # CLI ARGUMENT OPTIONS
 
+print_option() {
+    printf "\t%s\t%s\n" "${1}" "${2}" | expand -t 4,25
+}
+
 # Usage Message
 usage() {
-    echo -e "\nUsage: $0 [-f | -e] [-i full | essentials] [-h]\n" 1>&2
-    echo "HELP:"
-    echo -e "\n\n"
+    echo -e "\nUsage: $0 [OPTIONS] [Brewfile]\n"
+    echo -e "\nOptions:\n"
+    print_option "-F" "Full install"
+    print_option "-E" "Essentials install"
+    print_option "-i [full|essentials]" "More explicit intall type declaration"
+    print_option "-s" "Run secondary installation. Default: true"
+    print_option "-h" "Prints this usage message"
+    echo -e "\nArguments:\n"
+    print_option "Brewfile" "Path to Brew bundle file. Default: '${BREW_FILE}'"
+    echo -e "\n"
     exit 1
 }
 
 # Handle Options
-while getopts ":fei:h" OPTION; do
+while getopts ":EFhi:s" OPTION; do
     case "${OPTION}" in
-    e)
+    E)
         SETUP_TYPE="essentials"
         ;;
-    f)
+    F)
         # Default SETUP_TYPE globally set to "full"
+        RUN_SECONDARY=true
         ;;
     i)
         SETUP_TYPE=${OPTARG}
@@ -48,17 +65,20 @@ while getopts ":fei:h" OPTION; do
             full|essentials)
                 ;;
             *)
-                echo "Incorrect option provided for -i: ${OPTARG}" 1>&2
+                echo "Incorrect option provided for -i: ${OPTARG}"
                 usage
                 ;;
         esac
         ;;
+    s)
+        RUN_SECONDARY=true
+        ;;
     \?)
-        echo "Invalid Option: -${OPTARG}" 1>&2
+        echo "Invalid Option: -${OPTARG}"
         usage
         ;;
     :)
-        echo "Invalid Option: -${OPTARG} requires an argument" 1>&2
+        echo "Invalid Option: -${OPTARG} requires an argument"
         usage
         ;;
     h | *)
@@ -67,7 +87,12 @@ while getopts ":fei:h" OPTION; do
     esac
 done
 
-shift $((OPTIND -1)) # remove options already handled from $@
+shift $((OPTIND -1)) # remove options already handled by getopts from $@
+
+if [ $# -ne 0 ]; then
+    BREW_FILE=${1}
+    echo "Using Brewfile '${BREW_FILE}"
+fi
 
 # Output Color Configs
 GREEN="\033[0;32m"
@@ -84,12 +109,16 @@ getAccountId() {
 
 # Display Nicely Formatted Message
 message() {
-    if [ "$1" = "fail" ]; then
-        local msg="${RED}\n\n❌  ${2}${NC}\n\n\n"
+    if [ "$1" = "info" ]; then
+        local msg="${RED}\n\n${EMOJI_INFO}  ${2}${NC}\n\n\n"
+    elif [ "$1" = "warning" ]; then
+        local msg="${RED}\n\n${EMOJI_WARNING}  ${2}${NC}\n\n\n"
+    elif [ "$1" = "fail" ]; then
+        local msg="${RED}\n\n${EMOJI_FAIL} ${2}${NC}\n\n\n"
     elif [ "$1" = "error" ]; then
-        local msg="${RED}\n\n📛  ${2}${NC}\n\n\n"
+        local msg="${RED}\n\n${EMOJI_ERROR}  ${2}${NC}\n\n\n"
     else
-        local msg="${GREEN}\n\n✅  ${1}${NC}\n\n\n"
+        local msg="${GREEN}\n\n${EMOJI_CHECKMARK}  ${1}${NC}\n\n\n"
     fi
 
     shift
@@ -114,7 +143,7 @@ echo "| Script:    $0"
 echo "| Run by:    `whoami`"
 echo "| On:        `date`"
 echo "| PWD:       `pwd`"
-echo "| PID:        $$"
+echo "| PID:       $$"
 echo "|"
 echo "| Running '${SETUP_TYPE}' install..."
 echo "================================================================================"
@@ -230,10 +259,21 @@ sleep 2
 #-----------------------------------------------------------------------------------------------
 # COMPLETED MESSAGE
 echo ""
-echo "Now go login to accounts (Dropbox, emails, etc...) and then run secondary installs, \`bash secondary\`."
-echo ""
 echo ""
 echo "================================================================================"
 echo "| Primary setup has FINISHED"
 echo "================================================================================"
 echo ""
+echo ""
+echo ""
+
+#-----------------------------------------------------------------------------------------------
+# SECONDARY INSTALL
+if [ "$RUN_SECONDARY" = true ]; then 
+    echo "Runnig Secondary Install"
+    echo -e "--------------------------------------------------------------------------------\n"
+    bash ./secondary
+else 
+    echo "Now go login to accounts (Dropbox, emails, etc...) and then run secondary installs, \`bash secondary\`."
+    echo ""
+fi
