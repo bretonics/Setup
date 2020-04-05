@@ -1,17 +1,75 @@
 #!/usr/bin/env bash
 
-#--------------------------------------------------------------------------------
-# UTILS
-GREEN="\033[0;32m"
-RED="\033[0;31m"
-NC="\033[0m"  # Color reset
+#-----------------------------------------------------------------------------------------------
+# PRE-LAUNCH SETUP | 
+#-----------------------------------------------------------------------------------------------
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# LOGS
 
 # The first line redirects and appends (-a) everything from the standard ouput stream to the logfile and prints it to the screen.
 # The second line redirects the standard error to log file.
 exec 1> >(tee -a setup.log)
 exec 2> error.log
 
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# GLOBALS
+
+SETUP_TYPE="full"  # full setup: install everything in Brewfile and secondary
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# CLI ARGUMENT OPTIONS
+
+# Usage Message
+usage() {
+    echo -e "\nUsage: $0 [-f | -e] [-i full | essentials] [-h]\n" 1>&2
+    echo "HELP:"
+    echo -e "\n\n"
+    exit 1
+}
+
+# Handle Options
+while getopts ":fei:h" OPTION; do
+    case "${OPTION}" in
+    e)
+        SETUP_TYPE="essentials"
+        ;;
+    f)
+        # Default SETUP_TYPE globally set to "full"
+        ;;
+    i)
+        SETUP_TYPE=${OPTARG}
+        case "${SETUP_TYPE}" in
+            full|essentials)
+                ;;
+            *)
+                echo "Incorrect option provided for -i: ${OPTARG}" 1>&2
+                usage
+                ;;
+        esac
+        ;;
+    \?)
+        echo "Invalid Option: -${OPTARG}" 1>&2
+        usage
+        ;;
+    :)
+        echo "Invalid Option: -${OPTARG} requires an argument" 1>&2
+        usage
+        ;;
+    h | *)
+        usage
+        ;;
+    esac
+done
+
+shift $((OPTIND -1)) # remove options already handled from $@
+
+# Output Color Configs
+GREEN="\033[0;32m"
+RED="\033[0;31m"
+NC="\033[0m"
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Functions
 
 # Get Apple ID Username (email)
@@ -36,11 +94,12 @@ message() {
 #--------------------------------------------------------------------------------
 # START
 echo ""
-echo "INFO: This script will automate a lot of processes."
+echo "This script will automate a lot of processes."
 echo "Though not recommended to interrupt, exit this script at any time with Ctrl-C."
-echo "Press Ctrl-C to STOP now. You have 5 seconds"
+echo -e "\nPress Ctrl-C to STOP now if you don't wish to proceed. You have 5 seconds..."
 sleep 5
-echo "Starting automated installs...."
+echo "Starting automated install: $(echo ${SETUP_TYPE} | tr [:lower:] [:upper:])"
+sleep 2
 
 echo ""
 echo ""
@@ -50,6 +109,8 @@ echo "| Run by:    `whoami`"
 echo "| On:        `date`"
 echo "| PWD:       `pwd`"
 echo "| PID:        $$"
+echo "|"
+echo "| Running '${SETUP_TYPE}' install..."
 echo "================================================================================"
 echo ""
 echo ""
