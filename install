@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-#-----------------------------------------------------------------------------------------------
-# PRE-LAUNCH SETUP | 
-#-----------------------------------------------------------------------------------------------
+#===============================================================================================
+# PRE-LAUNCH SETUP
+#===============================================================================================
 
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#-----------------------------------------------------------------------------------------------
 # LOGS
 
 # The first line redirects and appends (-a) everything from the standard ouput stream to the logfile and prints it to the screen.
@@ -15,7 +15,12 @@ exec 2> error.log
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # GLOBALS
 
-SETUP_TYPE="full"  # full setup: install everything in Brewfile and secondary
+BREW_CASKS="./src/casks.txt"
+BREW_FILE="./src/Brewfile"
+BREW_FORMULAE="./src/formulae.txt"
+BREW_TAPS="./src/taps.txt"
+MAC_APPS="./src/apps.txt"
+SETUP_TYPE="full"  # DEFAULT full setup: installS everything in Brewfile and secondary
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # CLI ARGUMENT OPTIONS
@@ -91,8 +96,9 @@ message() {
     printf "${msg}"
 }
 
-#--------------------------------------------------------------------------------
-# START
+#===============================================================================================
+# START RUNNING SETUP
+#===============================================================================================
 echo ""
 echo "This script will automate a lot of processes."
 echo "Though not recommended to interrupt, exit this script at any time with Ctrl-C."
@@ -116,9 +122,9 @@ echo ""
 echo ""
 echo ""
 
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------
 # SYSTEM SETUP
-echo "Installing Xcode developer tools"
+echo "INSTALLING XCODE DEVELOPER TOOLS"
 printf "================================================================================\n\n"
 
 xcode-select --install
@@ -126,62 +132,89 @@ xcode-select --install
 message "Done installing Xcode developer tools."
 sleep 2
 
-echo "Installing Homebrew"
+echo "INSTALLING HOMEBREW"
 printf "================================================================================\n\n"
 
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" </dev/null
 
-printf "\n\nAdding taps...\n\n"
-brew_taps=(brewsci/bio brewsci/science homebrew/bundle caskroom/versions)
-for tap in ${brew_taps[@]}; do
-    brew tap $tap
-done
-
 message "Done installing Homebrew."
 sleep 2
 
-#--------------------------------------------------------------------------------
-# INSTALL ALL DESIRED FORMULAE
-echo "Installing formulae"
-printf "================================================================================\n\n"
+#-----------------------------------------------------------------------------------------------
+# FULL INSTALL - INSTALL ALL FORMULAE, TAPS, AND MAC APPS
+if [ "$SETUP_TYPE" = "full" ]; then
+    echo "INSTALLING EVERYTHING IN '${BREW_FILE}'"
+    printf "================================================================================\n\n"
+    brew bundle --file ${BREW_FILE}
 
-formulae="src/formulae.txt"
-while read -r formula; do
-    echo "Installing $formula"
-    brew install $formula
-    echo ""
-done < $formulae
+#-----------------------------------------------------------------------------------------------
+# ESSENTIALS INSTALL
+elif [ "$SETUP_TYPE" = "essentials" ]; then
+    echo "INSTALLING HOMEBREW TAPS, FORMULAE, AND CASKS"
+    printf "================================================================================\n\n"
 
-message "Done installing formulas."
-sleep 2
+    echo "Adding Homebrew Taps"
+    echo -e "--------------------------------------------------------------------------------\n"
+    while read -r tap; do
+        echo "Adding tap $tap"
+        brew tap $tap
+    done < $BREW_TAPS
+    message "Done adding Homebrew taps."
+    sleep 2
 
-#--------------------------------------------------------------------------------
-# INSTALL ALL DESIRED CASKS (3RD PARTY APPS)
-echo "Installing casks"
-printf "================================================================================\n\n"
+    echo "Installing Homebrew Formulae"
+    echo -e "--------------------------------------------------------------------------------\n"
+    while read -r formula; do
+        echo "Installing $formula"
+        brew install $formula
+        echo ""
+    done < $BREW_FORMULAE
+    message "Done installing Homebrew formulae."
+    sleep 2
 
-casks="src/casks.txt"
-while read -r cask; do
-    echo "Installing $cask"
-    brew cask install $cask
-    echo ""
-done < $casks
+    echo "Installing Casks (3rd party apps)"
+    echo -e "--------------------------------------------------------------------------------\n"
+    while read -r cask; do
+        echo "Installing $cask"
+        brew cask install $cask
+        echo ""
+    done < $BREW_CASKS
+    message "Done installing casks."
+    sleep 2
 
-message "Done installing casks."
-sleep 2
+    echo "Installing Apps From Mac App Store"
+    echo -e "--------------------------------------------------------------------------------\n"
+    mas signin --dialog $(getAccountId)
 
-#--------------------------------------------------------------------------------
+    while read -r line; do
+        app=$(echo $line | cut -f1 -d" ")
+        echo "Installing $app"
+        mas install $app
+        echo ""
+    done < $MAC_APPS
+    message "Done installing Mac App Store apps."
+    sleep 2
+
+#-----------------------------------------------------------------------------------------------
+# ERROR: INSTALL TYPE NOT SUPPORTED
+else
+    msg error "Something is terribly wrong. ${SETUP_TYPE} should have never passed."
+    exit 1
+fi
+
+#-----------------------------------------------------------------------------------------------
 # INSTALL CORE APPLICATIONS
-echo "Installing core resources"
+echo "INSTALLING CORE RESOURCES"
 printf "================================================================================\n\n"
 
-echo "Installing global NPM packages"
+echo "Installing Global NPM Packages"
+echo -e "--------------------------------------------------------------------------------\n"
 # brew link --force node@10  # link keg-only package if installing node v10
 npm install -g @angular/cli bunyan eslint aws-azure-login
 
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------
 # CLEANUP
-echo "Cleaning up"
+echo "CLEANING UP"
 printf "================================================================================\n\n"
 
 echo "Turning OFF sending brew analytics"
@@ -194,25 +227,9 @@ rm -rf $(brew --cache) # delete all
 message "Done cleaning up."
 sleep 2
 
-#--------------------------------------------------------------------------------
-# INSTALL MAC APPS
-echo "Installing apps from Mac App Store"
-printf "================================================================================\n\n"
-
-mas signin --dialog $(getAccountId)
-
-apps="src/apps.txt"
-while read -r line; do
-    app=$(echo $line | cut -f1 -d" ")
-    echo "Installing $app"
-    mas install $app
-    echo ""
-done < $apps
-
-message "Done installing Mac App Store apps."
-sleep 2
-
-
+#-----------------------------------------------------------------------------------------------
+# COMPLETED MESSAGE
+echo ""
 echo "Now go login to accounts (Dropbox, emails, etc...) and then run secondary installs, \`bash secondary\`."
 echo ""
 echo ""
