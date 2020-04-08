@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+#===============================================================================================
+# GLOBAL ENVIRONMENT VARIABLES
+#===============================================================================================
+
+# General
+SETUP_MODE="FULL"  # DEFAULT: Full setup - installs everything in Brewfile and secondary
+RUN_SECONDARY=false
+
+# Setup Files
+BREW_CASKS="./src/casks.txt"
+BREW_FILE="./src/Brewfile"
+BREW_FORMULAE="./src/formulae.txt"
+BREW_TAPS="./src/taps.txt"
+MAC_APPS="./src/apps.txt"
+
+# Color Outputs
+GREEN="\033[0;32m"
+RED="\033[0;31m"
+NC="\033[0m"
+
+# Emojis Hex
+EMOJI_CHECKMARK="\xe2\x9c\x85"
+EMOJI_ERROR="\xe2\x9b\x94\xef\xb8\x8f"
+EMOJI_FAIL="\xe2\x9d\x8c"
+EMOJI_INFO="\xe2\x84\xb9\xef\xb8\x8f"
+EMOJI_WARNING="\xe2\x9b\x94\xef\xb8\x8f"
+
