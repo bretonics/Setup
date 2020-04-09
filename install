@@ -27,20 +27,14 @@ handle_getopts "$@"
 #===============================================================================================
 # START RUNNING SETUP
 #===============================================================================================
-echo ""
-echo "This script will automate a lot of processes."
-echo "Though not recommended to interrupt, exit this script at any time with Ctrl-C."
-echo -e "\nPress Ctrl-C to STOP now if you don't wish to proceed. You have 5 seconds..."
-sleep 5
-echo "Starting automated install: ${SETUP_MODE}"
-sleep 2
+welcome_message
 
 echo ""
 echo ""
 echo "================================================================================"
-echo "| Script:    $0"
-echo "| Run by:    `whoami`"
-echo "| On:        `date`"
+echo "| Script:    $(basename "$0")"
+echo "| User:    `whoami`"
+echo "| Date:        `date`"
 echo "| PWD:       `pwd`"
 echo "| PID:       $$"
 echo "|"
@@ -52,7 +46,7 @@ echo "==========================================================================
 echo ""
 echo ""
 echo ""
-
+exit
 #-----------------------------------------------------------------------------------------------
 # SYSTEM SETUP
 echo "INSTALLING XCODE DEVELOPER TOOLS"

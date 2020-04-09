@@ -29,3 +29,24 @@ message() {
     shift
     printf "${msg}"
 }
+
+# Welcome Message
+welcome_message() {
+    m[0]="\n"
+    m[1]="${YELLOW} ___  ____  ____  __  __  ____\n"
+    m[2]="/ __)( ___)(_  _)(  )(  )(  _ \\ \n"
+    m[3]="\__ \ )__)   )(   )(__)(  )___/\n"
+    m[4]="(___/(____) (__) (______)(__)\n${NC}"
+    m[5]=""
+    m[6]=""
+
+    echo -e "${m[@]}"
+
+    echo ""
+    echo "This script will automate a lot of processes."
+    echo "Though not recommended to interrupt, exit this script at any time with Ctrl-C."
+    echo -e "\nPress Ctrl-C to STOP now if you don't wish to proceed. You have 5 seconds..."
+    sleep 5
+    echo "Starting automated install: ${SETUP_MODE}"
+    sleep 2
+}
