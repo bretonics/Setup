@@ -116,12 +116,11 @@ elif [ "$SETUP_MODE" = "ESSENTIALS" ]; then
     echo -e "--------------------------------------------------------------------------------\n"
     mas signin --dialog $(getAccountId)
 
-    while read -r line; do
-        app=$(echo $line | cut -f1 -d" ")
+    for app in $(sed -E -n 's/^([0-9]+)(.*)/\1/p' ${MAC_APPS}); do
         echo "Installing $app"
         mas install $app
         echo ""
-    done < $MAC_APPS
+    done
     message "Done installing Mac App Store apps."
     sleep 2
 
