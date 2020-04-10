@@ -75,10 +75,10 @@ if [ "$SETUP_MODE" = "FULL" ]; then
 
 #-----------------------------------------------------------------------------------------------
 # ESSENTIALS INSTALL
-# - Homebrew Taps specified by $BREW_TAPS
-# - Homebrew Forlumae specified by $BREW_FORMULAE
-# - Homebrew Casks specified by $BREW_CASKS
-# - applications from Mac App Store specified by $MAC_APPS
+# - Homebrew Taps specified by $BREW_TAPS_FILE
+# - Homebrew Forlumae specified by $BREW_FORMULAE_FILE
+# - Homebrew Casks specified by $BREW_CASKS_FILE
+# - applications from Mac App Store specified by $MAC_APPS_FILE
 elif [ "$SETUP_MODE" = "ESSENTIALS" ]; then
     echo "INSTALLING HOMEBREW TAPS, FORMULAE, AND CASKS"
     printf "================================================================================\n\n"
@@ -88,7 +88,7 @@ elif [ "$SETUP_MODE" = "ESSENTIALS" ]; then
     while read -r tap; do
         echo "Adding tap $tap"
         brew tap $tap
-    done < $BREW_TAPS
+    done < $BREW_TAPS_FILE
     message "Done adding Homebrew taps."
     sleep 2
 
@@ -98,7 +98,7 @@ elif [ "$SETUP_MODE" = "ESSENTIALS" ]; then
         echo "Installing $formula"
         brew install $formula
         echo ""
-    done < $BREW_FORMULAE
+    done < $BREW_FORMULAE_FILE
     message "Done installing Homebrew formulae."
     sleep 2
 
@@ -108,7 +108,7 @@ elif [ "$SETUP_MODE" = "ESSENTIALS" ]; then
         echo "Installing $cask"
         brew cask install $cask
         echo ""
-    done < $BREW_CASKS
+    done < $BREW_CASKS_FILE
     message "Done installing casks."
     sleep 2
 
@@ -116,7 +116,7 @@ elif [ "$SETUP_MODE" = "ESSENTIALS" ]; then
     echo -e "--------------------------------------------------------------------------------\n"
     mas signin --dialog $(getAccountId)
 
-    for app in $(sed -E -n 's/^([0-9]+)(.*)/\1/p' ${MAC_APPS}); do
+    for app in $(sed -E -n 's/^([0-9]+)(.*)/\1/p' ${MAC_APPS_FILE}); do
         echo "Installing $app"
         mas install $app
         echo ""

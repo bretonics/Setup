@@ -9,11 +9,11 @@ SETUP_MODE="FULL"  # DEFAULT: Full setup - installs everything in Brewfile and s
 RUN_SECONDARY=false
 
 # Setup Files
-BREW_CASKS="./src/casks.txt"
+BREW_CASKS_FILE="./src/casks.txt"
 BREW_FILE="./src/Brewfile"
-BREW_FORMULAE="./src/formulae.txt"
-BREW_TAPS="./src/taps.txt"
-MAC_APPS="./src/apps.txt"
+BREW_FORMULAE_FILE="./src/formulae.txt"
+BREW_TAPS_FILE="./src/taps.txt"
+MAC_APPS_FILE="./src/apps.txt"
 
 # Color Outputs
 GREEN="\033[0;32m"
@@ -21,7 +21,7 @@ RED="\033[0;31m"
 YELLOW="\033[0;33m"
 NC="\033[0m"
 
-# Emojis Hex
+# Emojis UTF-8 Hex
 EMOJI_CHECKMARK="\xe2\x9c\x85"
 EMOJI_ERROR="\xe2\x9b\x94\xef\xb8\x8f"
 EMOJI_FAIL="\xe2\x9d\x8c"
