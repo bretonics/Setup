@@ -1,0 +1,4 @@
+ServerAliveInterval 240
+
+Host *github.com
+        IdentityFile ~/.ssh/github_rsa
