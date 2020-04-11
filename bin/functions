@@ -7,9 +7,41 @@
 # Global Variables
 source ./bin/globals
 
+# Completed Message
+completed_message() {
+    echo ""
+    echo ""
+    echo "================================================================================"
+    echo "| ${1} setup has FINISHED"
+    echo "================================================================================"
+    echo ""
+    echo ""
+}
+
 # Get Apple ID Username (email)
 getAccountId() {
     defaults read MobileMeAccounts Accounts | sed -n -e 's/.*AccountID = \"\(.*\)\"\;/\1/p'
+}
+
+# Header Message
+header_message() {
+    echo ""
+    echo ""
+    echo "================================================================================"
+    echo "| Script:    $(basename "$0")"
+    echo "| User:      `whoami`"
+    echo "| Date:      `date`"
+    echo "| PWD:       `pwd`"
+    echo "| PID:       $$"
+    echo "|"
+    echo "| Running '${SETUP_MODE}' install..."
+    echo "|     - Brewfile: ${BREW_FILE}"
+    echo "|     - Secondary: $(if [ ${RUN_SECONDARY} = "true" ]; then echo "Yes"; else echo "No"; fi)"
+    echo "|"
+    echo "================================================================================"
+    echo ""
+    echo ""
+    echo ""
 }
 
 # Display Nicely Formatted Message
