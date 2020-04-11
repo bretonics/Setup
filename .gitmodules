@@ -7,3 +7,6 @@
 [submodule "bashFunctions"]
 	path = files/bash/functions
 	url = https://gist.github.com/894d8c2d1d4813c36b7d36e9a97aedd6.git
+[submodule "crontab"]
+	path = files/crontab
+	url = https://gist.github.com/9a48a3b9ef32d93d15f45c3f007550b4.git
