@@ -1,0 +1,9 @@
+[submodule "bashProfile"]
+	path = files/bash/profile
+	url = https://gist.github.com/5176d35739a0f4e7acfd.git
+[submodule "bashrc"]
+	path = files/bash/bashrc
+	url = https://gist.github.com/f3b61fcd1fa946df6dac.git
+[submodule "bashFunctions"]
+	path = files/bash/functions
+	url = https://gist.github.com/894d8c2d1d4813c36b7d36e9a97aedd6.git
