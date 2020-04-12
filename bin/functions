@@ -47,15 +47,15 @@ header_message() {
 # Display Nicely Formatted Message
 message() {
     if [ "$1" = "info" ]; then
-        local msg="${RED}\n\n${EMOJI_INFO}  ${2}${NC}\n\n\n"
+        local msg="\n\n${EMOJI_INFO} - ${RED}${2}${NC}\n\n\n"
     elif [ "$1" = "warning" ]; then
-        local msg="${RED}\n\n${EMOJI_WARNING}  ${2}${NC}\n\n\n"
+        local msg="\n\n${EMOJI_WARNING} - ${RED}${2}${NC}\n\n\n"
     elif [ "$1" = "fail" ]; then
-        local msg="${RED}\n\n${EMOJI_FAIL} ${2}${NC}\n\n\n"
+        local msg="\n\n${EMOJI_FAIL} - ${RED}${2}${NC}\n\n\n"
     elif [ "$1" = "error" ]; then
-        local msg="${RED}\n\n${EMOJI_ERROR}  ${2}${NC}\n\n\n"
+        local msg="\n\n${EMOJI_ERROR} - ${RED}${2}${NC}\n\n\n"
     else
-        local msg="${GREEN}\n\n${EMOJI_CHECKMARK}  ${1}${NC}\n\n\n"
+        local msg="\n\n${EMOJI_CHECKMARK} - ${GREEN}${1}${NC}\n\n\n"
     fi
 
     shift
