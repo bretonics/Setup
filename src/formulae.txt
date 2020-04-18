@@ -1,6 +1,7 @@
 asciinema
 autoconf
 automake
+awscli
 doxygen
 fontconfig
 freetype
@@ -40,6 +41,7 @@ mpfr
 mysql
 neofetch
 ninja
+node
 openssl
 pandoc
 pkg-config

@@ -1,6 +1,6 @@
 664501556 1000 OpenType Fonts
-443987910 1Password
-1080937753 AdBlock Master
+#443987910 1Password  # v6
+1333542190 1Password 7
 937984704 Amphetamine
 918207447 Annotate
 1076004595 AppGenome

@@ -1,12 +1,13 @@
 alfred
 atom
+devdocs
 dropbox
+fork
 gitify
 google-chrome
 google-backup-and-sync
-google-drive-file-stream
-java
 mactex
+mongodb-community
 rstudio
 spotify
 virtualbox

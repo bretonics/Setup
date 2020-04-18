@@ -1,6 +1,9 @@
-tap "caskroom/cask"
 tap "homebrew/bundle"
+tap "caskroom/cask"
+tap "homebrew/cask-versions"
 tap "homebrew/core"
+tap "homebrew/services"
+tap "mongodb/brew"
 cask "java"
 brew "openssl"
 brew "readline"
@@ -10,6 +13,7 @@ brew "asciinema"
 brew "autoconf"
 brew "autoconf"
 brew "automake"
+brew "awscli"
 brew "htslib"
 brew "bcftools"
 brew "blast"
@@ -41,6 +45,7 @@ brew "mummer"
 brew "mysql"
 brew "neofetch"
 brew "ninja"
+brew "node"
 brew "pandoc"
 brew "pandoc-citeproc"
 brew "pkg-config"
@@ -74,6 +79,7 @@ mas "1000 OpenType Fonts", id: 664501556
 mas "1Password", id: 443987910
 mas "AdBlock Master", id: 1080937753
 mas "Amphetamine", id: 937984704
+mas "Anaxi", id: 1317534033
 mas "Annotate", id: 918207447
 mas "AppGenome", id: 1076004595
 mas "Armadillo", id: 532223938
@@ -104,6 +110,7 @@ mas "Due", id: 524373870
 mas "EasyBatchPhoto", id: 432029334
 mas "EverFont", id: 586170998
 mas "Evernote", id: 406056744
+mas "Evernote Web Clipper", id: 1481669779
 mas "Everyday", id: 446089664
 mas "FilePane", id: 847515307
 mas "ForkLift", id: 412448059
@@ -160,6 +167,7 @@ mas "PriceWatcher", id: 438371054
 mas "Producteev", id: 450283360
 mas "PullRequestMenu", id: 919797974
 mas "Resume Lab - Pages Templates", id: 1218255329
+mas "RunCat", id: 1429033973
 mas "ScreenFloat", id: 414528154
 mas "Shade", id: 546881298
 mas "Sip", id: 507257563
@@ -182,6 +190,7 @@ mas "Templates for Photoshop by GN", id: 1204722354
 mas "TextWrangler", id: 404010395
 mas "The Duplicate Finder", id: 654667344
 mas "Timer Utility", id: 406187895
+mas "TinyNotepad", id: 1449415412
 mas "Trello", id: 1278508951
 mas "Trickster", id: 509641724
 mas "TweetDeck", id: 485812721
@@ -189,10 +198,11 @@ mas "unDock", id: 402359583
 mas "Vectr", id: 1204645754
 mas "Visits", id: 462227149
 mas "Wallpaper Wizard", id: 410801088
+mas "Weather for Status Bar", id: 1448031908
 mas "WiFi Explorer", id: 494803304
 mas "Will It Fit", id: 521680466
 mas "Window Tidy", id: 456609775
 mas "Xcode", id: 497799835
 mas "Yoink", id: 457622435
-mas "Yummy FTP", id: 492068728
+mas "Yummy FTP Pro", id: 492068728
 mas "Zone", id: 415832062
