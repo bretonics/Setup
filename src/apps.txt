@@ -1,108 +1,36 @@
-664501556 1000 OpenType Fonts
-#443987910 1Password  # v6
 1333542190 1Password 7
 937984704 Amphetamine
 918207447 Annotate
-1076004595 AppGenome
-532223938 Armadillo
-1015999125 Arriving 2
-404180306 Art Text 2
-414209656 Better Rename 9
-402440280 Big Mean Folder Machine 2
-425264550 Blackmagic Disk Speed Test
-902111700 Blogo
 1265895169 Calendar 366 II
-402355593 Chronicle
+1280542517 Chronicle Pro
 1130254674 CloudMounter
-587612662 Code Collector Pro
-412536790 CodeBox
-459413843 ColorStrokes
 1035237815 Commander One PRO
-402352687 Compartments
-501641097 DesiGN Books Author Templates
-1148881950 DesiGN Certificates Templates
-418534796 Diagrammix
-672206759 Disk Diag
-498672703 Droplr
 695406827 Dropzone 3
 524373870 Due
-432029334 EasyBatchPhoto
-586170998 EverFont
 406056744 Evernote
-446089664 Everyday
+1481669779 Evernote Web Clipper
 847515307 FilePane
-412448059 ForkLift
-647697434 Free Fonts
-760246983 Free Fonts - Christmas Collection
-478867587 FreeSpace Tab
-668208984 GIPHY CAPTURE
 468374949 Gelatin
-895042945 Graphics
-700757313 Halloween Fonts
-413564952 Home Inventory
-577411683 Infographics Lab for Keynote
-529580720 Inventor Fusion
 409183694 Keynote
-576338668 Leaf
-402387626 LiveQuartz
-1218759300 Logo Lab for iWork - Templates
-919007298 Logo Pop Free
-604108855 MacFonts - Free Fonts Collection
-430255202 Mactracker
 441258766 Magnet
 465965038 Markdown Pro
-448925439 Marked
 518594271 MenuMate
-642385433 Mini Design Bundle
 915542151 Monity
-736189492 Notability
-436938594 NuggitExpress
 409203825 Numbers
-508503680 Ordinatore Pro
 868499627 Overlays! (2)
 405219581 PDF Toolkit
 522090209 PDFGenius
 409201541 Pages
-639968404 Parcel
-592704001 Photos Duplicate Cleaner
-568494494 Pocket
 445189367 PopClip
 928494006 PopHub
-642142422 Premium Fonts
-476533227 Prepo
 919797974 PullRequestMenu
-1218255329 Resume Lab - Pages Templates
 586001240 SQLPro for SQLite
 414528154 ScreenFloat
 546881298 Shade
 507257563 Sip
-404243625 SketchBookExpress
-528106921 Sketchpad
-425955336 Skitch
 803453959 Slack
 418073146 Snap
-488652149 Sparkbox
-413853485 Status Barred
-534067900 Stock + Pro
-479510018 Stock Icons - Cliparts by GN
-704139979 Super Vectorizer
-484868989 System Lens
-1188351951 TaskBox
-1204722354 Templates for Photoshop by GN
-404010395 TextWrangler
-654667344 The Duplicate Finder
 1278508951 Trello
 509641724 Trickster
-485812721 TweetDeck
-494803304 WiFi Explorer
 456609775 Window Tidy
 457622435 Yoink
-492068728 Yummy FTP
-415832062 Zone
-490152466 iBooks Author
-408981381 iPhoto
-402989379 iStudiez Pro
-489094439 iTeleport
-414950773 skEditExpress
-402359583 unDock
-1147396723 WhatsApp

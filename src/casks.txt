@@ -5,9 +5,8 @@ dropbox
 fork
 gitify
 google-chrome
-google-backup-and-sync
 mactex
-mongodb-community
 rstudio
 spotify
 virtualbox
+visual-studio-code
