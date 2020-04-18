@@ -29,28 +29,12 @@ handle_getopts "$@"
 #===============================================================================================
 welcome_message
 
-echo ""
-echo ""
-echo "================================================================================"
-echo "| Script:    $(basename "$0")"
-echo "| User:      `whoami`"
-echo "| Date:      `date`"
-echo "| PWD:       `pwd`"
-echo "| PID:       $$"
-echo "|"
-echo "| Running '${SETUP_MODE}' install..."
-echo "|     - Brewfile: ${BREW_FILE}"
-echo "|     - Secondary: $(if [ ${RUN_SECONDARY} = "true" ]; then echo "Yes"; else echo "No"; fi)"
-echo "|"
-echo "================================================================================"
-echo ""
-echo ""
-echo ""
+header_message
 
 #-----------------------------------------------------------------------------------------------
 # SYSTEM SETUP
 echo "INSTALLING XCODE DEVELOPER TOOLS"
-printf "================================================================================\n\n"
+echo -e "================================================================================\n\n"
 
 xcode-select --install
 
@@ -58,7 +42,7 @@ message "Done installing Xcode developer tools."
 sleep 2
 
 echo "INSTALLING HOMEBREW"
-printf "================================================================================\n\n"
+echo -e "================================================================================\n\n"
 
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" </dev/null
 
@@ -70,7 +54,7 @@ sleep 2
 # - Install all Formulae, Taps, and Mac Apps specified by $BREW_FILE 
 if [ "$SETUP_MODE" = "FULL" ]; then
     echo "INSTALLING EVERYTHING IN '${BREW_FILE}'"
-    printf "================================================================================\n\n"
+    echo -e "================================================================================\n\n"
     brew bundle --file ${BREW_FILE}
 
 #-----------------------------------------------------------------------------------------------
@@ -81,7 +65,7 @@ if [ "$SETUP_MODE" = "FULL" ]; then
 # - applications from Mac App Store specified by $MAC_APPS_FILE
 elif [ "$SETUP_MODE" = "ESSENTIALS" ]; then
     echo "INSTALLING HOMEBREW TAPS, FORMULAE, AND CASKS"
-    printf "================================================================================\n\n"
+    echo -e "================================================================================\n\n"
 
     echo "Adding Homebrew Taps"
     echo -e "--------------------------------------------------------------------------------\n"
@@ -134,7 +118,7 @@ fi
 #-----------------------------------------------------------------------------------------------
 # INSTALL CORE APPLICATIONS
 echo "INSTALLING CORE RESOURCES"
-printf "================================================================================\n\n"
+echo -e "================================================================================\n\n"
 
 echo "Installing Global NPM Packages"
 echo -e "--------------------------------------------------------------------------------\n"
@@ -144,7 +128,7 @@ npm install -g @angular/cli bunyan eslint aws-azure-login
 #-----------------------------------------------------------------------------------------------
 # CLEANUP
 echo "CLEANING UP"
-printf "================================================================================\n\n"
+echo -e "================================================================================\n\n"
 
 echo "Turning OFF sending brew analytics"
 brew analytics off
@@ -156,16 +140,10 @@ rm -rf $(brew --cache) # delete all
 message "Done cleaning up."
 sleep 2
 
-#-----------------------------------------------------------------------------------------------
-# COMPLETED MESSAGE
-echo ""
-echo ""
-echo "================================================================================"
-echo "| Primary setup has FINISHED"
-echo "================================================================================"
-echo ""
-echo ""
-echo ""
+#===============================================================================================
+# COMPLETED
+#===============================================================================================
+completed_message "Primary"
 
 #-----------------------------------------------------------------------------------------------
 # SECONDARY INSTALL
