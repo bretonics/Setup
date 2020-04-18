@@ -15,6 +15,10 @@ BREW_FORMULAE_FILE="./src/formulae.txt"
 BREW_TAPS_FILE="./src/taps.txt"
 MAC_APPS_FILE="./src/apps.txt"
 
+# Setup Configurations
+GITHUB_KEYS_URL="https://github.com/settings/keys"
+GITHUB_RSA_NAME="github_rsa"
+
 # Color Outputs
 GREEN="\033[0;32m"
 RED="\033[0;31m"

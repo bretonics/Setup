@@ -1,71 +1,120 @@
 #!/usr/bin/env bash
 
-echo "================================================================================"
-echo "| Script:    $0"
-echo "| Run by:    `whoami`"
-echo "| On:        `date`"
-echo "| PID:       $$"
-echo "================================================================================"
-echo ""
-echo ""
-echo ""
+#===============================================================================================
+# PRE-LAUNCH SETUP
+#===============================================================================================
 
+SETUP_PWD=`pwd`
 
-#--------------------------------------------------------------------------------
-# PERSONALIZE SETUP
-echo "Running personalizations"
-printf "================================================================================\n\n"
+#-----------------------------------------------------------------------------------------------
+# SOURCES
+# - General Helper Functions
+# - Global Environment Variables
+# - CLI Argument Options
+for file in ./bin/*; do 
+    source $file
+done
+
+#===============================================================================================
+# START RUNNING SECONDARY SETUP
+#===============================================================================================
+header_message
 
 cd ~
-printf "\nCurrently at `pwd`\n"
+exit
 
-printf "\nDownloading Submodules\n"
+#-----------------------------------------------------------------------------------------------
+# SYSTEM PERSONALIZATION
+echo "RUNNING SYSTEM PERSONALIZATIONS"
+echo -e "================================================================================\n\n"
+
+echo -e "Downloading Submodules\n"
 git pull --recurse-submodules
 
-printf "\nCopying .bash_profile\n"
+echo -e "\nCopying .bash_profile\n"
 cp ./files/bash/profile/.bash_profile ~/
 
-printf "\nCopying .bashrc\n"
+echo -e "\nCopying .bashrc\n"
 cp ./files/bash/bashrc/.bashrc ~/
 
-printf "\nCopying .bash_functions\n"
+echo -e "\nCopying .bash_functions\n"
 cp ./files/bash/functions/.bash_functions ~/
 
-printf "\nInitializing crontab\n"
+echo -e "\nInitializing crontab\n"
 crontab ./files/crontab/crontab
 
-printf "\nSourcing .bash_profile\n"
+echo -e "\nSourcing .bash_profile\n"
 source ~/.bash_profile
 
-printf "\nInitializing crontab\n"
-crontab ./crontab
+echo -e "\nLinking and Sourcing all Bash Completions\n"
+ln -s /Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash /usr/local/etc/bash_completion.d/
+for f in /usr/local/etc/bash_completion.d/*; do source $f; done
 
-printf "\nSymlinking Atom config directory\n"
+echo -e "\nReducing Dock autohide animation\n"
+defaults write com.apple.dock autohide-time-modifier -float 0.25; killall Dock
+
+echo -e "\nRemove Dock Delay for Auto-Hide & Auto-Show\n"
+defaults write com.apple.Dock autohide-delay -float 0 && killall Dock
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# 3RD PARTY
+echo -e "\nSymlinking Atom config directory\n"
 rm -rf ~/.atom
 ln -sf ~/Dropbox/Apps/Atom ~/.atom
 
-printf "\nReducing Dock autohide animation\n"
-defaults write com.apple.dock autohide-time-modifier -float 0.25; killall Dock
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# GIT
+echo -e "\n\nConfiguring Git"
+echo -e "--------------------------------------------------------------------------------\n"
 
-printf "\nRemove Dock Delay for Auto-Hide & Auto-Show\n"
-defaults write com.apple.Dock autohide-delay -float 0 && killall Dock
+# git config --global pull.rebase true
 
-printf "\nCreating GPG Key\n"
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# SSH KEYS
+echo -e "\n\nConfiguring SSH Keys"
+echo -e "--------------------------------------------------------------------------------\n"
+
+cd ~
+mkdir ~/.ssh
+cp -v ./files/config ~/.ssh
+ssh-keygen -t rsa -f ~/.ssh/${GITHUB_RSA_NAME}
+cat ~/.ssh/${GITHUB_RSA_NAME}.pub | pbcopy
+
+echo -e "\n\nSSH public key copied to clipboard.\n"
+echo -e "\nGitHub will now open. Paste PUBLIC SSH key copied to your clipboard and come back here to continue.\n"
+sleep 3
+open ${GITHUB_KEYS_URL}
+read -p "Waiting on user to return. Press to continue... "
+pbcopy < /dev/null  # clear clipboard
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# GGP Key
+echo -e "\n\nCreating GPG Key"
+echo -e "--------------------------------------------------------------------------------\n"
+
 gpg --gen-key
 GPGkey=$(gpg --list-secret-keys --keyid-format LONG | sed -nE 's/sec.*rsa2048\/([a-zA-Z0-9]+).*/\1/p')
 
-printf "\nConfiguring GPG Key with resources\n"
-git config --global user.signingkey ${GPGkey}
+echo -e "\nConfiguring GPG Key with resources\n"
+git config --global user.signingkey ${GPGkey}  # configure Git to use GPG
 gpg --armor --export ${GPGkey} | pbcopy
-unset GPGkey
 
-printf "\n\nDone running personalizations.\n\n\n"
+echo -e "\n\nGPG key copied to clipboard.\n"
+unset GPGkey
+echo -e "GitHub will now open. Paste GPG key copied to your clipboard and come back here to continue.\n"
+sleep 3
+open ${GITHUB_KEYS_URL}
+read -p "Waiting on user to return. Press to continue... "
+pbcopy < /dev/null  # clear clipboard
+
+message "Done running workspace personalizations."
 sleep 2
 
-#--------------------------------------------------------------------------------
+#===============================================================================================
 # UPDATES
-echo "Running updates"
-printf "================================================================================\n\n"
+#===============================================================================================
+echo "RUNNING UPDATES"
+echo -e "================================================================================\n\n"
 
 echo "Updating macOS"
 softwareupdate -ia --verbose
@@ -73,11 +122,10 @@ softwareupdate -ia --verbose
 echo "Updating Atom"
 apm upgrade -c false
 
-printf "\n\nDone running updates.\n\n\n"
+message "Done running updates."
 sleep 2
 
-
-echo "================================================================================"
-echo "| Secondar setup has FINISHED"
-echo "================================================================================"
-echo ""
+#===============================================================================================
+# COMPLETED
+#===============================================================================================
+completed_message "Secondary"
