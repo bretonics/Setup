@@ -4,12 +4,7 @@
 # PRE-LAUNCH SETUP
 #===============================================================================================
 
-#-----------------------------------------------------------------------------------------------
-# LOGS
-# - The first line redirects and appends (-a) everything from the standard ouput stream to the logfile and prints it to the screen.
-# - The second line redirects the standard error to log file.
-exec 1>> >(tee -a setup.log)
-exec 2>> error.log
+logger # logs
 
 #-----------------------------------------------------------------------------------------------
 # SOURCES
