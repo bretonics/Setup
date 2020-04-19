@@ -5,13 +5,21 @@
 #===============================================================================================
 
 # Global Variables
-source ./bin/globals
+source ./lib/globals
 
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Divider Block Divider
+divider() {
+    echo -e "\n\n${1}\n--------------------------------------------------------------------------------\n"
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Get Apple ID Username (email)
 getAccountId() {
     defaults read MobileMeAccounts Accounts | sed -n -e 's/.*AccountID = \"\(.*\)\"\;/\1/p'
 }
 
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Completed Message
 footer() {
     echo ""
@@ -28,6 +36,7 @@ footer() {
     echo ""
 }
 
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Header Message
 header() {
     echo ""
@@ -49,15 +58,18 @@ header() {
     echo ""
 }
 
-# Stdout Stderror Logs
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Logs
 # - The first line redirects and appends (-a) everything from the standard ouput stream to the logfile and prints it to the screen.
 # - The second line redirects the standard error to log file.
-logger() {
+loggers() {
     exec 1>> >(tee -a setup.log)
     exec 2>> error.log
 }
 
-# Display Nicely Formatted Message
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Completion Messages
+# - Display Nicely Formatted Message
 message() {
     if [ "$1" = "info" ]; then
         local msg="\n\n${EMOJI_INFO} - ${RED}${2}${NC}\n\n\n"
@@ -75,6 +87,24 @@ message() {
     printf "${msg}"
 }
 
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Section Block Divider
+section() {
+    echo -e "\n\n| ${1}\n================================================================================\n\n"
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Sources
+# - General Helper Functions
+# - Global Environment Variables
+# - CLI Argument Options
+source_libs() {
+    for file in ./lib/*; do 
+        source $file
+    done
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Welcome Message
 welcome() {
     m[0]="\n"
