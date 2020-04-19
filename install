@@ -8,8 +8,8 @@
 # LOGS
 # - The first line redirects and appends (-a) everything from the standard ouput stream to the logfile and prints it to the screen.
 # - The second line redirects the standard error to log file.
-exec 1> >(tee -a setup.log)
-exec 2> error.log
+exec 1>> >(tee -a setup.log)
+exec 2>> error.log
 
 #-----------------------------------------------------------------------------------------------
 # SOURCES
@@ -27,24 +27,24 @@ handle_getopts "$@"
 #===============================================================================================
 # START RUNNING SETUP
 #===============================================================================================
-welcome_message
+welcome
 
-header_message
+header
 
 #-----------------------------------------------------------------------------------------------
 # SYSTEM SETUP
-echo "INSTALLING XCODE DEVELOPER TOOLS"
-echo -e "================================================================================\n\n"
+echo "| INSTALLING XCODE DEVELOPER TOOLS"
+echo -e "================================================================================\n"
 
 xcode-select --install
 
 message "Done installing Xcode developer tools."
 sleep 2
 
-echo "INSTALLING HOMEBREW"
-echo -e "================================================================================\n\n"
+echo "| INSTALLING HOMEBREW"
+echo -e "================================================================================\n"
 
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" </dev/null
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
 message "Done installing Homebrew."
 sleep 2
@@ -53,8 +53,8 @@ sleep 2
 # FULL INSTALL
 # - Install all Formulae, Taps, and Mac Apps specified by $BREW_FILE 
 if [ "$SETUP_MODE" = "FULL" ]; then
-    echo "INSTALLING EVERYTHING IN '${BREW_FILE}'"
-    echo -e "================================================================================\n\n"
+    echo "| INSTALLING EVERYTHING IN '${BREW_FILE}'"
+    echo -e "================================================================================\n"
     brew bundle --file ${BREW_FILE}
 
 #-----------------------------------------------------------------------------------------------
@@ -64,8 +64,8 @@ if [ "$SETUP_MODE" = "FULL" ]; then
 # - Homebrew Casks specified by $BREW_CASKS_FILE
 # - applications from Mac App Store specified by $MAC_APPS_FILE
 elif [ "$SETUP_MODE" = "ESSENTIALS" ]; then
-    echo "INSTALLING HOMEBREW TAPS, FORMULAE, AND CASKS"
-    echo -e "================================================================================\n\n"
+    echo "| INSTALLING HOMEBREW TAPS, FORMULAE, AND CASKS"
+    echo -e "================================================================================\n"
 
     echo "Adding Homebrew Taps"
     echo -e "--------------------------------------------------------------------------------\n"
@@ -116,24 +116,27 @@ else
 fi
 
 #-----------------------------------------------------------------------------------------------
-# INSTALL CORE APPLICATIONS
-echo "INSTALLING CORE RESOURCES"
-echo -e "================================================================================\n\n"
+# INSTALL CORE RESOURCES
+echo "| INSTALLING CORE RESOURCES"
+echo -e "================================================================================\n"
 
 echo "Installing Global NPM Packages"
 echo -e "--------------------------------------------------------------------------------\n"
 # brew link --force node@10  # link keg-only package if installing node v10
 npm install -g @angular/cli bunyan eslint aws-azure-login
 
+message_subsection "Installing VS Code Extensions"
+code --install-extension Shan.code-settings-sync
+
 #-----------------------------------------------------------------------------------------------
 # CLEANUP
-echo "CLEANING UP"
-echo -e "================================================================================\n\n"
+echo "\n\n| CLEANING UP"
+echo -e "================================================================================"
 
-echo "Turning OFF sending brew analytics"
+echo -e "Turning OFF sending brew analytics\n"
 brew analytics off
 
-echo "Cleaning up Homebrew downloads and caches"
+echo -e "Cleaning up Homebrew downloads and caches\n"
 brew cleanup -s # remove older versions in cellar + old downloads-cache
 rm -rf $(brew --cache) # delete all
 
@@ -143,7 +146,7 @@ sleep 2
 #===============================================================================================
 # COMPLETED
 #===============================================================================================
-completed_message "Primary"
+footer "Primary"
 
 #-----------------------------------------------------------------------------------------------
 # SECONDARY INSTALL
