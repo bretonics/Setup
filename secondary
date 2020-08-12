@@ -3,7 +3,6 @@
 #===============================================================================================
 # PRE-LAUNCH SETUP
 #===============================================================================================
-
 SETUP_PWD=`pwd`
 
 # Only execute when running independently of initial install
@@ -12,58 +11,52 @@ if [ -z $RUN_SECONDARY ] || [ $RUN_SECONDARY = false ]; then
     source_libs
 fi
 
-#-----------------------------------------------------------------------------------------------
-# SOURCES
-# - General Helper Functions
-# - Global Environment Variables
-# - CLI Argument Options
-for file in ./bin/*; do 
-    source $file
-done
-
 #===============================================================================================
 # START RUNNING SECONDARY SETUP
 #===============================================================================================
 header
-
-cd ~
-exit
 
 #-----------------------------------------------------------------------------------------------
 # SYSTEM PERSONALIZATION
 section "RUNNING SYSTEM PERSONALIZATIONS"
 
 echo -e "Downloading Submodules\n"
-git pull --recurse-submodules
+git submodule init && git submodule update
 
-echo -e "\nCopying .bash_profile\n"
+echo -e "Copying .bash_profile\n"
 cp ./files/bash/profile/.bash_profile ~/
 
-echo -e "\nCopying .bashrc\n"
+echo -e "Copying .bashrc\n"
 cp ./files/bash/bashrc/.bashrc ~/
 
-echo -e "\nCopying .bash_functions\n"
+echo -e "Copying .bash_functions\n"
 cp ./files/bash/functions/.bash_functions ~/
 
-echo -e "\nInitializing crontab\n"
+echo -e "Initializing crontab\n"
 crontab ./files/crontab/crontab
 
-echo -e "\nSourcing .bash_profile\n"
+echo -e "Sourcing .bash_profile\n"
 source ~/.bash_profile
 
-echo -e "\nLinking and Sourcing all Bash Completions\n"
+echo -e "Linking and Sourcing all Bash Completions\n"
 ln -s /Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash /usr/local/etc/bash_completion.d/
-for f in /usr/local/etc/bash_completion.d/*; do source $f; done
 
-echo -e "\nReducing Dock autohide animation\n"
-defaults write com.apple.dock autohide-time-modifier -float 0.25; killall Dock
+echo -e "Activating Dock Auto Hide\n"
+defaults write com.apple.Dock autohide -float 1
 
-echo -e "\nRemove Dock Delay for Auto-Hide & Auto-Show\n"
-defaults write com.apple.Dock autohide-delay -float 0 && killall Dock
+echo -e "Reducing Dock Auto Hide Animation\n"
+defaults write com.apple.dock autohide-time-modifier -float 0.25
+
+echo -e "Remove Dock Delay for Auto Hide & Auto-Show\n"
+defaults write com.apple.Dock autohide-delay -float 0
+
+killall Dock
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # 3RD PARTY
-echo -e "\nSymlinking Atom config directory\n"
+
+# Atom IDE
+echo -e "Symlinking Atom config directory\n"
 rm -rf ~/.atom
 ln -sf ~/Dropbox/Apps/Atom ~/.atom
 
@@ -81,14 +74,13 @@ git config --global user.email "${GIT_EMAIL}"
 # SSH KEYS
 subsection "Configuring SSH Keys"
 
-cd ~
 mkdir ~/.ssh
-cp -v ./files/config ~/.ssh
+cp -v ./files/ssh_config ~/.ssh/config
 ssh-keygen -t rsa -f ~/.ssh/${GITHUB_RSA_NAME}
 cat ~/.ssh/${GITHUB_RSA_NAME}.pub | pbcopy
 
 echo -e "\n\nSSH public key copied to clipboard.\n"
-echo -e "\nGitHub will now open. Paste PUBLIC SSH key copied to your clipboard and come back here to continue.\n"
+echo -e "GitHub will now open. Paste PUBLIC SSH key copied to your clipboard and come back here to continue.\n"
 sleep 3
 open ${GITHUB_KEYS_URL}
 read -p "Waiting on user to return. Press to continue... "
