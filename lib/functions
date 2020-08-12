@@ -5,7 +5,8 @@
 #===============================================================================================
 
 # Global Variables
-source ./lib/globals
+BASE_PATH="$(dirname $(dirname $0))"
+source ${BASE_PATH}/lib/globals
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Divider Block Divider
@@ -88,9 +89,15 @@ message() {
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Section Block Divider
+# Section Header
 section() {
     echo -e "\n\n| ${1}\n================================================================================\n\n"
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Subs Section Header
+subsection() {
+    echo -e "\n\n${1}\n--------------------------------------------------------------------------------\n"
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -107,21 +114,16 @@ source_libs() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Welcome Message
 welcome() {
-    m[0]="\n"
-    m[1]="${YELLOW} ___  ____  ____  __  __  ____\n"
-    m[2]="/ __)( ___)(_  _)(  )(  )(  _ \\ \n"
-    m[3]="\__ \ )__)   )(   )(__)(  )___/\n"
-    m[4]="(___/(____) (__) (______)(__)\n${NC}"
-    m[5]=""
-    m[6]=""
+    m[0]="\n${YELLOW}  ___  ____  ____  __  __  ____\n"
+    m[1]="/ __)( ___)(_  _)(  )(  )(  _ \\ \n"
+    m[2]="\__ \ )__)   )(   )(__)(  )___/\n"
+    m[3]="(___/(____) (__) (______)(__)\n${NC}\n"
 
     echo -e "${m[@]}"
-
-    echo ""
-    echo "This script will automate a lot of processes."
-    echo "Though not recommended to interrupt, exit this script at any time with Ctrl-C."
-    echo -e "\nPress Ctrl-C to STOP now if you don't wish to proceed. You have 5 seconds..."
-    sleep 5
-    echo "Starting automated install: ${SETUP_MODE}"
+    echo -e "This script will automate a lot of processes.\n"
+    echo -e "Though not recommended to interrupt, exit this script at any time with Ctrl-C.\n"
     sleep 2
+    echo -e "Press Ctrl-C to STOP ${EMOJI_STOP} now if you don't wish to proceed. Starting in 5 seconds...\n"
+    sleep 5
+    echo -e "Starting automated install: ${SETUP_MODE}\n"
 }

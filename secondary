@@ -20,15 +20,14 @@ done
 #===============================================================================================
 # START RUNNING SECONDARY SETUP
 #===============================================================================================
-header_message
+header
 
 cd ~
 exit
 
 #-----------------------------------------------------------------------------------------------
 # SYSTEM PERSONALIZATION
-echo "RUNNING SYSTEM PERSONALIZATIONS"
-echo -e "================================================================================\n\n"
+section "RUNNING SYSTEM PERSONALIZATIONS"
 
 echo -e "Downloading Submodules\n"
 git pull --recurse-submodules
@@ -66,15 +65,13 @@ ln -sf ~/Dropbox/Apps/Atom ~/.atom
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # GIT
-echo -e "\n\nConfiguring Git"
-echo -e "--------------------------------------------------------------------------------\n"
+subsection "Configuring Git"
 
 # git config --global pull.rebase true
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # SSH KEYS
-echo -e "\n\nConfiguring SSH Keys"
-echo -e "--------------------------------------------------------------------------------\n"
+subsection "Configuring SSH Keys"
 
 cd ~
 mkdir ~/.ssh
@@ -91,8 +88,7 @@ pbcopy < /dev/null  # clear clipboard
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # GGP Key
-echo -e "\n\nCreating GPG Key"
-echo -e "--------------------------------------------------------------------------------\n"
+subsection "Creating GPG Key"
 
 gpg --gen-key
 GPGkey=$(gpg --list-secret-keys --keyid-format LONG | sed -nE 's/sec.*rsa2048\/([a-zA-Z0-9]+).*/\1/p')
@@ -115,13 +111,12 @@ sleep 2
 #===============================================================================================
 # UPDATES
 #===============================================================================================
-echo "RUNNING UPDATES"
-echo -e "================================================================================\n\n"
+section "RUNNING UPDATES"
 
-echo "Updating macOS"
+subsection "Updating macOS"
 softwareupdate -ia --verbose
 
-echo "Updating Atom"
+subsection "Updating Atom"
 apm upgrade -c false
 
 message "Done running updates."
@@ -130,4 +125,4 @@ sleep 2
 #===============================================================================================
 # COMPLETED
 #===============================================================================================
-completed_message "Secondary"
+footer "Secondary"

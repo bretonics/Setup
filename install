@@ -3,31 +3,19 @@
 #===============================================================================================
 # PRE-LAUNCH SETUP
 #===============================================================================================
-
-logger # logs
-
-#-----------------------------------------------------------------------------------------------
-# SOURCES
-# - General Helper Functions
-# - Global Environment Variables
-# - CLI Argument Options
-for file in ./bin/*; do 
-    source $file
-done
-
-#-----------------------------------------------------------------------------------------------
-# HANDLE CLI OPTIONS
+source ./lib/functions
 handle_getopts "$@"
+loggers
 
 #===============================================================================================
 # START RUNNING SETUP
 #===============================================================================================
 welcome
-
 header
 
 #-----------------------------------------------------------------------------------------------
 # SYSTEM SETUP
+section "${EMOJI_BEER} INSTALLING HOMEBREW"
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
@@ -38,8 +26,7 @@ sleep 2
 # FULL INSTALL
 # - Install all Formulae, Taps, and Mac Apps specified by $BREW_FILE 
 if [ "$SETUP_MODE" = "FULL" ]; then
-    echo "| INSTALLING EVERYTHING IN '${BREW_FILE}'"
-    echo -e "================================================================================\n"
+    section "INSTALLING EVERYTHING IN '${BREW_FILE}'"
     brew bundle --file ${BREW_FILE}
 
 #-----------------------------------------------------------------------------------------------
@@ -49,11 +36,9 @@ if [ "$SETUP_MODE" = "FULL" ]; then
 # - Homebrew Casks specified by $BREW_CASKS_FILE
 # - applications from Mac App Store specified by $MAC_APPS_FILE
 elif [ "$SETUP_MODE" = "ESSENTIALS" ]; then
-    echo "| INSTALLING HOMEBREW TAPS, FORMULAE, AND CASKS"
-    echo -e "================================================================================\n"
+    section "${EMOJI_TOOLBOX} INSTALLING HOMEBREW TAPS, FORMULAE, AND CASKS"
 
-    echo "Adding Homebrew Taps"
-    echo -e "--------------------------------------------------------------------------------\n"
+    subsection "Adding Homebrew Taps"
     while read -r tap; do
         echo "Adding tap $tap"
         brew tap $tap
@@ -61,8 +46,7 @@ elif [ "$SETUP_MODE" = "ESSENTIALS" ]; then
     message "Done adding Homebrew taps."
     sleep 2
 
-    echo "Installing Homebrew Formulae"
-    echo -e "--------------------------------------------------------------------------------\n"
+    subsection "Installing Homebrew Formulae"
     while read -r formula; do
         echo "Installing $formula"
         brew install $formula
@@ -71,8 +55,7 @@ elif [ "$SETUP_MODE" = "ESSENTIALS" ]; then
     message "Done installing Homebrew formulae."
     sleep 2
 
-    echo "Installing Casks (3rd party apps)"
-    echo -e "--------------------------------------------------------------------------------\n"
+    subsection "Installing Casks (3rd party apps)"
     while read -r cask; do
         echo "Installing $cask"
         brew cask install $cask
@@ -81,10 +64,8 @@ elif [ "$SETUP_MODE" = "ESSENTIALS" ]; then
     message "Done installing casks."
     sleep 2
 
-    echo "Installing Apps From Mac App Store"
-    echo -e "--------------------------------------------------------------------------------\n"
+    subsection "Installing Apps From Mac App Store"
     mas signin --dialog $(getAccountId)
-
     for app in $(sed -E -n 's/^([0-9]+)(.*)/\1/p' ${MAC_APPS_FILE}); do
         echo "Installing $app"
         mas install $app
@@ -102,21 +83,18 @@ fi
 
 #-----------------------------------------------------------------------------------------------
 # INSTALL CORE RESOURCES
-echo "| INSTALLING CORE RESOURCES"
-echo -e "================================================================================\n"
+section "INSTALLING CORE RESOURCES"
 
-echo "Installing Global NPM Packages"
-echo -e "--------------------------------------------------------------------------------\n"
+subsection "Installing Global NPM Packages"
 # brew link --force node@10  # link keg-only package if installing node v10
 npm install -g @angular/cli bunyan eslint aws-azure-login
 
-message_subsection "Installing VS Code Extensions"
+subsection "Installing VS Code Extensions"
 code --install-extension Shan.code-settings-sync
 
 #-----------------------------------------------------------------------------------------------
 # CLEANUP
-echo "\n\n| CLEANING UP"
-echo -e "================================================================================"
+section "${EMOJI_TRASH} CLEANING UP"
 
 echo -e "Turning OFF sending brew analytics\n"
 brew analytics off
@@ -135,12 +113,10 @@ footer "Primary"
 
 #-----------------------------------------------------------------------------------------------
 # SECONDARY INSTALL
-if [ "$RUN_SECONDARY" = true ]; then 
-    echo "Runnig Secondary Install"
-    echo -e "--------------------------------------------------------------------------------\n"
+if [ $RUN_SECONDARY = true ]; then 
+    section "RUNNIG SECONDARY INSTALL"
     # Execute secondary script in the current shell without forking a sub shell
     . ./secondary
 else 
-    echo "Now go login to accounts (Dropbox, emails, etc...) and then run secondary installs, \`bash secondary\`."
-    echo ""
+    echo -e "Now go login to your accounts (Dropbox, emails, etc...) and then run secondary installs, \`bash secondary\`.\n"
 fi
