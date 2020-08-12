@@ -28,16 +28,6 @@ header
 
 #-----------------------------------------------------------------------------------------------
 # SYSTEM SETUP
-echo "| INSTALLING XCODE DEVELOPER TOOLS"
-echo -e "================================================================================\n"
-
-xcode-select --install
-
-message "Done installing Xcode developer tools."
-sleep 2
-
-echo "| INSTALLING HOMEBREW"
-echo -e "================================================================================\n"
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
