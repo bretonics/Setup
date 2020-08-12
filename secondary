@@ -6,7 +6,11 @@
 
 SETUP_PWD=`pwd`
 
-logger # logs
+# Only execute when running independently of initial install
+if [ -z $RUN_SECONDARY ] || [ $RUN_SECONDARY = false ]; then 
+    loggers
+    source_libs
+fi
 
 #-----------------------------------------------------------------------------------------------
 # SOURCES
