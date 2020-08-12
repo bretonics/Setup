@@ -68,6 +68,10 @@ ln -sf ~/Dropbox/Apps/Atom ~/.atom
 subsection "Configuring Git"
 
 # git config --global pull.rebase true
+read -p "Enter your name for Git: " GIT_NAME
+git config --global user.name "${GIT_NAME}"
+read -p "Enter your email for Git: " GIT_EMAIL
+git config --global user.email "${GIT_EMAIL}"
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # SSH KEYS
