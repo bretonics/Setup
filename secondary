@@ -16,10 +16,10 @@ fi
 #===============================================================================================
 header
 
-#-----------------------------------------------------------------------------------------------
-# SYSTEM PERSONALIZATION
 section "RUNNING SYSTEM PERSONALIZATIONS"
 
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# ENVIRONMENT
 echo -e "Downloading Submodules\n"
 git submodule init && git submodule update
 
@@ -38,19 +38,46 @@ crontab ./files/crontab/crontab
 echo -e "Sourcing .bash_profile\n"
 source ~/.bash_profile
 
-echo -e "Linking and Sourcing all Bash Completions\n"
-ln -s /Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash /usr/local/etc/bash_completion.d/
-
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# DOCK
 echo -e "Activating Dock Auto Hide\n"
-defaults write com.apple.Dock autohide -float 1
+defaults write com.apple.dock autohide -float 1
 
 echo -e "Reducing Dock Auto Hide Animation\n"
 defaults write com.apple.dock autohide-time-modifier -float 0.25
 
 echo -e "Remove Dock Delay for Auto Hide & Auto-Show\n"
-defaults write com.apple.Dock autohide-delay -float 0
+defaults write com.apple.dock autohide-delay -float 0
+
+echo -e "Change minimize/maximize window effect\n"
+defaults write com.apple.dock mineffect -string "scale"
+
+echo -e "Don’t automatically rearrange Spaces based on most recent use\n"
+defaults write com.apple.dock mru-spaces -bool false
 
 killall Dock
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# FINDER
+echo -e "Show the ~/Library folder\n"
+chflags nohidden ~/Library
+
+echo -e "Show the /Volumes folder\n"
+sudo chflags nohidden /Volumes
+
+echo -e "When performing a search, search the current folder by default\n"
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# OTHER
+echo -e "Disable local Time Machine backups\n"
+hash tmutil &> /dev/null && sudo tmutil disablelocal
+
+echo -e "Disable auto-correct\n"
+defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+
+echo -e "Set a blazingly fast keyboard repeat rate\n"
+defaults write NSGlobalDomain KeyRepeat -float 0.000000000001
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # 3RD PARTY
@@ -59,6 +86,15 @@ killall Dock
 echo -e "Symlinking Atom config directory\n"
 rm -rf ~/.atom
 ln -sf ~/Dropbox/Apps/Atom ~/.atom
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# BASH COMPLETIONS
+
+echo -e "Git Bash Completion\n"
+ln -s /Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash /usr/local/etc/bash_completion.d/
+
+echo -e "Creating NPM Bash Completion\n"
+npm completion > /usr/local/etc/bash_completion.d/npm
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # GIT
