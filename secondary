@@ -6,16 +6,16 @@
 SETUP_PWD=`pwd`
 
 # Only execute when running independently of initial install
-if [ -z $RUN_SECONDARY ] || [ $RUN_SECONDARY = false ]; then 
+if [ -z $RUN_SECONDARY ] || [ $RUN_SECONDARY = false ]; then
+    . ./lib/functions
     loggers
-    source_libs
 fi
 
-#===============================================================================================
-# START RUNNING SECONDARY SETUP
-#===============================================================================================
 header
 
+#===============================================================================================
+# SYSTEM PERSONALIZATIONS
+#===============================================================================================
 section "RUNNING SYSTEM PERSONALIZATIONS"
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
