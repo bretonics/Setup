@@ -1,6 +1,10 @@
+adns
 awscli
+dos2unix
+doxygen
 gd
 gdbm
+gh
 gengetopt
 git-flow-avh
 git-lfs
@@ -11,6 +15,7 @@ htop
 hugo
 imagemagick
 mas
+mongodb-community
 neofetch
 node
 openssl

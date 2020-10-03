@@ -16,6 +16,7 @@
 445189367 PopClip
 928494006 PopHub
 919797974 PullRequestMenu
+957810159 Raindrop.io for Safari
 1429033973 RunCat
 414528154 ScreenFloat
 507257563 Sip
