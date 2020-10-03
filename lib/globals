@@ -14,6 +14,7 @@ BREW_FILE="./src/Brewfile"
 BREW_FORMULAE_FILE="./src/formulae.txt"
 BREW_TAPS_FILE="./src/taps.txt"
 MAC_APPS_FILE="./src/apps.txt"
+NPM_PACKAGES_FILE="./src/npm.txt"
 
 # Setup Configurations
 GITHUB_KEYS_URL="https://github.com/settings/keys"

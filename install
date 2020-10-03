@@ -86,8 +86,13 @@ fi
 section "INSTALLING CORE RESOURCES"
 
 subsection "Installing Global NPM Packages"
-# brew link --force node@10  # link keg-only package if installing node v10
-npm install -g @angular/cli bunyan eslint aws-azure-login
+while read -r package; do
+    echo "Installing $package"
+    npm install -g $package
+    echo ""
+done < $NPM_PACKAGES_FILE
+message "Done installing NPM packages."
+sleep 2
 
 subsection "Installing VS Code Extensions"
 code --install-extension Shan.code-settings-sync

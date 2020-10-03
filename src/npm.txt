@@ -1,0 +1,6 @@
+@angular/cli
+aws-azure-login
+bunyan
+eslint
+npm-check-updates
+tslint
