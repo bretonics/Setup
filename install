@@ -96,6 +96,7 @@ sleep 2
 
 subsection "Installing VS Code Extensions"
 code --install-extension Shan.code-settings-sync
+sleep 2
 
 #-----------------------------------------------------------------------------------------------
 # CLEANUP

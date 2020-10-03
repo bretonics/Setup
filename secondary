@@ -21,7 +21,7 @@ section "RUNNING SYSTEM PERSONALIZATIONS"
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # ENVIRONMENT
 echo -e "Downloading Submodules\n"
-git submodule init && git submodule update
+git submodule update --init
 
 echo -e "Copying .bash_profile\n"
 cp ./files/bash/profile/.bash_profile ~/
