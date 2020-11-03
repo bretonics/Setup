@@ -1,5 +1,4 @@
 alfred
-atom
 brave-browser
 datagrip
 devdocs

@@ -79,14 +79,6 @@ defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 echo -e "Set a blazingly fast keyboard repeat rate\n"
 defaults write NSGlobalDomain KeyRepeat -float 0.000000000001
 
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# 3RD PARTY
-
-# Atom IDE
-echo -e "Symlinking Atom config directory\n"
-rm -rf ~/.atom
-ln -sf ~/Dropbox/Apps/Atom ~/.atom
-
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # BASH COMPLETIONS
 
@@ -96,7 +88,7 @@ ln -s /Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash
 echo -e "Creating NPM Bash Completion\n"
 npm completion > /usr/local/etc/bash_completion.d/npm
 
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#- - - - - - - - - - - - - - - - - - - - - - - - -
 # GIT
 subsection "Configuring Git"
 
@@ -106,7 +98,7 @@ git config --global user.name "${GIT_NAME}"
 read -p "Enter your email for Git: " GIT_EMAIL
 git config --global user.email "${GIT_EMAIL}"
 
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#- - - - - - - - - - - - - - - - - - - - - - - - -
 # SSH KEYS
 subsection "Configuring SSH Keys"
 
@@ -122,7 +114,7 @@ open ${GITHUB_KEYS_URL}
 read -p "Waiting on user to return. Press to continue... "
 pbcopy < /dev/null  # clear clipboard
 
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#- - - - - - - - - - - - - - - - - - - - - - - - -
 # GGP Key
 subsection "Creating GPG Key"
 
@@ -156,9 +148,6 @@ section "RUNNING UPDATES"
 
 subsection "Updating macOS"
 softwareupdate -ia --verbose
-
-subsection "Updating Atom"
-apm upgrade -c false
 
 message "Done running updates."
 sleep 2
