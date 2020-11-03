@@ -11,6 +11,13 @@ gitify
 google-chrome
 mactex
 postman
+qlcolorcode
+qlimagesize
+qlmarkdown
+qlstephen
+qlvideo
+quicklook-json
+quicklookase
 raindropio
 spotify
 visual-studio-code
