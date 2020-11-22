@@ -4,6 +4,8 @@
 # PRE-LAUNCH SETUP
 #===============================================================================================
 source ./lib/functions
+source ./lib/getopts
+
 handle_getopts "$@"
 loggers
 
