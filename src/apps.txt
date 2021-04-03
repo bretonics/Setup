@@ -5,10 +5,13 @@
 1280542517 Chronicle Pro
 1130254674 CloudMounter
 1035237815 Commander One PRO
+924726344 Deliveries
 1482920575 DuckDuckGo Privacy Essentials
 524373870 Due
+1489591003 Edison Mail
 1481669779 Evernote Web Clipper
 468374949 Gelatin
+1099568401 Home Assistant
 441258766 Magnet
 915542151 Monity
 405219581 PDF Toolkit
@@ -16,12 +19,12 @@
 445189367 PopClip
 928494006 PopHub
 919797974 PullRequestMenu
-957810159 Raindrop.io for Safari
 1429033973 RunCat
+1233965871 ScreenBrush
 414528154 ScreenFloat
 507257563 Sip
 418073146 Snap
-1176895641 Spark
+1473726602 Tab Space
 1449415412 TinyNotepad
 1448031908 Weather for Status Bar
 457622435 Yoink
