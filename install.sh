@@ -68,5 +68,5 @@ footer "Primary"
 if [ $RUN_SECONDARY = true ]; then 
     section "Running Secondary Install"
     # Execute secondary script in the current shell without forking a sub shell
-    . ./secondary
+    . ./secondary.sh
 fi

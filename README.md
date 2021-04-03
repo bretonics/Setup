@@ -18,7 +18,7 @@ The [Brewfile](https://github.com/bretonics/Setup/tree/master/src/Brewfile) cont
 Files in [./src](https://github.com/bretonics/Setup/tree/master/src) keep track of individual programs (Apps, Formulae, and Casks) to install.
 
 ```
-$ ./install -h
+$ ./install.sh -h
 
 Usage: install [Options] Brewfile
 
@@ -41,7 +41,7 @@ Arguments:
 
 Secondary
 ---
-Secondary setup modifies personalized Mac settings, and is run after initial install, `bash secondary`.
+Secondary setup modifies personalized Mac settings, and is run after initial install, `bash secondary.sh`.
 
 
 ## Customizable Setup
@@ -65,9 +65,9 @@ Modify the `./src/Brewfile` and run `bash install`, or do `bash install /path/to
 ### Personalized
 1. Modify files containing list of apps and their respective Mac App Store product identifiers, formulae, and/or casks that you want installed in the `/.src/` directory.
 
-2. Run `bash install`.
+2. Run `bash install.sh`.
 
-3. Optional: `bash secondary`.
+3. Optional: `bash secondary.sh`.
 
 
 ## Useful Commands
