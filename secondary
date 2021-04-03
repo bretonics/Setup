@@ -18,6 +18,14 @@ header
 #===============================================================================================
 section "RUNNING SYSTEM PERSONALIZATIONS"
 
+
+#-----------------------------------------------------------------------------------------------
+# ENVIRONMENT
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+subsection "Default Mac Settings"
+. ./bin/setting_defaults.sh
+
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # ENVIRONMENT
 echo -e "Downloading Submodules\n"
