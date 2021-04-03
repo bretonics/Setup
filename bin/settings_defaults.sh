@@ -47,6 +47,16 @@ killall Dock
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # FINDER
+ask "Show the ~/Library folder"
+if [ "$RESPONSE" = true ]; then
+    chflags nohidden ~/Library
+fi
+
+ask "Show the /Volumes folder"
+if [ "$RESPONSE" = true ]; then
+    sudo chflags nohidden /Volumes
+fi
+
 ask "When performing a search, search the current folder by default"
 if [ "$RESPONSE" = true ]; then
     defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
@@ -54,6 +64,16 @@ fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # OTHER
+ask "Create iCloud shortcut"
+if [ "$RESPONSE" = true ]; then
+    ln -s "${ICLOUD_HOME_PATH}" ~/iCloud
+fi
+
+ask "Disable local Time Machine backups"
+if [ "$RESPONSE" = true ]; then
+    hash tmutil &> /dev/null && sudo tmutil disablelocal
+fi
+
 ask "Disable auto-correct"
 if [ "$RESPONSE" = true ]; then
     defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
