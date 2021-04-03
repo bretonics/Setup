@@ -13,7 +13,9 @@
 
 Options
 ---
-Files in [./src](https://github.com/bretonics/Setup/tree/master/src) keep track of individual programs (Apps, Formulae, and Casks) to install. The [Brewfile](https://github.com/bretonics/Setup/tree/master/src/Brewfile) contains everything, and is used in a `FULL` setup mode (default).
+The [Brewfile](https://github.com/bretonics/Setup/tree/master/src/Brewfile) contains everything, and is used in a `FULL` setup mode (default).
+
+Files in [./src](https://github.com/bretonics/Setup/tree/master/src) keep track of individual programs (Apps, Formulae, and Casks) to install.
 
 ```
 $ ./install -h
@@ -42,11 +44,13 @@ Secondary
 Secondary setup modifies personalized Mac settings, and is run after initial install, `bash secondary`.
 
 
-## Customize Setup
+## Customizable Setup
 ---
-I suggest [downloading the repo](https://github.com/bretonics/Setup/archive/master.zip) and doing a [custom](#Customize-Setup) install. You probably want to do this, unless you really like everything configured as I do (we both know you don't).
+I suggest [downloading the repo](https://github.com/bretonics/Setup/archive/master.zip) and doing a [custom](#Customize-Setup) install. You probably want to do this...unless you really like everything configured as I do (we both know you don't).
 
-[Download the repo](https://github.com/bretonics/Setup/archive/master.zip), or Clone/Fork the [Setup repo](https://github.com/bretonics/Setup).
+- Download: [the repo](https://github.com/bretonics/Setup/archive/master.zip)
+- Clone: `git clone --recurse-submodules https://github.com/bretonics/Setup.git`
+- Fork: [the repo](https://github.com/bretonics/Setup)
 
 You can also execute directly and run everything automatically with:
 ```
