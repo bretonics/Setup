@@ -1,6 +1,8 @@
 @angular/cli
+@angular-devkit/schematics-cli
 aws-azure-login
 bunyan
+chalk
 eslint
 npm-check-updates
 tslint
