@@ -1,9 +1,10 @@
 brewsci/bio
 brewsci/science
-caskroom/cask
-caskroom/versions
 homebrew/bundle
+homebrew/cask
+homebrew/cask-fonts
 homebrew/cask-versions
 homebrew/core
 homebrew/services
+homebrew/versions
 mongodb/brew
