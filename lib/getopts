@@ -21,7 +21,7 @@ handle_arguments() {
 
 # Bash Builtin Getopts
 handle_getopts() {
-    OPTIONS=":EFhi:s"
+    OPTIONS=":DEFhi:s"
 
     # No Arguments Runs FULL Install
     if [ $# -eq 0 ]; then
@@ -31,6 +31,9 @@ handle_getopts() {
     # Handle Options
     while getopts ${OPTIONS} option; do
         case "${option}" in
+        D)
+            DEFAULTS=true
+            ;;
         E)
             SETUP_MODE="ESSENTIALS"
             ;;
@@ -85,8 +88,9 @@ usage() {
     echo -e "\nUsage: $(basename "$0") [Options] Brewfile\n"
     echo -e "\nRunning install without any options below will run a FULL setup by default.\n"
     echo -e "\nOptions:\n"
-    print_option "-F" "Full install setup (Defaults: -s=true)"
+    print_option "-D" "Use defaults (does not ask to apply secondary settings"
     print_option "-E" "Essentials only installations"
+    print_option "-F" "Full install setup (Defaults: -s=true)"
     print_option "-i [full|essentials]" "More explicit install type declaration"
     print_option "-s" "Run secondary installation (Default: false)"
     print_option "-h" "Prints this usage message"

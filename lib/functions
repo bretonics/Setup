@@ -9,6 +9,26 @@ BASE_PATH="$(dirname $(dirname $0))"
 source ${BASE_PATH}/lib/globals
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Ask User Response
+ask () {
+    if [ "${DEFAULTS}" == true ]; then
+        RESPONSE=true
+    else
+        echo -en "\n${1} (y/n)? "
+        read -n 1 -r
+        case "$REPLY" in
+            y|Y )
+                RESPONSE=true
+                ;;
+            n|N|*)
+                RESPONSE=false
+                message info "Skipping..."
+                ;;
+        esac
+    fi
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Divider Block Divider
 divider() {
     echo -e "\n\n${1}\n--------------------------------------------------------------------------------\n"

@@ -5,7 +5,7 @@
 #===============================================================================================
 
 # General
-SETUP_MODE="FULL"  # DEFAULT: Full setup - installs everything in Brewfile and secondary
+DEFAULTS=true
 RUN_SECONDARY=false
 
 # Setup Files
