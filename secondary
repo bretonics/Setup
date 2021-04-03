@@ -3,8 +3,6 @@
 #===============================================================================================
 # PRE-LAUNCH SETUP
 #===============================================================================================
-SETUP_PWD=`pwd`
-
 # Only execute when running independently of initial install
 if [ -z $RUN_SECONDARY ] || [ $RUN_SECONDARY = false ]; then
     . ./lib/functions
@@ -16,149 +14,35 @@ header
 #===============================================================================================
 # SYSTEM PERSONALIZATIONS
 #===============================================================================================
-section "RUNNING SYSTEM PERSONALIZATIONS"
-
-
-#-----------------------------------------------------------------------------------------------
-# ENVIRONMENT
+section "Running System Personalizations"
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-subsection "Default Mac Settings"
-. ./bin/setting_defaults.sh
-
+setDefaultShell
+copyFiles
+setSettings
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# ENVIRONMENT
-echo -e "Downloading Submodules\n"
-git submodule update --init
-
-echo -e "Copying .bash_profile\n"
-cp ./files/bash/profile/.bash_profile ~/
-
-echo -e "Copying .bashrc\n"
-cp ./files/bash/bashrc/.bashrc ~/
-
-echo -e "Copying .bash_functions\n"
-cp ./files/bash/functions/.bash_functions ~/
-
-echo -e "Initializing crontab\n"
-crontab ./files/crontab/crontab
-
-echo -e "Sourcing .bash_profile\n"
-source ~/.bash_profile
-
+if [ isZsh ]; then
+    installOMZ
+    installSpaceshipPrompt
+fi
+installStarshipPrompt
+addShellCompletions
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# DOCK
-echo -e "Activating Dock Auto Hide\n"
-defaults write com.apple.dock autohide -float 1
-
-echo -e "Reducing Dock Auto Hide Animation\n"
-defaults write com.apple.dock autohide-time-modifier -float 0.25
-
-echo -e "Remove Dock Delay for Auto Hide & Auto-Show\n"
-defaults write com.apple.dock autohide-delay -float 0
-
-echo -e "Change minimize/maximize window effect\n"
-defaults write com.apple.dock mineffect -string "scale"
-
-echo -e "Don’t automatically rearrange Spaces based on most recent use\n"
-defaults write com.apple.dock mru-spaces -bool false
-
-killall Dock
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# FINDER
-echo -e "Show the ~/Library folder\n"
-chflags nohidden ~/Library
-
-echo -e "Show the /Volumes folder\n"
-sudo chflags nohidden /Volumes
-
-echo -e "When performing a search, search the current folder by default\n"
-defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# OTHER
-echo -e "Disable local Time Machine backups\n"
-hash tmutil &> /dev/null && sudo tmutil disablelocal
-
-echo -e "Disable auto-correct\n"
-defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
-
-echo -e "Set a blazingly fast keyboard repeat rate\n"
-defaults write NSGlobalDomain KeyRepeat -float 0.000000000001
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# BASH COMPLETIONS
-
-echo -e "Git Bash Completion\n"
-ln -s /Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash /usr/local/etc/bash_completion.d/
-
-echo -e "Creating NPM Bash Completion\n"
-npm completion > /usr/local/etc/bash_completion.d/npm
-
-#- - - - - - - - - - - - - - - - - - - - - - - - -
-# GIT
-subsection "Configuring Git"
-
-# git config --global pull.rebase true
-read -p "Enter your name for Git: " GIT_NAME
-git config --global user.name "${GIT_NAME}"
-read -p "Enter your email for Git: " GIT_EMAIL
-git config --global user.email "${GIT_EMAIL}"
-
-#- - - - - - - - - - - - - - - - - - - - - - - - -
-# SSH KEYS
-subsection "Configuring SSH Keys"
-
-mkdir ~/.ssh
-cp -v ./files/ssh_config ~/.ssh/config
-ssh-keygen -t rsa -f ~/.ssh/${GITHUB_RSA_NAME}
-cat ~/.ssh/${GITHUB_RSA_NAME}.pub | pbcopy
-
-echo -e "\n\nSSH public key copied to clipboard.\n"
-echo -e "GitHub will now open. Paste PUBLIC SSH key copied to your clipboard and come back here to continue.\n"
-sleep 3
-open ${GITHUB_KEYS_URL}
-read -p "Waiting on user to return. Press to continue... "
-pbcopy < /dev/null  # clear clipboard
-
-#- - - - - - - - - - - - - - - - - - - - - - - - -
-# GGP Key
-subsection "Creating GPG Key"
-
-gpg --gen-key
-GPGkey=$(gpg --list-secret-keys --keyid-format LONG | sed -nE 's/sec.*rsa2048\/([a-zA-Z0-9]+).*/\1/p')
-
-echo -e "\nConfiguring GPG Key with resources\n"
-git config --global user.signingkey ${GPGkey}  # configure Git to use GPG
-gpg --armor --export ${GPGkey} | pbcopy
-
-echo -e "\n\nGPG key copied to clipboard.\n"
-unset GPGkey
-echo -e "GitHub will now open. Paste GPG key copied to your clipboard and come back here to continue.\n"
-sleep 3
-open ${GITHUB_KEYS_URL}
-read -p "Waiting on user to return. Press to continue... "
-pbcopy < /dev/null  # clear clipboard
-
-message "Done running workspace personalizations."
-sleep 2
+configureGit
+configureSSH
+configureGPG
 
 #===============================================================================================
 # BACKUPS
 #===============================================================================================
-. ./bin/restore_backup.sh '/Volumes/Backups/'
+section "Backups"
+restoreBackups
 
 #===============================================================================================
 # UPDATES
 #===============================================================================================
-section "RUNNING UPDATES"
-
-subsection "Updating macOS"
-softwareupdate -ia --verbose
-
-message "Done running updates."
-sleep 2
+section "Updates"
+updateMacOS
 
 #===============================================================================================
 # COMPLETED

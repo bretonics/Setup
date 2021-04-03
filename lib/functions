@@ -9,14 +9,97 @@ BASE_PATH="$(dirname $(dirname $0))"
 source ${BASE_PATH}/lib/globals
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Adds Bash Completions
+addBashCompletions() {
+    if [ !isBash ]; then return 0; fi
+
+    brew install bash-completion
+
+    # Add bash-completions sourcing
+    echo "[[ -r \"/usr/local/etc/profile.d/bash_completion.sh\" ]] && . \"/usr/local/etc/profile.d/bash_completion.sh\"" >> ${SHELL_PROFILE_FILE}
+
+    ask "Add Git Completion"
+    if [ "$RESPONSE" = true ]; then
+        ln -s /Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash /usr/local/etc/bash_completion.d/
+        BASH_COMPLETIONS=true
+    fi
+
+    ask "Add NPM Completion"
+    if [ "$RESPONSE" = true ]; then
+        npm completion > /usr/local/etc/bash_completion.d/npm
+        BASH_COMPLETIONS=true
+    fi
+
+    # Source if any completions setup
+    if [ "$BASH_COMPLETIONS" = true ]; then
+        echo "for file in /usr/local/etc/bash_completion.d/*; do source $file; done" >> ${SHELL_RC_FILE}
+        source ${SHELL_PROFILE_FILE}
+    fi
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Adds Homebrew Taps
+# - List in $BREW_TAPS_FILE
+addTaps() {
+    subsection "Adding Homebrew Taps"
+
+    while read -r tap; do
+        echo "Adding tap ${tap}"
+        brew tap ${tap}
+    done < $BREW_TAPS_FILE
+
+    message "DONE adding Homebrew taps"
+    sleep 2
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Adds Appropriate Shell Completions
+addShellCompletions() {
+    subsection "Shell Completions"
+
+    if [ isZsh ]; then
+        addZshCompletions
+    fi
+
+    if [ isBash ]; then
+        addBashCompletions
+    fi
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Add and Source Homebrew Install
+addHomebrewPath() {
+    if [ -z ${IS_APPLE_CPU} ]; then
+        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ${SHELL_PROFILE_FILE}
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Adds Zsh Completions
+addZshCompletions() {
+    if [ !isZsh ]; then return 0; fi
+
+    # Setup appropriate sourcing
+    mkdir ~/.zsh_completions
+    echo "export FPATH=$FPATH:~/.zsh_completions/" >> ${SHELL_RC_FILE}
+    echo "autoload -Uz compinit && compinit" >> ${SHELL_RC_FILE}
+
+    # TODO: Do we need more configs to setup autocomplete in Zsh?
+    rm ~/.zcompdump # clean up
+    source .zshrc
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Ask User Response
+# - $2: If anything truthy passed (1), explicitly ask
 ask () {
-    if [ "${DEFAULTS}" == true ]; then
+    if [ "${DEFAULTS}" == true ] && [ -z ${2} ]; then
         RESPONSE=true
     else
         echo -en "\n${1} (y/n)? "
         read -n 1 -r
-        case "$REPLY" in
+        case "${REPLY}" in
             y|Y )
                 RESPONSE=true
                 ;;
@@ -26,6 +109,140 @@ ask () {
                 ;;
         esac
     fi
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Clean Up
+cleanUp() {
+    subsection "Cleaning up system"
+
+    echo -e "Turning OFF sending brew analytics\n"
+    brew analytics off
+
+    echo -e "Cleaning up Homebrew downloads and caches\n"
+    brew cleanup -s # remove older versions in cellar + old downloads-cache
+    rm -rf $(brew --cache) # delete all
+
+    message "DONE cleaning up"
+    sleep 2
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Configure Git
+configureGit() {
+    subsection "Git"
+
+    ask "Configure Git"
+    if [ "$RESPONSE" = true ]; then
+        # git config --global pull.rebase true
+        ask "Using name: '${USER_NAME}'. Is this correct" 1
+        if [ "$RESPONSE" = true ]; then
+            git config --global user.name "${USER_NAME}"
+        else
+            printf "\nPlease enter your full name: "
+            read GIT_NAME && git config --global user.name "${GIT_NAME}"
+        fi
+
+        printf "\nEnter your email: "
+        read GIT_EMAIL && git config --global user.email "${GIT_EMAIL}"
+
+        echo -e "\n\nGit Configured"
+        echo -e "Name: $(git config --get user.name)"
+        echo -e "Email: $(git config --get user.email)\n"
+
+        ask "Do you want to enable Git prompt status (PS1)"
+        if [ "$RESPONSE" = true ]; then
+            if [ "DEFAULT_SHELL" = "bash" ]; then
+                ln -s ${GIT_PROMPT_PATH} ~/
+                echo ". ~/git-prompt.sh" >> .bashrc
+                echo -e "\nAdd \"__git_ps1 ' (%s)'\" in your PS1 where you'd like to see the git status"
+            fi
+
+            # TODO: figure out which way is best for Zsh
+            # NOTE: already taken care of with Starship/Spaceship prompts. Is this gratuitous? 
+        fi
+    fi
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Configure GPG - OpenPGP Encryption
+configureGPG() {
+    subsection "GPG Key"
+
+    ask "Create GPG Key"
+    if [ "$RESPONSE" = true ]; then
+        gpg --gen-key
+        GPGkey=$(gpg --list-secret-keys --keyid-format LONG | sed -nE 's/sec.*rsa2048\/([a-zA-Z0-9]+).*/\1/p')
+
+        echo -e "\nConfiguring GPG Key with resources\n"
+        git config --global user.signingkey ${GPGkey}  # configure Git to use GPG
+        gpg --armor --export ${GPGkey} | pbcopy
+
+        echo -e "\n\nGPG key copied to clipboard.\n"
+        unset GPGkey
+        echo -e "GitHub will now open. Paste GPG key copied to your clipboard and come back here to continue.\n"
+        sleep 3
+        open ${GITHUB_KEYS_URL}
+        read -p "Waiting on user to return. Press to continue... "
+        pbcopy < /dev/null  # clear clipboard
+
+        message "Done running workspace personalizations"
+        sleep 2
+    fi
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Configure SSH
+configureSSH() {
+    subsection "SSH Keys"
+
+    ask "Create SSH Keys"
+    if [ "$RESPONSE" = true ]; then
+        mkdir ~/.ssh
+        cp -v ./files/ssh_config ~/.ssh/config
+        ssh-keygen -t rsa -f ~/.ssh/${GITHUB_RSA_NAME}
+        cat ~/.ssh/${GITHUB_RSA_NAME}.pub | pbcopy
+
+        echo -e "\n\nSSH public key copied to clipboard.\n"
+        echo -e "GitHub will now open. Paste PUBLIC SSH key copied to your clipboard and come back here to continue.\n"
+        sleep 3
+        open ${GITHUB_KEYS_URL}
+        read -p "Waiting on user to return. Press to continue... "
+        pbcopy < /dev/null  # clear clipboard
+    fi
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Copy Files
+copyFiles() {
+    subsection "Files"
+
+    echo -e "Downloading Submodules\n"
+    git submodule update --init --recursive
+
+    ask "Copy .bash_profile"
+    if [ "$RESPONSE" = true ]; then
+        cp ./files/bash/profile/.bash_profile ~/
+        cp ./files/bash/shell/.shell_colors ~/
+    fi
+
+    ask "Copy .bashrc"
+    if [ "$RESPONSE" = true ]; then
+        cp ./files/bash/bashrc/.bashrc ~/
+    fi
+
+    ask "Copy .bash_functions"
+    if [ "$RESPONSE" = true ]; then
+        cp ./files/bash/functions/.bash_functions ~/
+    fi
+
+    ask "Initialize crontab"
+    if [ "$RESPONSE" = true ]; then
+        crontab ./files/crontab/crontab
+    fi
+
+    echo -e "Sourcing .bash_profile\n"
+    source ~/.bash_profile
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -80,12 +297,191 @@ header() {
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Installs Mac App Store Applications
+# - List in $MAC_APPS_FILE
+installApps() {
+    subsection "Installing Apps From Mac App Store"
+
+    mas signin --dialog $(getAccountId)
+    for app in $(sed -E -n 's/^([0-9]+)(.*)/\1/p' ${MAC_APPS_FILE}); do
+        echo "Installing $app"
+        mas install $app
+        echo ""
+    done
+
+    message "DONE installing Mac App Store apps"
+    sleep 2
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Installs Homebrew Package Manager
+installHomebrew() {
+    subsection "Installing Homebrew Package Manager"
+
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    addHomebrewPath
+
+    message "DONE installing Homebrew"
+    sleep 2
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Installs Homebrew Casks
+# - List in $BREW_CASKS_FILE
+installCasks() {
+    subsection "Installing Casks (3rd party apps)"
+
+    while read -r cask; do
+        echo "Installing $cask"
+        brew cask install $cask
+        echo ""
+    done < $BREW_CASKS_FILE
+
+    message "DONE installing casks"
+    sleep 2
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Installs Homebrew Formulae
+# - List in $BREW_FORMULAE_FILE
+installFormulae() {
+    subsection "Installing Homebrew Formulae"
+
+    while read -r formula; do
+        echo "Installing ${formula}"
+        brew install ${formula}
+        echo ""
+    done < $BREW_FORMULAE_FILE
+
+    message "DONE installing Homebrew formulae"
+    sleep 2
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Installs Oh My Zsh Framework
+installOMZ() {
+    subsection "Oh My Zsh Framework"
+
+    ask "Install Oh My Zsh" 1
+    if [ "$RESPONSE" = true ]; then
+        sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+        if [ $? -eq 0 ]; then
+            OMZ_INSTALLED=true
+            message "DONE installing Oh My Zsh"
+            sleep 2
+            exit
+        fi
+    fi
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Installs NPM Packages
+# - List in $NPM_PACKAGES_FILE
+installNodePackages() {
+    subsection "Installing Global NPM Packages"
+
+    # OS Dependent Presets
+    # Is this really necessary?
+    # if [ "${IS_CATALINA}" = true ]; then
+    #     echo -e "Setting NPM prefix\n"
+    #     npm config set prefix /usr/local
+    # fi
+
+    while read -r package; do
+        echo "Installing ${package}"
+        npm install -g ${package}
+    done < $NPM_PACKAGES_FILE
+
+    message "DONE installing NPM packages"
+    sleep 2
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Installs Spaceship Prompt
+installSpaceshipPrompt() {
+    subsection "Spaceship Prompt"
+
+    ask "Install Spaceship Prompt" 1
+    if [ "$RESPONSE" = true ]; then
+        echo -e "\nInstalling RobotoMono Powerline font\n"
+        brew install font-roboto-mono-for-powerline
+
+        echo -e "Installing Spaceship Prompt\n"
+        npm install -g spaceship-prompt
+
+        SPACESHIP_PROMPT_INSTALLED=true
+    fi
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Installs Starship Prompt
+installStarshipPrompt() {
+    subsection "Starship Prompt"
+
+    ask "Install Starship Prompt"
+    if [ "$RESPONSE" = true ]; then
+        echo -e "\nInstalling FiraCode Nerd font\n"
+        brew install font-fira-code-nerd-font
+
+        echo -e "Installing Startship Prompt\n"
+        brew install starship
+
+        # Add to Shell's .rc
+        echo -e "\n# Starship Prompt" >> ${SHELL_RC_FILE}
+        echo "eval \"\$(starship init ${DEFAULT_SHELL})\"" >> ${SHELL_RC_FILE}
+
+        STARSHIP_PROMPT_INSTALLED=true
+    fi
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Installs VS Code Extensions
+# - List in $VS_CODE_EXTENSIONS_FILE
+installVSCodeExt() {
+    subsection "Installing VS Code Extensions"
+
+    while read -r extension; do
+        echo "Installing ${extension}"
+        code --install-extension ${extension}
+    done < $VS_CODE_EXTENSIONS_FILE
+    sleep 2
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Is Default Shell Bash?
+isBash() {
+    if [ "${DEFAULT_SHELL}" != "bash" ]; then
+        return 0
+    fi
+    return 1
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Is Default Shell Zsh?
+isZsh() {
+    if [ "${DEFAULT_SHELL}" != "zsh" ]; then
+        return 0
+    fi
+    return 1
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Logs
-# - The first line redirects and appends (-a) everything from the standard ouput stream to the logfile and prints it to the screen.
+# - The first line redirects and appends (-a) everything from the standard output stream to the log file and prints it to the screen.
 # - The second line redirects the standard error to log file.
 loggers() {
     exec 1>> >(tee -a setup.log)
     exec 2>> error.log
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Run Pre-flight Checks
+# - Is masOS supported?
+preFlightChecks() {
+    if [ ! -z $OS_UNSUPPORTED ]; then
+        message "error" "Unsupported macOS Version"
+        exit 1;
+    fi
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -109,15 +505,60 @@ message() {
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Restore Backups
+# - Copies over Time Machine backups
+restoreBackups() {
+    subsection "Time Machine Backups"
+
+    ask "Restore Time Machine Backups" 1
+    if [ "$RESPONSE" = true ]; then
+        . ./bin/restore_backup.sh '/Volumes/Backups/'
+    fi
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Section Header
 section() {
-    echo -e "\n\n| ${1}\n================================================================================\n\n"
+    title=$(echo ${1} | tr [:lower:] [:upper:])
+    echo -e "\n\n| ${title}\n================================================================================\n\n"
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Determine and Set Default Shell
+setDefaultShell() {
+    subsection "Default Shell"
+
+    if [ isZsh ]; then
+        echo "The default interactive shell is now Zsh"
+        ask "Update your account to use Bash instead"
+        if [ "$RESPONSE" = true ]; then
+            chsh -s /bin/bash
+            echo "Bash set as system default"
+            echo "export BASH_SILENCE_DEPRECATION_WARNING=1" >> ~/.bash_profile
+            echo "If you wish to revert to using Zsh, execute the command 'chsh /bin/zsh'"
+            DEFAULT_SHELL="bash"
+            SHELL_PROFILE_FILE="${HOME}/${BASH_PROFILE_FILE}"
+            SHELL_RC_FILE="${HOME}/.${DEFAULT_SHELL}rc"
+        fi
+    fi
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Sets Mac Settings
+setSettings() {
+    subsection "Default Mac Settings"
+
+    ask "Set Mac Settings"
+    if [ "$RESPONSE" = true ]; then
+        . ./bin/settings_defaults.sh
+    fi
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Subs Section Header
 subsection() {
-    echo -e "\n\n${1}\n--------------------------------------------------------------------------------\n"
+    title=$(echo ${1} | tr [:lower:] [:upper:])
+    echo -e "\n\n| ${title}\n--------------------------------------------------------------------------------\n"
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -132,6 +573,20 @@ source_libs() {
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Update Mac OS
+updateMacOS() {
+    subsection "Running Updates"
+
+    ask "Update macOS" 1
+    if [ "$RESPONSE" = true ]; then
+        subsection "Updating macOS"
+        softwareupdate -ia --verbose
+        message "Done running updates"
+        sleep 2
+    fi
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Welcome Message
 welcome() {
     m[0]="\n${YELLOW}  ___  ____  ____  __  __  ____\n"
@@ -141,9 +596,9 @@ welcome() {
 
     echo -e "${m[@]}"
     echo -e "This script will automate a lot of processes.\n"
-    echo -e "Though not recommended to interrupt, exit this script at any time with Ctrl-C.\n"
+    echo -e "Though not recommended interrupting, exit this script at any time with Ctrl-C.\n"
     sleep 2
-    echo -e "Press Ctrl-C to STOP ${EMOJI_STOP} now if you don't wish to proceed. Starting in 5 seconds...\n"
+    echo -e "Press Ctrl-C to STOP ${EMOJI_STOP} now if you ${RED}don't${NC} wish to proceed. Starting in 5 seconds...\n"
     sleep 5
     echo -e "Starting automated install: ${SETUP_MODE}\n"
 }

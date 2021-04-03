@@ -6,6 +6,7 @@
 source ./lib/functions
 source ./lib/getopts
 
+preFlightChecks
 handle_getopts "$@"
 loggers
 
@@ -17,65 +18,28 @@ header
 
 #-----------------------------------------------------------------------------------------------
 # SYSTEM SETUP
-section "${EMOJI_BEER} INSTALLING HOMEBREW"
-
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-
-message "Done installing Homebrew."
-sleep 2
+section "Homebrew"
+installHomebrew
 
 #-----------------------------------------------------------------------------------------------
 # FULL INSTALL
 # - Install all Formulae, Taps, and Mac Apps specified by $BREW_FILE 
 if [ "$SETUP_MODE" = "FULL" ]; then
-    section "INSTALLING EVERYTHING IN '${BREW_FILE}'"
+    section "Installing Everything In '${BREW_FILE}'"
     brew bundle --file ${BREW_FILE}
 
 #-----------------------------------------------------------------------------------------------
 # ESSENTIALS INSTALL
 # - Homebrew Taps specified by $BREW_TAPS_FILE
-# - Homebrew Forlumae specified by $BREW_FORMULAE_FILE
+# - Homebrew Formulae specified by $BREW_FORMULAE_FILE
 # - Homebrew Casks specified by $BREW_CASKS_FILE
-# - applications from Mac App Store specified by $MAC_APPS_FILE
+# - Mac App Store Applications specified by $MAC_APPS_FILE
 elif [ "$SETUP_MODE" = "ESSENTIALS" ]; then
-    section "${EMOJI_TOOLBOX} INSTALLING HOMEBREW TAPS, FORMULAE, AND CASKS"
-
-    subsection "Adding Homebrew Taps"
-    while read -r tap; do
-        echo "Adding tap $tap"
-        brew tap $tap
-    done < $BREW_TAPS_FILE
-    message "Done adding Homebrew taps."
-    sleep 2
-
-    subsection "Installing Homebrew Formulae"
-    while read -r formula; do
-        echo "Installing $formula"
-        brew install $formula
-        echo ""
-    done < $BREW_FORMULAE_FILE
-    message "Done installing Homebrew formulae."
-    sleep 2
-
-    subsection "Installing Casks (3rd party apps)"
-    while read -r cask; do
-        echo "Installing $cask"
-        brew cask install $cask
-        echo ""
-    done < $BREW_CASKS_FILE
-    message "Done installing casks."
-    sleep 2
-
-    subsection "Installing Apps From Mac App Store"
-    mas signin --dialog $(getAccountId)
-    for app in $(sed -E -n 's/^([0-9]+)(.*)/\1/p' ${MAC_APPS_FILE}); do
-        echo "Installing $app"
-        mas install $app
-        echo ""
-    done
-    message "Done installing Mac App Store apps."
-    sleep 2
-
+    section "Installing Homebrew Taps, Formulae, And Casks"
+    addTaps
+    installFormulae
+    installCasks
+    installApps
 #-----------------------------------------------------------------------------------------------
 # ERROR: INSTALL MODE NOT SUPPORTED
 else
@@ -85,34 +49,14 @@ fi
 
 #-----------------------------------------------------------------------------------------------
 # INSTALL CORE RESOURCES
-section "INSTALLING CORE RESOURCES"
-
-subsection "Installing Global NPM Packages"
-while read -r package; do
-    echo "Installing $package"
-    npm install -g $package
-    echo ""
-done < $NPM_PACKAGES_FILE
-message "Done installing NPM packages."
-sleep 2
-
-subsection "Installing VS Code Extensions"
-code --install-extension Shan.code-settings-sync
-sleep 2
+section "Installing Core Resources"
+installNodePackages
+installVSCodeExt
 
 #-----------------------------------------------------------------------------------------------
 # CLEANUP
-section "${EMOJI_TRASH} CLEANING UP"
-
-echo -e "Turning OFF sending brew analytics\n"
-brew analytics off
-
-echo -e "Cleaning up Homebrew downloads and caches\n"
-brew cleanup -s # remove older versions in cellar + old downloads-cache
-rm -rf $(brew --cache) # delete all
-
-message "Done cleaning up."
-sleep 2
+section "Clean Up"
+cleanUp
 
 #===============================================================================================
 # COMPLETED
@@ -122,9 +66,7 @@ footer "Primary"
 #-----------------------------------------------------------------------------------------------
 # SECONDARY INSTALL
 if [ $RUN_SECONDARY = true ]; then 
-    section "RUNNIG SECONDARY INSTALL"
+    section "Running Secondary Install"
     # Execute secondary script in the current shell without forking a sub shell
     . ./secondary
-else 
-    echo -e "Now go login to your accounts (Dropbox, emails, etc...) and then run secondary installs, \`bash secondary\`.\n"
 fi

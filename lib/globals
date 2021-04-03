@@ -5,18 +5,52 @@
 #===============================================================================================
 
 # General
+ADMIN=$(dsmemberutil checkmembership -U `whoami` -G admin | grep "not")
 DEFAULTS=true
+DEFAULT_SHELL="zsh"
+ICLOUD_HOME_PATH="~/Library/Mobile\ Documents/com~apple~CloudDocs"
 RUN_SECONDARY=false
+SETUP_MODE="FULL"  # DEFAULT: Full setup - installs everything in Brewfile and secondary.sh
+USER_NAME=$(id -F) # full user's name, e.g. Andres Breton
 
-# Setup Files
+# Shell
+BASH_PROFILE_FILE=".bash_profile"
+ZSH_PROFILE_FILE=".zprofile"
+SHELL_PROFILE_FILE="${HOME}/${ZSH_PROFILE_FILE}"
+
+# macOS Version
+IS_APPLE_CPU=$(sysctl -n machdep.cpu.brand_string | grep -i "apple") # Apple M1 Hardware = "Apple processor"
+MAC_OS_VERSION=$(sw_vers -productVersion)
+OS_MAJOR_VERSION=$(echo $MAC_OS_VERSION | sed -E 's/([0-9]+)\.[0-9]+\.[0-9]+/\1/')
+OS_MINOR_VERSION=$(echo $MAC_OS_VERSION | sed -E 's/[0-9]+\.([0-9]+)\.[0-9]+/\1/')
+if [ ${OS_MAJOR_VERSION} -ge 11 ]; then
+    IS_BIG_SUR=true
+elif [ ${OS_MAJOR_VERSION} -eq 10 ]; then
+    if [ ${OS_MINOR_VERSION} -gt 14 ]; then
+        IS_CATALINA=true  # 15 (Catalina)
+    elif [ ${OS_MINOR_VERSION} -eq 14 ]; then
+        IS_CATALINA=false  # 14 (Mojave)
+        DEFAULT_SHELL="bash"
+        SHELL_PROFILE_FILE="${HOME}/${BASH_PROFILE_FILE}"
+    else
+        OS_UNSUPPORTED=true
+    fi
+else
+    OS_UNSUPPORTED=true
+fi
+
+SHELL_RC_FILE="${HOME}/.${DEFAULT_SHELL}rc" # determined by macOS version
+
+# Setup File Paths
 BREW_CASKS_FILE="./src/casks.txt"
 BREW_FILE="./src/Brewfile"
 BREW_FORMULAE_FILE="./src/formulae.txt"
 BREW_TAPS_FILE="./src/taps.txt"
 MAC_APPS_FILE="./src/apps.txt"
 NPM_PACKAGES_FILE="./src/npm.txt"
+VS_CODE_EXTENSIONS_FILE="./src/vscode.txt"
 
-# Setup Configurations
+# Setup Configuration Variables
 GITHUB_KEYS_URL="https://github.com/settings/keys"
 GITHUB_RSA_NAME="github_rsa"
 
@@ -39,4 +73,3 @@ EMOJI_TOOLBOX="\xf0\x9f\xa7\xb0\x20"
 EMOJI_WARNING="\xe2\x9b\x94\xef\xb8\x8f\x20"
 EMOJI_WRENCH="\xf0\x9f\x94\xa7\x20"
 EMOJI_WRENCH_HAMMER="\xf0\x9f\x9b\xa0\x20\x20"
-
