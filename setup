@@ -1,6 +1,6 @@
 # Download and start setup process
-# git clone --recurse-submodules https://github.com/bretonics/Setup.git
-curl https://codeload.github.com/bretonics/Setup/zip/v0.1.1 -o Setup-0.1.1.zip
-unzip Setup-0.1.1.zip
-cd Setup-0.1.1
-bash install
+curl https://codeload.github.com/bretonics/Setup/zip/v1.0.0 -o Setup.zip
+curl https://api.github.com/repos/bretonics/Setup/zipball/v1.0.0 -o Setup.zip
+unzip Setup.zip -d Setup
+cd Setup
+caffeinate bash ./install.sh
