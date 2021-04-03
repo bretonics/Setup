@@ -8,15 +8,7 @@ flux
 fork
 gitify
 google-chrome
-mactex
+nordvpn
 postman
-qlcolorcode
-qlimagesize
-qlmarkdown
-qlstephen
-qlvideo
-quicklook-json
-quicklookase
-raindropio
 spotify
 visual-studio-code
