@@ -10,3 +10,9 @@
 [submodule "crontab"]
 	path = files/crontab
 	url = https://gist.github.com/9a48a3b9ef32d93d15f45c3f007550b4.git
+[submodule "shellColors"]
+	path = files/shell/colors
+	url = git@gist.github.com:8bb600ff913a8097c4ce551b6cbacff5.git
+[submodule "gitHooks"]
+	path = files/git/hooks
+	url = git@gist.github.com:e3ea90efb3084034bccc60f770a2d37c.git
