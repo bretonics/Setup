@@ -1,6 +1,10 @@
 # Download and start setup process
-curl https://codeload.github.com/bretonics/Setup/zip/v1.0.0 -o Setup.zip
-curl https://api.github.com/repos/bretonics/Setup/zipball/v1.0.0 -o Setup.zip
+URL=$(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/bretonics/Setup/releases/latest \
+    | grep "zipball_url" \
+    | cut -d '"' -f 4)
+
+curl -L -H "Accept: application/vnd.github.v3+json" --url ${URL} -o Setup.zip
+
 unzip Setup.zip -d Setup
-cd Setup
+cd Setup/bretonics-Setup*
 caffeinate bash ./install.sh
