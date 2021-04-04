@@ -10,6 +10,10 @@
 
 ## Automate Setting Up A New Mac
 ---
+``` bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup)"
+```
+
 
 Options
 ---
@@ -17,7 +21,7 @@ The [Brewfile](https://github.com/bretonics/Setup/tree/master/src/Brewfile) cont
 
 Files in [./src](https://github.com/bretonics/Setup/tree/master/src) keep track of individual programs (Apps, Formulae, and Casks) to install.
 
-```
+``` bash
 $ ./install.sh -h
 
 Usage: install [Options] Brewfile
@@ -53,8 +57,8 @@ I suggest [downloading the repo](https://github.com/bretonics/Setup/archive/mast
 - Fork: [the repo](https://github.com/bretonics/Setup)
 
 You can also execute directly and run everything automatically with:
-```
-curl https://raw.githubusercontent.com/bretonics/Setup/master/setup | bash
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup)"
 ```
 
 > Cancel the auto run with `Ctrl-C` if you want to modify [apps.txt](https://github.com/bretonics/Setup/blob/master/src/apps.txt), [formulae.txt](https://github.com/bretonics/Setup/blob/master/src/formulae.txt), [casks.txt](https://github.com/bretonics/Setup/blob/master/src/casks.txt), and/or [Brewfile](https://github.com/bretonics/Setup/blob/master/src/Brewfile).
@@ -72,7 +76,7 @@ Modify the `./src/Brewfile` and run `bash install`, or do `bash install /path/to
 
 ## Useful Commands
 ---
-```
+```bash
 # List all installed Mac apps
 mas list | sort -fk 2
 
