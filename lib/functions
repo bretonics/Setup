@@ -69,7 +69,7 @@ addShellCompletions() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Add and Source Homebrew Install
 addHomebrewPath() {
-    if [ -z ${IS_APPLE_CPU} ]; then
+    if [ ${IS_APPLE_CPU} ]; then
         echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ${SHELL_PROFILE_FILE}
         eval "$(/opt/homebrew/bin/brew shellenv)"
     fi
