@@ -105,6 +105,7 @@ ask() {
         case "${REPLY}" in
             y|Y)
                 RESPONSE=true
+                echo ""
                 ;;
             n|N|*)
                 RESPONSE=false
@@ -136,35 +137,35 @@ configureGit() {
     subsection "Git"
 
     ask "Configure Git"
+    if [ $RESPONSE != true ]; then return; fi
+
+    # git config --global pull.rebase true
+    ask "Using name: '${USER_NAME}'. Is this correct" 1
     if [ "$RESPONSE" = true ]; then
-        # git config --global pull.rebase true
-        ask "Using name: '${USER_NAME}'. Is this correct" 1
-        if [ "$RESPONSE" = true ]; then
-            git config --global user.name "${USER_NAME}"
-        else
-            printf "\nPlease enter your full name: "
-            read GIT_NAME && git config --global user.name "${GIT_NAME}"
+        git config --global user.name "${USER_NAME}"
+    else
+        printf "\nPlease enter your full name: "
+        read GIT_NAME && git config --global user.name "${GIT_NAME}"
+    fi
+
+    printf "\nEnter your email: "
+    read GIT_EMAIL && git config --global user.email "${GIT_EMAIL}"
+
+    echo -e "\n\nGit Configured"
+    echo -e "Name: $(git config --get user.name)"
+    echo -e "Email: $(git config --get user.email)\n"
+
+    if [ $BASH_COMPLETIONS_INSTALLED = true ]; then
+        ask "Do you want to enable Git prompt status (PS1)"
+        if [ $RESPONSE != true ]; then return; fi
+
+        if [ ${DEFAULT_SHELL} = "bash" ]; then
+            ln -s ${GIT_PROMPT_PATH} ~/
+            echo -e "\nAdd \"__git_ps1 ' (%s)'\" in your PS1 where you'd like to see the git status"
         fi
 
-        printf "\nEnter your email: "
-        read GIT_EMAIL && git config --global user.email "${GIT_EMAIL}"
-
-        echo -e "\n\nGit Configured"
-        echo -e "Name: $(git config --get user.name)"
-        echo -e "Email: $(git config --get user.email)\n"
-
-        if [ $BASH_COMPLETIONS_INSTALLED = true ]; then
-            ask "Do you want to enable Git prompt status (PS1)"
-            if [ "$RESPONSE" = true ]; then
-                if [ ${DEFAULT_SHELL} = "bash" ]; then
-                    ln -s ${GIT_PROMPT_PATH} ~/
-                    echo -e "\nAdd \"__git_ps1 ' (%s)'\" in your PS1 where you'd like to see the git status"
-                fi
-
-                # TODO: figure out which way is best for Zsh
-                # NOTE: already taken care of with Starship/Spaceship prompts. Is this gratuitous?
-            fi
-        fi
+        # TODO: figure out which way is best for Zsh
+        # NOTE: already taken care of with Starship/Spaceship prompts. Is this gratuitous?
     fi
 }
 
@@ -174,25 +175,25 @@ configureGPG() {
     subsection "GPG Key"
 
     ask "Create GPG Key"
-    if [ "$RESPONSE" = true ]; then
-        gpg --gen-key
-        GPGkey=$(gpg --list-secret-keys --keyid-format LONG | sed -nE 's/sec.*rsa2048\/([a-zA-Z0-9]+).*/\1/p')
+    if [ $RESPONSE != true ]; then return; fi
 
-        echo -e "\nConfiguring GPG Key with resources\n"
-        git config --global user.signingkey ${GPGkey} # configure Git to use GPG
-        gpg --armor --export ${GPGkey} | pbcopy
+    gpg --gen-key
+    GPGkey=$(gpg --list-secret-keys --keyid-format LONG | sed -nE 's/sec.*rsa2048\/([a-zA-Z0-9]+).*/\1/p')
 
-        echo -e "\n\nGPG key copied to clipboard.\n"
-        unset GPGkey
-        echo -e "GitHub will now open. Paste GPG key copied to your clipboard and come back here to continue.\n"
-        sleep 3
-        open ${GITHUB_KEYS_URL}
-        read -p "Waiting on user to return. Press to continue... "
-        pbcopy < /dev/null # clear clipboard
+    echo -e "\nConfiguring GPG Key with resources\n"
+    git config --global user.signingkey ${GPGkey} # configure Git to use GPG
+    gpg --armor --export ${GPGkey} | pbcopy
 
-        message "Done running workspace personalizations"
-        sleep 2
-    fi
+    echo -e "\n\nGPG key copied to clipboard.\n"
+    unset GPGkey
+    echo -e "GitHub will now open. Paste GPG key copied to your clipboard and come back here to continue.\n"
+    sleep 3
+    open ${GITHUB_KEYS_URL}
+    read -p "Waiting on user to return. Press to continue... "
+    pbcopy < /dev/null # clear clipboard
+
+    message "Done running workspace personalizations"
+    sleep 2
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -201,19 +202,19 @@ configureSSH() {
     subsection "SSH Keys"
 
     ask "Create SSH Keys"
-    if [ "$RESPONSE" = true ]; then
-        mkdir ~/.ssh
-        cp -v ./files/ssh_config ~/.ssh/config
-        ssh-keygen -t rsa -f ~/.ssh/${GITHUB_RSA_NAME}
-        cat ~/.ssh/${GITHUB_RSA_NAME}.pub | pbcopy
+    if [ $RESPONSE != true ]; then return; fi
 
-        echo -e "\n\nSSH public key copied to clipboard.\n"
-        echo -e "GitHub will now open. Paste PUBLIC SSH key copied to your clipboard and come back here to continue.\n"
-        sleep 3
-        open ${GITHUB_KEYS_URL}
-        read -p "Waiting on user to return. Press to continue... "
-        pbcopy < /dev/null # clear clipboard
-    fi
+    mkdir ~/.ssh
+    cp -v ./files/ssh_config ~/.ssh/config
+    ssh-keygen -t rsa -f ~/.ssh/${GITHUB_RSA_NAME}
+    cat ~/.ssh/${GITHUB_RSA_NAME}.pub | pbcopy
+
+    echo -e "\n\nSSH public key copied to clipboard.\n"
+    echo -e "GitHub will now open. Paste PUBLIC SSH key copied to your clipboard and come back here to continue.\n"
+    sleep 3
+    open ${GITHUB_KEYS_URL}
+    read -p "Waiting on user to return. Press to continue... "
+    pbcopy < /dev/null # clear clipboard
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -371,15 +372,14 @@ installOMZ() {
     subsection "Oh My Zsh Framework"
 
     ask "Install Oh My Zsh" 1
-    if [ "$RESPONSE" = true ]; then
-        sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-        if [ $? -eq 0 ]; then
-            OMZ_INSTALLED=true
-            message "DONE installing Oh My Zsh"
-            sleep 2
-            exit
-        fi
-    fi
+    if [ $RESPONSE != true ]; then return; fi
+
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    if [ $? -ne 0 ]; then return; fi
+
+    OMZ_INSTALLED=true
+    message "DONE installing Oh My Zsh"
+    sleep 2
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -413,15 +413,15 @@ installSpaceshipPrompt() {
     subsection "Spaceship Prompt"
 
     ask "Install Spaceship Prompt" 1
-    if [ "$RESPONSE" = true ]; then
-        echo -e "\nInstalling RobotoMono Powerline font\n"
-        brew install font-roboto-mono-for-powerline
+    if [ $RESPONSE != true ]; then return; fi
 
-        echo -e "Installing Spaceship Prompt\n"
-        npm install -g spaceship-prompt
+    echo -e "\nInstalling RobotoMono Powerline font\n"
+    brew install font-roboto-mono-for-powerline
 
-        SPACESHIP_PROMPT_INSTALLED=true
-    fi
+    echo -e "Installing Spaceship Prompt\n"
+    npm install -g spaceship-prompt
+
+    SPACESHIP_PROMPT_INSTALLED=true
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -430,19 +430,19 @@ installStarshipPrompt() {
     subsection "Starship Prompt"
 
     ask "Install Starship Prompt" 1
-    if [ "$RESPONSE" = true ]; then
-        echo -e "\nInstalling FiraCode Nerd font\n"
-        brew install font-fira-code-nerd-font
+    if [ $RESPONSE != true ]; then return; fi
 
-        echo -e "Installing Startship Prompt\n"
-        brew install starship
+    echo -e "\nInstalling FiraCode Nerd font\n"
+    brew install font-fira-code-nerd-font
 
-        # Add to Shell's .rc
-        echo -e "\n# Starship Prompt" >> ${SHELL_RC_FILE}
-        echo "eval \"\$(starship init ${DEFAULT_SHELL})\"" >> ${SHELL_RC_FILE}
+    echo -e "Installing Startship Prompt\n"
+    brew install starship
 
-        STARSHIP_PROMPT_INSTALLED=true
-    fi
+    # Add to Shell's .rc
+    echo -e "\n# Starship Prompt" >> ${SHELL_RC_FILE}
+    echo "eval \"\$(starship init ${DEFAULT_SHELL})\"" >> ${SHELL_RC_FILE}
+
+    STARSHIP_PROMPT_INSTALLED=true
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -522,9 +522,9 @@ restoreBackups() {
     subsection "Time Machine Backups"
 
     ask "Restore Time Machine Backups" 1
-    if [ "$RESPONSE" = true ]; then
-        . ./bin/restore_backup.sh '/Volumes/Backups/'
-    fi
+    if [ $RESPONSE != true ]; then return; fi
+
+    . ./bin/restore_backup.sh '/Volumes/Backups/'
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -540,19 +540,19 @@ setDefaultShell() {
     subsection "Default Shell"
 
     isZsh
-    if [ $? -eq 0 ]; then
-        echo "The default interactive shell is now Zsh"
-        ask "Update your account to use Bash instead"
-        if [ "$RESPONSE" = true ]; then
-            chsh -s /bin/bash
-            echo "Bash set as system default"
-            echo "export BASH_SILENCE_DEPRECATION_WARNING=1" >> ${BASH_PROFILE_PATH}
-            echo "If you wish to revert to using Zsh, execute the command 'chsh /bin/zsh'"
-            DEFAULT_SHELL="bash"
-            SHELL_PROFILE_FILE="${BASH_PROFILE_PATH}"
-            SHELL_RC_FILE="${BASH_RC_PATH}"
-        fi
-    fi
+    if [ $? -ne 0 ]; then return; fi
+
+    echo "The default interactive shell is now Zsh"
+    ask "Update your account to use Bash instead"
+    if [ $RESPONSE != true ]; then return; fi
+
+    chsh -s /bin/bash
+    echo "Bash set as system default"
+    echo "export BASH_SILENCE_DEPRECATION_WARNING=1" >> ${BASH_PROFILE_PATH}
+    echo "If you wish to revert to using Zsh, execute the command 'chsh /bin/zsh'"
+    DEFAULT_SHELL="bash"
+    SHELL_PROFILE_FILE="${BASH_PROFILE_PATH}"
+    SHELL_RC_FILE="${BASH_RC_PATH}"
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -561,9 +561,9 @@ setSettings() {
     subsection "Default Mac Settings"
 
     ask "Set Mac Settings"
-    if [ "$RESPONSE" = true ]; then
-        . ./bin/settings_defaults.sh
-    fi
+    if [ $RESPONSE != true ]; then return; fi
+
+    . ./bin/settings_defaults.sh
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -590,12 +590,12 @@ updateMacOS() {
     subsection "Running Updates"
 
     ask "Update macOS" 1
-    if [ "$RESPONSE" = true ]; then
-        subsection "Updating macOS"
-        softwareupdate -ia --verbose
-        message "Done running updates"
-        sleep 2
-    fi
+    if [ $RESPONSE != true ]; then return; fi
+
+    subsection "Updating macOS"
+    softwareupdate -ia --verbose
+    message "Done running updates"
+    sleep 2
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
