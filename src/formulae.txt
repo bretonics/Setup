@@ -29,4 +29,5 @@ ssh-copy-id
 tree
 webp
 wget
+wtfutil
 xz

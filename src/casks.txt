@@ -1,5 +1,7 @@
 alfred
+amazon-music
 brave-browser
+cloudflare-warp
 datagrip
 devdocs
 docker
