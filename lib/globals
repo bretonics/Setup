@@ -5,18 +5,25 @@
 #===============================================================================================
 
 # General
-ADMIN=$(dsmemberutil checkmembership -U `whoami` -G admin | grep "not")
+ADMIN=$(dsmemberutil checkmembership -U $(whoami) -G admin | grep "not")
 DEFAULTS=true
-DEFAULT_SHELL="zsh"
 ICLOUD_HOME_PATH="~/Library/Mobile\ Documents/com~apple~CloudDocs"
 RUN_SECONDARY=false
 SETUP_MODE="FULL"  # DEFAULT: Full setup - installs everything in Brewfile and secondary.sh
 USER_NAME=$(id -F) # full user's name, e.g. Andres Breton
 
 # Shell
+CURRENT_SHELL=$(echo $0)
+DEFAULT_SHELL=$(echo ${SHELL##*/})
 BASH_PROFILE_FILE=".bash_profile"
+BASH_RC_FILE=".bashrc"
 ZSH_PROFILE_FILE=".zprofile"
-SHELL_PROFILE_FILE="${HOME}/${ZSH_PROFILE_FILE}"
+ZSH_RC_FILE=".zshrc"
+
+BASH_PROFILE_PATH="${HOME}/${BASH_PROFILE_FILE}"
+BASH_RC_PATH="${HOME}/${BASH_RC_FILE}"
+ZSH_PROFILE_PATH="${HOME}/${ZSH_PROFILE_FILE}"
+ZSH_RC_PATH="${HOME}/${ZSH_RC_FILE}"
 
 # macOS Version
 IS_APPLE_CPU=$(sysctl -n machdep.cpu.brand_string | grep -i "apple") # Apple M1 Hardware = "Apple processor"
@@ -27,11 +34,11 @@ if [ ${OS_MAJOR_VERSION} -ge 11 ]; then
     IS_BIG_SUR=true
 elif [ ${OS_MAJOR_VERSION} -eq 10 ]; then
     if [ ${OS_MINOR_VERSION} -gt 14 ]; then
-        IS_CATALINA=true  # 15 (Catalina)
+        IS_CATALINA=true # 15 (Catalina)
     elif [ ${OS_MINOR_VERSION} -eq 14 ]; then
-        IS_CATALINA=false  # 14 (Mojave)
+        IS_CATALINA=false # 14 (Mojave)
         DEFAULT_SHELL="bash"
-        SHELL_PROFILE_FILE="${HOME}/${BASH_PROFILE_FILE}"
+        SHELL_PROFILE_FILE="${BASH_PROFILE_PATH}"
     else
         OS_UNSUPPORTED=true
     fi
@@ -39,6 +46,7 @@ else
     OS_UNSUPPORTED=true
 fi
 
+SHELL_PROFILE_FILE="${ZSH_PROFILE_PATH}"
 SHELL_RC_FILE="${HOME}/.${DEFAULT_SHELL}rc" # determined by macOS version
 
 # Setup File Paths

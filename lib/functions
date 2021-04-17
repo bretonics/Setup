@@ -11,29 +11,23 @@ source ${BASE_PATH}/lib/globals
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Adds Bash Completions
 addBashCompletions() {
-    if [ !isBash ]; then return 0; fi
+    isBash
+    if [ $? -ne 0 ]; then return; fi
 
     brew install bash-completion
 
     # Add bash-completions sourcing
     echo "[[ -r \"/usr/local/etc/profile.d/bash_completion.sh\" ]] && . \"/usr/local/etc/profile.d/bash_completion.sh\"" >> ${SHELL_PROFILE_FILE}
+    BASH_COMPLETIONS_INSTALLED=true
 
     ask "Add Git Completion"
     if [ "$RESPONSE" = true ]; then
         ln -s /Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash /usr/local/etc/bash_completion.d/
-        BASH_COMPLETIONS=true
     fi
 
     ask "Add NPM Completion"
     if [ "$RESPONSE" = true ]; then
         npm completion > /usr/local/etc/bash_completion.d/npm
-        BASH_COMPLETIONS=true
-    fi
-
-    # Source if any completions setup
-    if [ "$BASH_COMPLETIONS" = true ]; then
-        echo "for file in /usr/local/etc/bash_completion.d/*; do source $file; done" >> ${SHELL_RC_FILE}
-        source ${SHELL_PROFILE_FILE}
     fi
 }
 
@@ -57,11 +51,13 @@ addTaps() {
 addShellCompletions() {
     subsection "Shell Completions"
 
-    if [ isZsh ]; then
+    isZsh
+    if [ $? -eq 0 ]; then
         addZshCompletions
     fi
 
-    if [ isBash ]; then
+    isBash
+    if [ $? -eq 0 ]; then
         addBashCompletions
     fi
 }
@@ -78,7 +74,8 @@ addHomebrewPath() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Adds Zsh Completions
 addZshCompletions() {
-    if [ !isZsh ]; then return 0; fi
+    isZsh
+    if [ $? -ne 0 ]; then return; fi
 
     # Setup appropriate sourcing
     mkdir ~/.zsh_completions
@@ -93,14 +90,14 @@ addZshCompletions() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Ask User Response
 # - $2: If anything truthy passed (1), explicitly ask
-ask () {
+ask() {
     if [ "${DEFAULTS}" == true ] && [ -z ${2} ]; then
         RESPONSE=true
     else
         echo -en "\n${1} (y/n)? "
         read -n 1 -r
         case "${REPLY}" in
-            y|Y )
+            y|Y)
                 RESPONSE=true
                 ;;
             n|N|*)
@@ -150,16 +147,17 @@ configureGit() {
         echo -e "Name: $(git config --get user.name)"
         echo -e "Email: $(git config --get user.email)\n"
 
-        ask "Do you want to enable Git prompt status (PS1)"
-        if [ "$RESPONSE" = true ]; then
-            if [ "DEFAULT_SHELL" = "bash" ]; then
-                ln -s ${GIT_PROMPT_PATH} ~/
-                echo ". ~/git-prompt.sh" >> .bashrc
-                echo -e "\nAdd \"__git_ps1 ' (%s)'\" in your PS1 where you'd like to see the git status"
-            fi
+        if [ $BASH_COMPLETIONS_INSTALLED = true ]; then
+            ask "Do you want to enable Git prompt status (PS1)"
+            if [ "$RESPONSE" = true ]; then
+                if [ ${DEFAULT_SHELL} = "bash" ]; then
+                    ln -s ${GIT_PROMPT_PATH} ~/
+                    echo -e "\nAdd \"__git_ps1 ' (%s)'\" in your PS1 where you'd like to see the git status"
+                fi
 
-            # TODO: figure out which way is best for Zsh
-            # NOTE: already taken care of with Starship/Spaceship prompts. Is this gratuitous? 
+                # TODO: figure out which way is best for Zsh
+                # NOTE: already taken care of with Starship/Spaceship prompts. Is this gratuitous?
+            fi
         fi
     fi
 }
@@ -175,7 +173,7 @@ configureGPG() {
         GPGkey=$(gpg --list-secret-keys --keyid-format LONG | sed -nE 's/sec.*rsa2048\/([a-zA-Z0-9]+).*/\1/p')
 
         echo -e "\nConfiguring GPG Key with resources\n"
-        git config --global user.signingkey ${GPGkey}  # configure Git to use GPG
+        git config --global user.signingkey ${GPGkey} # configure Git to use GPG
         gpg --armor --export ${GPGkey} | pbcopy
 
         echo -e "\n\nGPG key copied to clipboard.\n"
@@ -184,7 +182,7 @@ configureGPG() {
         sleep 3
         open ${GITHUB_KEYS_URL}
         read -p "Waiting on user to return. Press to continue... "
-        pbcopy < /dev/null  # clear clipboard
+        pbcopy < /dev/null # clear clipboard
 
         message "Done running workspace personalizations"
         sleep 2
@@ -208,7 +206,7 @@ configureSSH() {
         sleep 3
         open ${GITHUB_KEYS_URL}
         read -p "Waiting on user to return. Press to continue... "
-        pbcopy < /dev/null  # clear clipboard
+        pbcopy < /dev/null # clear clipboard
     fi
 }
 
@@ -242,7 +240,7 @@ copyFiles() {
     fi
 
     echo -e "Sourcing .bash_profile\n"
-    source ~/.bash_profile
+    source ${BASH_PROFILE_PATH}
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -265,9 +263,9 @@ footer() {
     echo "================================================================================"
     echo "| ${1} setup has FINISHED"
     echo "| Script:    $(basename "$0")"
-    echo "| User:      `whoami`"
-    echo "| Date:      `date`"
-    echo "| PWD:       `pwd`"
+    echo "| User:      $(whoami)"
+    echo "| Date:      $(date)"
+    echo "| PWD:       $(pwd)"
     echo "| PID:       $$"
     echo "================================================================================"
     echo ""
@@ -281,9 +279,9 @@ header() {
     echo ""
     echo "================================================================================"
     echo "| Script:    $(basename "$0")"
-    echo "| User:      `whoami`"
-    echo "| Date:      `date`"
-    echo "| PWD:       `pwd`"
+    echo "| User:      $(whoami)"
+    echo "| Date:      $(date)"
+    echo "| PWD:       $(pwd)"
     echo "| PID:       $$"
     echo "|"
     echo "| Running '${SETUP_MODE}' install..."
@@ -299,6 +297,7 @@ header() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs Mac App Store Applications
 # - List in $MAC_APPS_FILE
+# TODO: mojave install mas from tap for Mojave
 installApps() {
     subsection "Installing Apps From Mac App Store"
 
@@ -332,8 +331,8 @@ installCasks() {
     subsection "Installing Casks (3rd party apps)"
 
     while read -r cask; do
-        echo "Installing $cask"
-        brew cask install $cask
+        echo "Installing ${cask}"
+        brew install ${cask}
         echo ""
     done < $BREW_CASKS_FILE
 
@@ -364,7 +363,7 @@ installOMZ() {
 
     ask "Install Oh My Zsh" 1
     if [ "$RESPONSE" = true ]; then
-        sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+        sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
         if [ $? -eq 0 ]; then
             OMZ_INSTALLED=true
             message "DONE installing Oh My Zsh"
@@ -388,7 +387,7 @@ installNodePackages() {
     # fi
 
     while read -r package; do
-        echo "Installing ${package}"
+        echo -e "\n\nInstalling ${package}"
         npm install -g ${package}
     done < $NPM_PACKAGES_FILE
 
@@ -418,7 +417,7 @@ installSpaceshipPrompt() {
 installStarshipPrompt() {
     subsection "Starship Prompt"
 
-    ask "Install Starship Prompt"
+    ask "Install Starship Prompt" 1
     if [ "$RESPONSE" = true ]; then
         echo -e "\nInstalling FiraCode Nerd font\n"
         brew install font-fira-code-nerd-font
@@ -450,19 +449,19 @@ installVSCodeExt() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Is Default Shell Bash?
 isBash() {
-    if [ "${DEFAULT_SHELL}" != "bash" ]; then
-        return 0
+    if [ "${DEFAULT_SHELL}" = "bash" ]; then
+        return
     fi
-    return 1
+    false
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Is Default Shell Zsh?
 isZsh() {
-    if [ "${DEFAULT_SHELL}" != "zsh" ]; then
-        return 0
+    if [ "${DEFAULT_SHELL}" = "zsh" ]; then
+        return
     fi
-    return 1
+    false
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -480,7 +479,7 @@ loggers() {
 preFlightChecks() {
     if [ ! -z $OS_UNSUPPORTED ]; then
         message "error" "Unsupported macOS Version"
-        exit 1;
+        exit 1
     fi
 }
 
@@ -528,17 +527,18 @@ section() {
 setDefaultShell() {
     subsection "Default Shell"
 
-    if [ isZsh ]; then
+    isZsh
+    if [ $? -eq 0 ]; then
         echo "The default interactive shell is now Zsh"
         ask "Update your account to use Bash instead"
         if [ "$RESPONSE" = true ]; then
             chsh -s /bin/bash
             echo "Bash set as system default"
-            echo "export BASH_SILENCE_DEPRECATION_WARNING=1" >> ~/.bash_profile
+            echo "export BASH_SILENCE_DEPRECATION_WARNING=1" >> ${BASH_PROFILE_PATH}
             echo "If you wish to revert to using Zsh, execute the command 'chsh /bin/zsh'"
             DEFAULT_SHELL="bash"
-            SHELL_PROFILE_FILE="${HOME}/${BASH_PROFILE_FILE}"
-            SHELL_RC_FILE="${HOME}/.${DEFAULT_SHELL}rc"
+            SHELL_PROFILE_FILE="${BASH_PROFILE_PATH}"
+            SHELL_RC_FILE="${BASH_RC_PATH}"
         fi
     fi
 }
@@ -567,7 +567,7 @@ subsection() {
 # - Global Environment Variables
 # - CLI Argument Options
 source_libs() {
-    for file in ./lib/*; do 
+    for file in ./lib/*; do
         source $file
     done
 }

@@ -12,9 +12,9 @@ fi
 header
 
 #===============================================================================================
-# SYSTEM PERSONALIZATIONS
+# SYSTEM PERSONALIZATION
 #===============================================================================================
-section "Running System Personalizations"
+section "Running System Personalization"
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 setDefaultShell
