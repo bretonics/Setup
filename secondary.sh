@@ -21,10 +21,8 @@ setDefaultShell
 copyFiles
 setSettings
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-if [ isZsh ]; then
-    installOMZ
-    installSpaceshipPrompt
-fi
+installOMZ
+installSpaceshipPrompt
 installStarshipPrompt
 addShellCompletions
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

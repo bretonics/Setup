@@ -14,6 +14,9 @@ addBashCompletions() {
     isBash
     if [ $? -ne 0 ]; then return; fi
 
+    ask "Install additional Bash completions"
+    if [ $RESPONSE != true ]; then return; fi
+
     brew install bash-completion
 
     # Add bash-completions sourcing
@@ -50,6 +53,9 @@ addTaps() {
 # Adds Appropriate Shell Completions
 addShellCompletions() {
     subsection "Shell Completions"
+
+    ask "Configure shell completions"
+    if [ $RESPONSE != true ]; then return; fi
 
     isZsh
     if [ $? -eq 0 ]; then
@@ -359,6 +365,9 @@ installFormulae() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs Oh My Zsh Framework
 installOMZ() {
+    isZsh
+    if [ $? -ne 0 ]; then return; fi
+
     subsection "Oh My Zsh Framework"
 
     ask "Install Oh My Zsh" 1
@@ -398,6 +407,9 @@ installNodePackages() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs Spaceship Prompt
 installSpaceshipPrompt() {
+    isZsh
+    if [ $? -ne 0 ]; then return; fi
+
     subsection "Spaceship Prompt"
 
     ask "Install Spaceship Prompt" 1
