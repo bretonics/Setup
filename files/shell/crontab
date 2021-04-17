@@ -1,0 +1,48 @@
+# Crontab - Crontab template to automate virtual world
+
+# Template from https://gist.github.com/bretonics/9a48a3b9ef32d93d15f45c3f007550b4
+
+# Andrés Bretón ~ http://andresbreton.com, dev@andresbreton.com
+
+# ==============================================================================
+# MIN(0-59) HOUR(0-23) DOM(1-31) M(1-12) DOW(0-6)   CMD
+#     |__________|_________|_______|________|______ |__MINUTE of
+#                |_________|_______|________|______ |__HOUR of
+#                          |_______|________|______ |__DAY of
+#                                  |________|______ |__MONTH
+#                                           |______ |__DAY of WEEK
+#                                                   |__Command
+#
+# @hourly        Run once an hour   ==  0 * * * *
+# @daily         Run once a day     ==  0 0 * * *
+# @midnight      (same as @daily)
+# @weekly        Run once a week    ==  0 0 * * 0
+# @monthly       Run once a month   ==  0 0 1 * *
+# @yearly        Run once a year    ==  0 0 1 1 *
+# @annually      (same as @yearly)
+# @reboot        Run at startup
+#
+#
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  *
+# ==============================================================================
+
+# Set Path
+PATH=/bin:/usr/bin:/usr/local/bin:
+
+# Upgrade and update packages monthly on 1st and 15th
+0 12 1,15 * * brew upgrade --cleanup
+# 0 12 1,15 * * brew cask upgrade # not great since we can't pin casks
+0 12 1,15 * * brew cask cleanup --outdated
+0 12 1,15 * * apm update --confirm false
+
+# Update Mac apps every Monday
+0 10 * * 1 mas upgrade
+
+# Automate 10x run analysis
+0 22 * * * ~/launch10x

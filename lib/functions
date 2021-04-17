@@ -205,7 +205,7 @@ configureSSH() {
     if [ $RESPONSE != true ]; then return; fi
 
     mkdir ~/.ssh
-    cp -v ./files/ssh_config ~/.ssh/config
+    cp -v ./files/shell/ssh_config ~/.ssh/config
     ssh-keygen -t rsa -f ~/.ssh/${GITHUB_RSA_NAME}
     cat ~/.ssh/${GITHUB_RSA_NAME}.pub | pbcopy
 
@@ -222,28 +222,25 @@ configureSSH() {
 copyFiles() {
     subsection "Files"
 
-    echo -e "Downloading Submodules\n"
-    git submodule update --init --recursive
-
     ask "Copy .bash_profile"
     if [ "$RESPONSE" = true ]; then
-        cp ./files/bash/profile/.bash_profile ~/
-        cp ./files/bash/shell/.shell_colors ~/
+        cp ./files/bash/.bash_profile ~/
+        cp ./files/shell/.shell_colors ~/
     fi
 
     ask "Copy .bashrc"
     if [ "$RESPONSE" = true ]; then
-        cp ./files/bash/bashrc/.bashrc ~/
+        cp ./files/bash/.bashrc ~/
     fi
 
     ask "Copy .bash_functions"
     if [ "$RESPONSE" = true ]; then
-        cp ./files/bash/functions/.bash_functions ~/
+        cp ./files/bash/.bash_functions ~/
     fi
 
     ask "Initialize crontab"
     if [ "$RESPONSE" = true ]; then
-        crontab ./files/crontab/crontab
+        crontab ./files/shell/crontab
     fi
 
     echo -e "Sourcing .bash_profile\n"

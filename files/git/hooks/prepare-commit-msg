@@ -1,0 +1,29 @@
+#!/bin/sh
+#
+# Adapted from original source: https://bitbucket.org/snippets/atlassian/qedp7d
+# Docs: https://git-scm.com/docs/githooks
+
+# git prepare-commit-msg hook for automatically prepending an issue key
+# from the start of the current branch name to commit messages.
+
+COMMIT_MSG_FILE=$1 # $1 is the file name containing log message
+COMMIT_SOURCE=$2 # $2 is the commit message source (message | template | squash | commit)
+SHA1=$3 # $3 is the commit SHA-1
+
+# Check a commit ammend
+if [ $COMMIT_SOURCE = "merge" ] || [ $COMMIT_SOURCE = "commit" ]; then
+    exit
+fi
+
+# Ex.) feature/TICKET-1234
+# - ISSUE_KEY = "TICKET-1234"
+ISSUE_KEY=`git branch | grep -o "\* \(.*/\)*[A-Z]\{2,\}-[0-9]\+" | grep -o "[A-Z]\{2,\}-[0-9]\+"`
+
+# If no issue key in branch, use the default message
+if [ -z $ISSUE_KEY ]; then
+    exit
+fi
+
+# Issue key matched from branch prefix
+# Prepend ticket ID to commit message
+sed -i -e "1s/^/$ISSUE_KEY: /" $COMMIT_MSG_FILE
