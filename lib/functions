@@ -132,6 +132,12 @@ cleanUp() {
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Does Command Exist?
+commandExists() {
+	command -v "$1" >/dev/null 2>&1 || message error "$1 is required but it's not installed." >&2; false;
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Configure Git
 configureGit() {
     subsection "Git"
