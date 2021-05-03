@@ -5,4 +5,5 @@ bunyan
 chalk
 eslint
 npm-check-updates
+serve
 tslint
