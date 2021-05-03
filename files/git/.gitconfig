@@ -1,0 +1,2 @@
+[alias]
+l = log --pretty=short -n 50 --graph --abbrev-commit
