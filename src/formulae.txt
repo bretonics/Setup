@@ -23,6 +23,7 @@ pandoc
 python3
 readline
 rename
+rust
 screenresolution
 speedtest-cli
 ssh-copy-id
