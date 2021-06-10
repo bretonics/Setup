@@ -1,7 +1,7 @@
 # Setup
 
 [![GitHub version](https://badge.fury.io/gh/bretonics%2Fsetup.svg)](http://badge.fury.io/gh/bretonics%2Fsetup)
-![License](https://img.shields.io/github/license/bretonics/setup)
+[![MIT License](https://img.shields.io/badge/License-MIT-red.svg)](https://bretonics.mit-license.org/)
 
 [![GitHub Issues](https://img.shields.io/github/issues/bretonics/setup)](https://GitHub.com/bretonics/setup/issues/)
 [![GitHub Pull-Requests](https://img.shields.io/github/issues-pr/bretonics/setup.svg)](https://GitHub.com/bretonics/setup/pull/)

@@ -4,6 +4,7 @@
 #
 #   CAPITAN:        Andrés Bretón, dev@andresbreton.me
 #   REPO:           https://github.com/bretonics/Setup
+#   LICENSE:        MIT (https://bretonics.mit-license.org/)
 #   FILE:           setup
 #   USAGE:          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup)"
 #
