@@ -330,6 +330,9 @@ installHomebrew() {
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     addHomebrewPath
 
+    # Automatically run cleanup every 7 days
+    brew autoupdate start 604800 --cleanup
+
     message "DONE installing Homebrew"
     sleep 2
 }
