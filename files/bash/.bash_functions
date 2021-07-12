@@ -12,6 +12,10 @@ get-git-branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
+drpx-ignore() {
+    xattr -w com.dropbox.ignored 1 $@
+}
+
 #-------------------------------------------------------------------------------
 # QSUB
 submit_cr() {
