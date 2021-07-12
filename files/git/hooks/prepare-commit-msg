@@ -2,7 +2,7 @@
 #
 # Adapted from original source: https://bitbucket.org/snippets/atlassian/qedp7d
 # Docs: https://git-scm.com/docs/githooks
-
+#
 # git prepare-commit-msg hook for automatically prepending an issue key
 # from the start of the current branch name to commit messages.
 
@@ -10,7 +10,7 @@ COMMIT_MSG_FILE=$1 # $1 is the file name containing log message
 COMMIT_SOURCE=$2 # $2 is the commit message source (message | template | squash | commit)
 SHA1=$3 # $3 is the commit SHA-1
 
-# Check a commit ammend
+# Check a commit amend
 if [ $COMMIT_SOURCE = "merge" ] || [ $COMMIT_SOURCE = "commit" ]; then
     exit
 fi
