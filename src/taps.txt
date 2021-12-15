@@ -1,5 +1,6 @@
 brewsci/bio
 brewsci/science
+homebrew/autoupdate
 homebrew/bundle
 homebrew/cask
 homebrew/cask-fonts
