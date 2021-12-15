@@ -5,23 +5,29 @@
 #   CAPITAN:        Andrés Bretón, dev@andresbreton.me
 #   REPO:           https://github.com/bretonics/Setup
 #   LICENSE:        MIT (https://bretonics.mit-license.org/)
-#   FILE:           setup
+#   FILE:           setup.sh
 #   USAGE:          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup)"
 #
-#       Running the setup without any options below will run a FULL setup by default. Use the following to accommodate your needs.
+#       Running the setup without any options below will run a MAIN setup by default. Use the following to accommodate your needs.
 #
 #       Options:
-#           -F                      Full install setup (Defaults: -s=true)
+#           -B                      Sync backups from latest Time Machine backup
+#           -D                      Use defaults (skip confirmation when applying secondary settings)
 #           -E                      Essentials only installations
-#           -i [full|essentials]    More explicit install type declaration
+#           -F                      Run full main install with defaults (Sets -B, -D, -S, and -s)
+#           -M                      Main install setup (-s=true)
+#           -S                      Set Mac setting system preference defaults (Default: false)
+#           -i [main|essentials]    Explicit install type declaration, i.e. -M or -E)
+#           -m                      Run additional specified mode installation
 #           -s                      Run secondary installation (Default: false)
 #           -h                      Prints this usage message
+
 #
 #       Most likely you will want to pass your own Brewfile as followed:
-#       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup)" "" ~/absolute/path/to/Brewfile
+#       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup.sh)" "" ~/absolute/path/to/Brewfile
 #
 #       You can also pass any of the available options:
-#       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup)" "" -s
+#       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup.sh)" "" -s
 
 #       Alternatively, you can download also download the repo (https://github.com/bretonics/Setup/archive/master.zip) and
 #       customize the setup to your specifications. See https://github.com/bretonics/Setup#customizable-setup
