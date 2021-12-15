@@ -1,10 +1,25 @@
+#===============================================================================================
+# SHELL ENHANCEMENTS
+
 # Oh My Zsh Installation
 if [ -d "/Users/${USER}/.oh-my-zsh" ]; then
     source "/Users/${USER}/.omzsh"
+    unset LESS
 fi
 
-# Zsh Completions
+# Completions
 autoload -Uz compinit && compinit
 
+# Aliases
+source ~/.alias
+
+# Source Enhancements: suggestions, highlighting, etc...
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+#===============================================================================================
+# PROMPT
+autoload -U promptinit && promptinit
+
 # Starship
-if [ $TERM_PROGRAM != 'vscode' ]; then eval "$(starship init zsh)"; fi
+eval "$(starship init zsh)"
