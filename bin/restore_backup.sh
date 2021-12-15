@@ -21,6 +21,7 @@ BACKUP_PATH=$(echo ${BACKUP_PATH} | sed -E 's/\/?$//')
 loggers
 
 # Copy over all content
+section "Attempting to sync backups from latest Time Machine: ${BACKUP_DIR}"
 for DIR in ${DIRECTORIES[@]}; do
     BACKUP_DIR="${BACKUP_PATH}/${DIR}/"
     subsection "Syncing Backup Directory '${DIR}'"
