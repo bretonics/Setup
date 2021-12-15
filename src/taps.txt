@@ -2,6 +2,7 @@ brewsci/bio
 brewsci/science
 homebrew/autoupdate
 homebrew/bundle
+heroku/brew
 homebrew/cask
 homebrew/cask-fonts
 homebrew/cask-versions

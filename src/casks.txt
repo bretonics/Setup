@@ -10,6 +10,7 @@ flux
 fork
 gitify
 google-chrome
+lens
 nordvpn
 postman
 spotify
