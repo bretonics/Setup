@@ -21,9 +21,9 @@ handle_arguments() {
 
 # Bash Builtin Getopts
 handle_getopts() {
-    OPTIONS=":DEFhi:s"
+    OPTIONS=":BDEFhi:m:s"
 
-    # No Arguments Runs FULL Install
+    # No Arguments Runs MAIN Install
     if [ $# -eq 0 ]; then
         RUN_SECONDARY=true
     fi
@@ -31,21 +31,33 @@ handle_getopts() {
     # Handle Options
     while getopts ${OPTIONS} option; do
         case "${option}" in
+        B)
+            RESTORE_BACKUP=true
+            ;;
         D)
             DEFAULTS=true
             ;;
-        E)
-            SETUP_MODE="ESSENTIALS"
-            ;;
         F)
-            # Global Default: SETUP_MODE="FULL"
+            DEFAULTS=true
+            RESTORE_BACKUP=true
+            SET_DEFAULT_SYSTEM_PREFERENCES=true
+            SETUP_TYPE="MAIN"
+            ;;
+        E)
+            SETUP_TYPE="ESSENTIALS"
+            ;;
+        M)
+            # Global Default: SETUP_TYPE="MAIN"
             RUN_SECONDARY=true
             ;;
+        P)
+            SET_DEFAULT_SYSTEM_PREFERENCES=true
+            ;;
         i)
-            SETUP_MODE=$(echo ${OPTARG} | tr [:lower:] [:upper:])
-            case "${SETUP_MODE}" in
-                FULL)
-                    # Global Default: SETUP_MODE="FULL"
+            SETUP_TYPE=$(echo ${OPTARG} | tr [:lower:] [:upper:])
+            case "${SETUP_TYPE}" in
+                MAIN)
+                    # Global Default: SETUP_TYPE="MAIN"
                     RUN_SECONDARY=true
                     ;;
                 ESSENTIALS)
@@ -55,6 +67,15 @@ handle_getopts() {
                     usage
                     ;;
             esac
+            ;;
+        m)
+            # If additional mode indicated, set globals
+            MODE=$(echo ${OPTARG} | tr [:upper:] [:lower:])
+            if [ -n "${MODE}" ]; then
+                MODE_SOURCE_PATH="./src/mode/${MODE}/"
+                MODE_INSTALL_FILE="${MODE_SOURCE_PATH}install.sh"
+                MODE_BREW_FILE="${MODE_SOURCE_PATH}Brewfile"
+            fi
             ;;
         s)
             RUN_SECONDARY=true
@@ -86,12 +107,16 @@ print_option() {
 # Usage Message
 usage() {
     echo -e "\nUsage: $(basename "$0") [Options] Brewfile\n"
-    echo -e "\nRunning install without any options below will run a FULL setup by default.\n"
+    echo -e "\nRunning install without any options below will run a MAIN setup by default.\n"
     echo -e "\nOptions:\n"
-    print_option "-D" "Use defaults (does not ask to apply secondary settings"
+    print_option "-B" "Sync backups from latest Time Machine backup"
+    print_option "-D" "Use defaults (skip confirmation when applying secondary settings)"
     print_option "-E" "Essentials only installations"
-    print_option "-F" "Full install setup (Defaults: -s=true)"
-    print_option "-i [full|essentials]" "More explicit install type declaration"
+    print_option "-F" "Run full main install with defaults (Sets -B, -D, -S, and -s)"
+    print_option "-M" "Main install setup (-s=true)"
+    print_option "-S" "Set Mac setting system preference defaults (Default: false)"
+    print_option "-i [main|essentials]" "Explicit install type declaration, i.e. -M or -E)"
+    print_option "-m <mode>" "Run additional specified mode installation"
     print_option "-s" "Run secondary installation (Default: false)"
     print_option "-h" "Prints this usage message"
     echo -e "\nArguments:\n"

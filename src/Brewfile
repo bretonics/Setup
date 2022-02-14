@@ -10,81 +10,91 @@ tap "homebrew/core"
 tap "homebrew/services"
 tap "mongodb/brew"
 brew "adns"
+brew "webp"
 brew "gdbm"
+brew "xz"
+brew "python@3.10"
 brew "asciinema"
 brew "autoconf"
 brew "automake"
+brew "python@3.9"
 brew "awscli"
 brew "bash-completion"
-brew "derailed/k9s/k9s"
+brew "fontconfig"
+brew "glib"
+brew "cmatrix"
 brew "dos2unix"
 brew "doxygen"
-brew "fontconfig"
 brew "gd"
 brew "gengetopt"
 brew "gh"
 brew "git-flow-avh"
 brew "git-lfs"
 brew "glances"
-brew "glib"
+brew "unbound"
+brew "gnutls"
 brew "gnupg"
-brew "gpg"
-brew "heroku"
-brew "helm"
-brew "help2man"
 brew "hdf5"
+brew "helm"
 brew "htop"
 brew "htslib"
 brew "hugo"
+brew "libheif"
 brew "imagemagick"
+brew "node"
+brew "joplin-cli"
+brew "jq"
+brew "k9s"
 brew "krew"
-brew "kubectl"
 brew "kubectx"
 brew "kumactl"
-brew "libheif"
+brew "libssh2"
 brew "mas"
 brew "minikube"
-brew "mongodb/brew/mongodb-community"
+brew "screenresolution"
 brew "neofetch"
-brew "node"
-brew "openssl"
+brew "nghttp2"
+brew "node@14"
 brew "pandoc"
+brew "podman"
 brew "pulumi"
 brew "pure"
-brew "python"
-brew "readline"
+brew "python@3.8"
 brew "rename"
 brew "rust"
-brew "screenfetch"
-brew "screenresolution"
 brew "speedtest-cli"
 brew "ssh-copy-id"
 brew "starship"
 brew "tree"
-brew "unison"
-brew "webp"
 brew "wget"
 brew "wtfutil"
-brew "xz"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
+brew "heroku/brew/heroku"
+brew "mongodb/brew/mongodb-community"
 cask "alfred"
 cask "amazon-music"
 cask "brave-browser"
-cask "cloudflare-warp"
 cask "datagrip"
 cask "devdocs"
+cask "discord"
 cask "docker"
 cask "dropbox"
+cask "fetch"
 cask "flux"
 cask "font-fira-code-nerd-font"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-powerline-symbols"
 cask "fork"
+cask "gimp"
 cask "github"
 cask "gitify"
 cask "google-chrome"
+cask "joplin"
 cask "lens"
 cask "mactex"
 cask "nordvpn"
+cask "notion"
 cask "postman"
 cask "qlcolorcode"
 cask "qlimagesize"
@@ -97,76 +107,39 @@ cask "raindropio"
 cask "spotify"
 cask "visual-studio-code"
 mas "1Password 7", id: 1333542190
-mas "1000 OpenType Fonts", id: 664501556
 mas "Amphetamine", id: 937984704
 mas "Annotate", id: 918207447
-mas "Better Rename 9", id: 414209656
-mas "Big Mean Folder Machine 2", id: 402440280
-mas "Calendar 366 II", id: 1265895169
-mas "Chronicle Pro", id: 1280542517
 mas "CloudMounter", id: 1130254674
 mas "Commander One PRO", id: 1035237815
-mas "Deliveries", id: 924726344
-mas "DesiGN Certificates Templates", id: 1148881950
-mas "Diagrammix", id: 418534796
 mas "DuckDuckGo Privacy Essentials", id: 1482920575
 mas "Due", id: 524373870
 mas "Edison Mail", id: 1489591003
-mas "EverFont", id: 586170998
 mas "Evernote", id: 406056744
 mas "Evernote Web Clipper", id: 1481669779
-mas "FilePane", id: 847515307
-mas "ForkLift", id: 412448059
-mas "Free Fonts", id: 647697434
-mas "Free Fonts - Christmas Collection", id: 760246983
 mas "Gelatin", id: 468374949
-mas "Graphics", id: 895042945
-mas "Halloween Fonts", id: 700757313
+mas "Hidden Bar", id: 1452453066
 mas "Home Assistant", id: 1099568401
-mas "Infographics Lab for Keynote", id: 577411683
-mas "Keynote", id: 409183694
-mas "LiveQuartz", id: 402387626
-mas "Logo Lab for iWork - Templates", id: 1218759300
-mas "Logo Pop Free", id: 919007298
-mas "MacFonts - Free Fonts Collection", id: 604108855
+mas "Mactracker", id: 430255202
 mas "Magnet", id: 441258766
-mas "Markdown Pro", id: 465965038
-mas "Marked", id: 448925439
-mas "MenuMate", id: 518594271
-mas "Mini Design Bundle", id: 642385433
+mas "Meeter", id: 1510445899
 mas "Monity", id: 915542151
-mas "Notability", id: 736189492
-mas "NuggitExpress", id: 436938594
-mas "Numbers", id: 409203825
-mas "Ordinatore Pro", id: 508503680
-mas "Overlays!", id: 868499627
-mas "Pages", id: 409201541
+mas "Notion Web Clipper", id: 1559269364
 mas "PDF Toolkit", id: 405219581
 mas "PDFGenius", id: 522090209
-mas "Photos Duplicate Cleaner", id: 592704001
 mas "PopClip", id: 445189367
 mas "PopHub", id: 928494006
-mas "Premium Fonts", id: 642142422
 mas "PullRequestMenu", id: 919797974
-mas "Resume & CV Lab - Templates", id: 1218255329
+mas "Raindrop.io for Safari", id: 957810159
 mas "RunCat", id: 1429033973
 mas "ScreenBrush", id: 1233965871
 mas "ScreenFloat", id: 414528154
+mas "Session Pal", id: 1515213004
 mas "Sip", id: 507257563
-mas "skEditExpress", id: 414950773
+mas "Slack", id: 803453959
 mas "Snap", id: 418073146
-mas "SQLPro for SQLite", id: 586001240
-mas "Stock Icons - Cliparts by GN", id: 479510018
-mas "Super Vectorizer", id: 704139979
+mas "Spark", id: 1176895641
 mas "Tab Space", id: 1473726602
-mas "Templates for Photoshop by GN", id: 1204722354
-mas "The Duplicate Finder", id: 654667344
 mas "TinyNotepad", id: 1449415412
-mas "Wallpaper Wizard", id: 410801088
+mas "Twitter", id: 1482454543
 mas "Weather for Status Bar", id: 1448031908
-mas "WiFi Explorer", id: 494803304
-mas "Will It Fit", id: 521680466
-mas "Window Tidy", id: 456609775
 mas "Yoink", id: 457622435
-mas "Yummy FTP Pro", id: 492068728
-mas "Zone", id: 415832062

@@ -22,36 +22,33 @@ section "Homebrew"
 installHomebrew
 
 #-----------------------------------------------------------------------------------------------
-# FULL INSTALL
+# MAIN INSTALL (DEFAULT)
 # - Install all Formulae, Taps, and Mac Apps specified by $BREW_FILE 
-if [ "$SETUP_MODE" = "FULL" ]; then
-    section "Installing Everything In '${BREW_FILE}'"
+if [ "$SETUP_TYPE" = "MAIN" ]; then
+    section "Main Installing: '${BREW_FILE}'"
     brew bundle --file ${BREW_FILE}
 
 #-----------------------------------------------------------------------------------------------
 # ESSENTIALS INSTALL
-# - Homebrew Taps specified by $BREW_TAPS_FILE
-# - Homebrew Formulae specified by $BREW_FORMULAE_FILE
-# - Homebrew Casks specified by $BREW_CASKS_FILE
-# - Mac App Store Applications specified by $MAC_APPS_FILE
-elif [ "$SETUP_MODE" = "ESSENTIALS" ]; then
-    section "Installing Homebrew Taps, Formulae, And Casks"
-    addTaps
-    installFormulae
-    installCasks
-    installApps
+# - Install all Formulae, Taps, and Mac Apps specified by $ESSENTIALS_BREW_FILE 
+elif [ "$SETUP_TYPE" = "ESSENTIALS" ]; then
+    section "Essentials Installation: '${ESSENTIALS_BREW_FILE}'"
+    . "${ESSENTIALS_INSTALL_FILE}"
 #-----------------------------------------------------------------------------------------------
-# ERROR: INSTALL MODE NOT SUPPORTED
+# ERROR: INSTALL TYPE NOT SUPPORTED
 else
-    msg error "Something is terribly wrong. ${SETUP_MODE} should have never passed."
+    msg error "Something is terribly wrong. ${SETUP_TYPE} should have never passed."
     exit 1
 fi
 
 #-----------------------------------------------------------------------------------------------
-# INSTALL CORE RESOURCES
-section "Installing Core Resources"
-installNodePackages
-installVSCodeExt
+# MODE INSTALL
+# - MODE_SOURCE_PATH is a 'MODE' directory name under ./src/mode/MODE
+# - MODE is the argument passed to -m option, e.g. 'dev'
+if [ -d "${MODE_SOURCE_PATH}" ] && [ -f "${MODE_INSTALL_FILE}" ]; then
+    section "${MODE} Installation: '${MODE_BREW_FILE}'"
+    . "${MODE_INSTALL_FILE}"
+fi
 
 #-----------------------------------------------------------------------------------------------
 # CLEANUP
@@ -63,10 +60,14 @@ cleanUp
 #===============================================================================================
 footer "Primary"
 
+#===============================================================================================
+# ADDITIONAL SETUP
+#===============================================================================================
+
 #-----------------------------------------------------------------------------------------------
 # SECONDARY INSTALL
 if [ $RUN_SECONDARY = true ]; then 
     section "Running Secondary Install"
     # Execute secondary script in the current shell without forking a sub shell
-    . ./secondary.sh
+    . "${SECONDARY_FILE}"
 fi

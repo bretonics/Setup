@@ -1,0 +1,63 @@
+tap "homebrew/autoupdate"
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
+tap "homebrew/core"
+tap "homebrew/services"
+tap "homebrew/versions"
+brew "glances"
+brew "gpg"
+brew "help2man"
+brew "htop"
+brew "imagemagick"
+brew "mas"
+brew "neofetch"
+brew "openssl"
+brew "pandoc"
+brew "readline"
+brew "rename"
+brew "screenresolution"
+brew "speedtest-cli"
+brew "ssh-copy-id"
+brew "tree"
+brew "wget"
+brew "xz"
+cask "alfred"
+cask "amazon-music"
+cask "brave-browser"
+cask "cloudflare-warp"
+cask "dropbox"
+cask "flux"
+cask "google-chrome"
+cask "nordvpn"
+cask "spotify"
+cask "zoom"
+mas "1Password 7", id: 1333542190
+mas "Amphetamine", id: 937984704
+mas "Annotate", id: 918207447
+mas "Blurred", id: 1497527363
+mas "Calendar 366 II", id: 1265895169
+mas "CloudMounter", id: 1130254674
+mas "Deliveries", id: 290986013
+mas "Due", id: 524373870
+mas "Evernote", id: 406056744
+mas "Evernote Web Clipper", id: 1481669779
+mas "Gelatin", id: 468374949
+mas "Home Assistant", id: 1099568401
+mas "iStat Menus", id: 1319778037
+mas "Magnet", id: 441258766
+mas "Meeter", id: 1510445899
+mas "Monity", id: 915542151
+mas "Overlays!", id: 868499627
+mas "PDF Toolkit", id: 405219581
+mas "PDFGenius", id: 522090209
+mas "PopClip", id: 445189367
+mas "RunCat", id: 1429033973
+mas "ScreenBrush", id: 1233965871
+mas "ScreenFloat", id: 414528154
+mas "Slack", id: 803453959
+mas "Snap", id: 418073146
+mas "Tot", id: 1491071483
+mas "Weather for Status Bar", id: 1448031908
+mas "Yoink", id: 457622435

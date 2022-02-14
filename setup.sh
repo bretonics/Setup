@@ -2,35 +2,36 @@
 
 # ===============================================================================================
 #
-#   CAPITAN:        Andrés Bretón, dev@andresbreton.me
-#   REPO:           https://github.com/bretonics/Setup
-#   LICENSE:        MIT (https://bretonics.mit-license.org/)
-#   FILE:           setup.sh
-#   USAGE:          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup)"
+#`  CAPITAN:        Andrés Bretón, dev@andresbreton.me
+#`  REPO:           https://github.com/bretonics/Setup
+#`  LICENSE:        MIT (https://bretonics.mit-license.org/)
+#`  FILE:           setup.sh
+#`  USAGE:          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup)"
 #
-#       Running the setup without any options below will run a MAIN setup by default. Use the following to accommodate your needs.
+# ===============================================================================================
+#   Running the setup without any options below will run a MAIN setup by default. Use the following to accommodate your needs.
 #
-#       Options:
-#           -B                      Sync backups from latest Time Machine backup
-#           -D                      Use defaults (skip confirmation when applying secondary settings)
-#           -E                      Essentials only installations
-#           -F                      Run full main install with defaults (Sets -B, -D, -S, and -s)
-#           -M                      Main install setup (-s=true)
-#           -S                      Set Mac setting system preference defaults (Default: false)
-#           -i [main|essentials]    Explicit install type declaration, i.e. -M or -E)
-#           -m                      Run additional specified mode installation
-#           -s                      Run secondary installation (Default: false)
-#           -h                      Prints this usage message
+#   Options:
+#
+#       -B                      Sync backups from latest Time Machine backup
+#       -D                      Use defaults (skip confirmation when applying secondary settings)
+#       -E                      Essentials only installations
+#       -F                      Run full main install with defaults (Sets -B, -D, -S, and -s)
+#       -M                      Main install setup (-s=true)
+#       -S                      Set Mac setting system preference defaults (Default: false)
+#       -i [main|essentials]    Explicit install type declaration, i.e. -M or -E)
+#       -m <mode>               Run additional specified mode installation
+#       -s                      Run secondary installation (Default: false)
+#       -h                      Prints this usage message
+#
+#   Most likely you will want to pass your own Brewfile as followed:
+#   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup.sh)" "" ~/absolute/path/to/Brewfile
+#
+#   You can also pass any of the available options:
+#   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup.sh)" "" -s
 
-#
-#       Most likely you will want to pass your own Brewfile as followed:
-#       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup.sh)" "" ~/absolute/path/to/Brewfile
-#
-#       You can also pass any of the available options:
-#       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup.sh)" "" -s
-
-#       Alternatively, you can download also download the repo (https://github.com/bretonics/Setup/archive/master.zip) and
-#       customize the setup to your specifications. See https://github.com/bretonics/Setup#customizable-setup
+#   Alternatively, you can download also download the repo (https://github.com/bretonics/Setup/archive/master.zip) and
+#   customize the setup to your specifications. See https://github.com/bretonics/Setup#customizable-setup
 # ===============================================================================================
 
 # Download latest release and start setup process

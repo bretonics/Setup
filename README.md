@@ -20,17 +20,9 @@
 
 ## Automate Mac Setup
 
-Get most of the tedious configurations, applications, and other settings automatically setup on a clean macOS install. New Mac? Clean macOS install? Run Setup and automate it all.
+New Mac? Clean macOS install? Run Setup and automate it all!
 
-``` bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup)"
-```
-
-> Cancel the auto run with `Ctrl-C` if you want to modify [apps.txt](https://github.com/bretonics/Setup/blob/master/src/apps.txt), [formulae.txt](https://github.com/bretonics/Setup/blob/master/src/formulae.txt), [casks.txt](https://github.com/bretonics/Setup/blob/master/src/casks.txt), and/or [Brewfile](https://github.com/bretonics/Setup/blob/master/src/Brewfile).
->
-> See [Customizable Setup](#customizable-setup) for a better way to utilize a custom Setup.
-
-<br>
+Get most of the tedious configurations, application installs, and other settings automatically configured on your Mac.
 
 - Installs [Homebrew](https://brew.sh/)
 - Installs Xcode Developer Tools
@@ -38,28 +30,70 @@ Get most of the tedious configurations, applications, and other settings automat
 - Sets up environment (executables/tools (git, npm, etc), shells (defaults, prompts, etc), CLIs, and more)
 - Additional [environment configurations](https://github.com/bretonics/Setup/blob/master/bin/settings_defaults.sh)
 - Updates macOS
+  
+Start with a [Customizable Setup](#customizable-setup) run.
+
+---
+
+``` bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup.sh)"
+```
+
+> Cancel the auto run with `Ctrl-C` if you want to modify [apps.txt](https://github.com/bretonics/Setup/blob/master/src/apps.txt), [formulae.txt](https://github.com/bretonics/Setup/blob/master/src/formulae.txt), [casks.txt](https://github.com/bretonics/Setup/blob/master/src/casks.txt), and/or [Brewfile](https://github.com/bretonics/Setup/blob/master/src/Brewfile).
+>
+> See [Customizable Setup](#customizable-setup) for a better way to utilize a custom Setup.
+
+## Installation Types
+
+### Main
+
+This install includes the entire app, formulae, and cask collection, including those in the [essentials](#essentials) install type and all [modes](#modes). This is more for something like a Mac mini.
+
+See the default [Brewfile](https://github.com/bretonics/Setup/tree/master/src/Brewfile).
+
+### Essentials
+
+This install includes a smaller subset of what I deem essential, must haves. It's intended more for a Macbook Pro where you don't need everything under the sun.
+
+See the default [Brewfile](https://github.com/bretonics/Setup/tree/master/src/essentials/Brewfile).
+
+### Secondary
+
+Secondary setup modifies personalized Mac settings, and is run after the initial install. It requires more attention as it may ask for credential or information input. It runs by default if running 'main' type. You must pass the `-s` option otherwise, or you can always run it directly `bash ./secondary.sh`.
+
+## Modes
+
+Directories in [./src/mode](https://github.com/bretonics/Setup/tree/master/src) separate other installation modes that can be run in addition to the 'main' or 'essentials' install chosen.
+
+Each directory keeps track of individual programs (Apps, Formulae, and Casks) to install for the specific mode, via their own `Brewfile`, and includes an `install.sh` for all logic pertaining to the mode.
+
+Available modes:
+
+- dev
+- fun
 
 Options
 ---
 
-The [Brewfile](https://github.com/bretonics/Setup/tree/master/src/Brewfile) contains everything, and is used in a `FULL` setup mode (default).
-
-Files in [./src](https://github.com/bretonics/Setup/tree/master/src) keep track of individual programs (Apps, Formulae, and Casks) to install.
-
 ``` bash
 $ ./install.sh -h
 
-Usage: install [Options] Brewfile
+Usage: install.sh [Options] Brewfile
 
 
-Running install without any options below will run a FULL setup by default.
+Running install without any options below will run a MAIN setup by default.
 
 
 Options:
 
-    -F                      Full install setup (Defaults: -s=true)
+    -B                      Sync backups from latest Time Machine backup
+    -D                      Use defaults (skip confirmation when applying secondary settings)
     -E                      Essentials only installations
-    -i [full|essentials]    More explicit install type declaration
+    -F                      Run full main install with defaults (Sets -B, -D, -P, and -s)
+    -M                      Main install type (-s=true)
+    -P                      Set Mac setting system preference defaults (Default: false)
+    -i [main|essentials]    Explicit install type declaration, i.e. -M or -E)
+    -m <mode>               Run additional specified mode installation (in ./src/mode)
     -s                      Run secondary installation (Default: false)
     -h                      Prints this usage message
 
@@ -68,25 +102,18 @@ Arguments:
     Brewfile                Path to Brew bundle file (Default: './src/Brewfile')
 ```
 
-Secondary
----
-
-Secondary setup modifies personalized Mac settings, and is run after initial install, `bash secondary.sh`.
-
----
-
 ## Customizable Setup
 
-I suggest using your own Brewfile. If you don't have one, see [Useful Commands](#useful-commands) to create one, and pass this to the program as followed:
+I suggest using your own Brewfile. If you don't have one, see [Useful Commands](#useful-commands) to create one before running Setup, and pass this to the program as followed:
 
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup)" "" ~/absolute/path/to/Brewfile
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup.sh)" "" ~/absolute/path/to/Brewfile
 ```
 
 You can also pass any of the available [options](#options):
 
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup)" "" -E
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup.sh)" "" -E
 ```
 
 ### Manual
@@ -97,15 +124,15 @@ You probably want to do this --unless you really like everything configured as I
 
 **Brewfile**
 
-Modify the `./src/Brewfile` and run `bash install`, or do `bash install /path/to/Brewfile`.
+Modify the `./src/Brewfile` and run `bash install`, or pass your own: `bash install /absolute/path/to/my/Brewfile`.
 
 **Personalizations**
 
 1. Modify files containing list of apps and their respective Mac App Store product identifiers, formulae, and/or casks that you want installed in the [src](https://github.com/bretonics/Setup/tree/master/src) directory.
 
-2. Run `bash install.sh`.
+2. Run `bash install.sh -E`
 
-3. Optional: `bash secondary.sh`.
+3. Optional: `bash secondary.sh`
 
 ---
 
@@ -117,4 +144,34 @@ mas list | sort -fk 2
 
 # Create Brewfile
 brew bundle dump
+```
+
+## Contribute
+
+Have a particular set of configurations to add? Feel free to create a PR!
+
+If there's a particular set of commands, applications, or utilities you find useful, add an additional install mode (-m myMode).
+
+- Create a directory with the mode's name under `src`, i.e. `src/mymode` (lowercase)  
+- The entrypoint is set to $MODE_INSTALL_FILE
+- A mode's entrypoint should be named `install.sh`
+- `install.sh` should be located in the named mode's directory, e.g. `src/mymode`
+- A mode's logic should be called from this entrypoint
+- Any and all files related to a mode are to be contained in the mode's root directory, i.e. `src/mymode`
+- You can use a `Brewfile` to organize and handle all resource installations (called from a mode's `install.sh`), or add individual text files for each set of apps, formulae, and casks (1 entry per line) and pass the file reference to these functions:
+  - installApps
+  - installFormulae
+  - installCasks
+- It's encourage to mimic the root directory's structure, but it's **not** required
+
+```
+├── src/mymode
+       ├── Brewfile
+       ├── apps.txt
+       ├── casks.txt
+       ├── formulae.txt
+       ├── install.sh
+       ├── npm.txt
+       ├── taps.txt
+       └── vscode.txt
 ```

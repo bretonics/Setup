@@ -6,13 +6,26 @@
 
 # General
 ADMIN=$(dsmemberutil checkmembership -U $(whoami) -G admin | grep "not")
-DEFAULTS=true
+DEFAULTS=false
 ICLOUD_HOME_PATH="~/Library/Mobile\ Documents/com~apple~CloudDocs"
+RESTORE_BACKUP=false
 RUN_SECONDARY=false
-SETUP_MODE="FULL"  # DEFAULT: Full setup - installs everything in Brewfile and secondary.sh
-USER_NAME=$(id -F) # full user's name, e.g. Andres Breton
+SECONDARY_FILE="./secondary.sh"
+SET_DEFAULT_SYSTEM_PREFERENCES=false
+SETUP_TYPE="MAIN"  # DEFAULT: Main setup - installs everything in Brewfile and secondary.sh
+USER_NAME=$(id -F) # Complete user's name, e.g. Andrés Bretón
 
-# Shell
+# Setup File Paths
+SOURCE_PATH="./src/"
+BREW_CASKS_FILE="${SOURCE_PATH}casks.txt"
+BREW_FILE="${SOURCE_PATH}Brewfile"
+BREW_FORMULAE_FILE="${SOURCE_PATH}formulae.txt"
+BREW_TAPS_FILE="${SOURCE_PATH}taps.txt"
+ESSENTIALS_BREW_FILE="${SOURCE_PATH}essentials/Brewfile"
+ESSENTIALS_INSTALL_FILE="${SOURCE_PATH}essentials/install.sh"
+MAC_APPS_FILE="${SOURCE_PATH}apps.txt"
+
+# Shell Defaults
 CURRENT_SHELL=$(echo $0)
 DEFAULT_SHELL=$(echo ${SHELL##*/})
 BASH_PROFILE_FILE=".bash_profile"
@@ -24,6 +37,7 @@ BASH_PROFILE_PATH="${HOME}/${BASH_PROFILE_FILE}"
 BASH_RC_PATH="${HOME}/${BASH_RC_FILE}"
 ZSH_PROFILE_PATH="${HOME}/${ZSH_PROFILE_FILE}"
 ZSH_RC_PATH="${HOME}/${ZSH_RC_FILE}"
+SHELL_PROFILE_FILE="${ZSH_PROFILE_PATH}"
 
 # macOS Version
 IS_APPLE_CPU=$(sysctl -n machdep.cpu.brand_string | grep -i "apple") # Apple M1 Hardware = "Apple processor"
@@ -46,17 +60,9 @@ else
     OS_UNSUPPORTED=true
 fi
 
-SHELL_PROFILE_FILE="${ZSH_PROFILE_PATH}"
-SHELL_RC_FILE="${HOME}/.${DEFAULT_SHELL}rc" # determined by macOS version
-
-# Setup File Paths
-BREW_CASKS_FILE="./src/casks.txt"
-BREW_FILE="./src/Brewfile"
-BREW_FORMULAE_FILE="./src/formulae.txt"
-BREW_TAPS_FILE="./src/taps.txt"
-MAC_APPS_FILE="./src/apps.txt"
-NPM_PACKAGES_FILE="./src/npm.txt"
-VS_CODE_EXTENSIONS_FILE="./src/vscode.txt"
+# Shell Defaults
+# ! Order is important - determined by macOS version above
+SHELL_RC_FILE="${HOME}/.${DEFAULT_SHELL}rc"
 
 # Setup Configuration Variables
 GITHUB_KEYS_URL="https://github.com/settings/keys"
