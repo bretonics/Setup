@@ -42,8 +42,8 @@ SHELL_PROFILE_FILE="${ZSH_PROFILE_PATH}"
 # macOS Version
 IS_APPLE_CPU=$(sysctl -n machdep.cpu.brand_string | grep -i "apple") # Apple M1 Hardware = "Apple processor"
 MAC_OS_VERSION=$(sw_vers -productVersion)
-OS_MAJOR_VERSION=$(echo $MAC_OS_VERSION | sed -E 's/([0-9]+)\.[0-9]+\.[0-9]+/\1/')
-OS_MINOR_VERSION=$(echo $MAC_OS_VERSION | sed -E 's/[0-9]+\.([0-9]+)\.[0-9]+/\1/')
+OS_MAJOR_VERSION=$(echo $MAC_OS_VERSION | sed -E 's/([0-9]+)\.([0-9]+)\.?([0-9]+)?/\1/')
+OS_MINOR_VERSION=$(echo $MAC_OS_VERSION | sed -E 's/([0-9]+)\.([0-9]+)\.?([0-9]+)?/\2/')
 if [ ${OS_MAJOR_VERSION} -ge 11 ]; then
     IS_BIG_SUR=true
 elif [ ${OS_MAJOR_VERSION} -eq 10 ]; then

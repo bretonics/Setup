@@ -317,12 +317,13 @@ installApps() {
 
     mas signin --dialog $(getAccountId)
 
-    for app in $(sed -E -n 's/^([0-9]+)(.*)/\1/p' ${1}); do
-    while read -r app
-        echo "Installing $app"
-        mas install $app
-        echo ""
-    done < ${1}
+    for app in $(sed -E -n 's/^([0-9]+)(.*)/\1/p' ${1:-}); do
+        while read -r app; do
+            echo "Installing $app"
+            mas install $app
+            echo ""
+        done < ${1}
+    done
 
     message "DONE installing Mac App Store apps"
     sleep 2
