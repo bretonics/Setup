@@ -23,7 +23,7 @@
 #       You can also pass any of the available options:
 #       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup)" "" -s
 
-#       Alternatively, you can download also download the repo (https://github.com/bretonics/Setup/archive/master.zip) and
+#       Alternatively, you can download also download the repo (https://github.com/bretonics/Setup/archive/main.zip) and
 #       customize the setup to your specifications. See https://github.com/bretonics/Setup#customizable-setup
 # ===============================================================================================
 

@@ -15,15 +15,15 @@
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup)"
 ```
 
-> Cancel the auto run with `Ctrl-C` if you want to modify [apps.txt](https://github.com/bretonics/Setup/blob/master/src/apps.txt), [formulae.txt](https://github.com/bretonics/Setup/blob/master/src/formulae.txt), [casks.txt](https://github.com/bretonics/Setup/blob/master/src/casks.txt), and/or [Brewfile](https://github.com/bretonics/Setup/blob/master/src/Brewfile).
+> Cancel the auto run with `Ctrl-C` if you want to modify [apps.txt](https://github.com/bretonics/Setup/blob/main/src/apps.txt), [formulae.txt](https://github.com/bretonics/Setup/blob/main/src/formulae.txt), [casks.txt](https://github.com/bretonics/Setup/blob/main/src/casks.txt), and/or [Brewfile](https://github.com/bretonics/Setup/blob/main/src/Brewfile).
 > See [Customizable Setup](#customizable-setup) for a better way to utilize a custom Setup.
 
 Options
 ---
 
-The [Brewfile](https://github.com/bretonics/Setup/tree/master/src/Brewfile) contains everything, and is used in a `FULL` setup mode (default).
+The [Brewfile](https://github.com/bretonics/Setup/tree/main/src/Brewfile) contains everything, and is used in a `FULL` setup mode (default).
 
-Files in [./src](https://github.com/bretonics/Setup/tree/master/src) keep track of individual programs (Apps, Formulae, and Casks) to install.
+Files in [./src](https://github.com/bretonics/Setup/tree/main/src) keep track of individual programs (Apps, Formulae, and Casks) to install.
 
 ``` bash
 $ ./install.sh -h
@@ -72,7 +72,7 @@ You can also pass any of the available [options](#options):
 
 **You probably want to do this...unless you really like everything configured as I do (we both know you don't)**.
 
-[Download the repo](https://github.com/bretonics/Setup/archive/master.zip) or [fork](https://github.com/bretonics/Setup) it to do a custom install and modify the following:
+[Download the repo](https://github.com/bretonics/Setup/archive/main.zip) or [fork](https://github.com/bretonics/Setup) it to do a custom install and modify the following:
 
 **Brewfile**
 
