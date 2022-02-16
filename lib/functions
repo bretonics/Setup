@@ -88,6 +88,9 @@ addZshCompletions() {
     echo "export FPATH=$FPATH:~/.zsh_completions/" >> ${SHELL_RC_FILE}
     echo "autoload -Uz compinit && compinit" >> ${SHELL_RC_FILE}
 
+    # Hugo
+    hugo completion zsh > /usr/local/share/zsh/site-functions/_hugo
+
     # TODO: Do we need more configs to setup autocomplete in Zsh?
     rm ~/.zcompdump # clean up
     source .zshrc
@@ -294,8 +297,9 @@ header() {
     echo "| PWD:       $(pwd)"
     echo "| PID:       $$"
     echo "|"
-    echo "| Running '${SETUP_MODE}' install..."
+    echo "| Running '${SETUP_TYPE}' install..."
     echo "|     - Brewfile: ${BREW_FILE}"
+    echo "|     - Mode: $(if [ -n "${MODE}" ]; then echo "${MODE}"; else echo "N/A"; fi)"
     echo "|     - Secondary: $(if [ ${RUN_SECONDARY} = "true" ]; then echo "Yes"; else echo "No"; fi)"
     echo "|"
     echo "================================================================================"
@@ -306,16 +310,19 @@ header() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs Mac App Store Applications
-# - List in $MAC_APPS_FILE
+# - $1 argument: path to file listing Mac apps
 # TODO: mojave install mas from tap for Mojave
 installApps() {
     subsection "Installing Apps From Mac App Store"
 
     mas signin --dialog $(getAccountId)
-    for app in $(sed -E -n 's/^([0-9]+)(.*)/\1/p' ${MAC_APPS_FILE}); do
-        echo "Installing $app"
-        mas install $app
-        echo ""
+
+    for app in $(sed -E -n 's/^([0-9]+)(.*)/\1/p' ${1:-}); do
+        while read -r app; do
+            echo "Installing $app"
+            mas install $app
+            echo ""
+        done < ${1}
     done
 
     message "DONE installing Mac App Store apps"
@@ -339,7 +346,7 @@ installHomebrew() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs Homebrew Casks
-# - List in $BREW_CASKS_FILE
+# - $1 argument: path to file listing Homebrew casks
 installCasks() {
     subsection "Installing Casks (3rd party apps)"
 
@@ -347,7 +354,7 @@ installCasks() {
         echo "Installing ${cask}"
         brew install ${cask}
         echo ""
-    done < $BREW_CASKS_FILE
+    done < ${1}
 
     message "DONE installing casks"
     sleep 2
@@ -355,7 +362,7 @@ installCasks() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs Homebrew Formulae
-# - List in $BREW_FORMULAE_FILE
+# - $1 argument: path to file listing Homebrew formulae
 installFormulae() {
     subsection "Installing Homebrew Formulae"
 
@@ -363,7 +370,7 @@ installFormulae() {
         echo "Installing ${formula}"
         brew install ${formula}
         echo ""
-    done < $BREW_FORMULAE_FILE
+    done < ${1}
 
     message "DONE installing Homebrew formulae"
     sleep 2
@@ -390,7 +397,7 @@ installOMZ() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs NPM Packages
-# - List in $NPM_PACKAGES_FILE
+# - $1 argument: path to file listing npm packages
 installNodePackages() {
     subsection "Installing Global NPM Packages"
 
@@ -404,7 +411,7 @@ installNodePackages() {
     while read -r package; do
         echo -e "\n\nInstalling ${package}"
         npm install -g ${package}
-    done < $NPM_PACKAGES_FILE
+    done < ${1}
 
     message "DONE installing NPM packages"
     sleep 2
@@ -453,14 +460,14 @@ installStarshipPrompt() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs VS Code Extensions
-# - List in $VS_CODE_EXTENSIONS_FILE
+# - $1 argument: path to file listing VS Code extensions
 installVSCodeExt() {
     subsection "Installing VS Code Extensions"
 
     while read -r extension; do
         echo "Installing ${extension}"
         code --install-extension ${extension}
-    done < $VS_CODE_EXTENSIONS_FILE
+    done < ${1}
     sleep 2
 }
 
@@ -525,6 +532,11 @@ message() {
 # Restore Backups
 # - Copies over Time Machine backups
 restoreBackups() {
+    if [ $RESTORE_BACKUP != true ]; then
+        echo -e "\nNot restoring backup\n"
+        return;
+    fi
+
     subsection "Time Machine Backups"
 
     ask "Restore Time Machine Backups" 1
@@ -564,6 +576,8 @@ setDefaultShell() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Sets Mac Settings
 setSettings() {
+    if [ $SET_DEFAULT_SYSTEM_PREFERENCES != true ]; then return; fi
+
     subsection "Default Mac Settings"
 
     ask "Set Mac Settings"
@@ -618,5 +632,8 @@ welcome() {
     sleep 2
     echo -e "Press Ctrl-C to STOP ${EMOJI_STOP} now if you ${RED}don't${NC} wish to proceed. Starting in 5 seconds...\n"
     sleep 5
-    echo -e "Starting automated install: ${SETUP_MODE}\n"
+    echo -e "Starting automated install:\n"
+    echo -e "Type: ${SETUP_TYPE}\n"
+    echo -e "Mode: $(if [ -n "${MODE}" ]; then echo "${MODE}"; else echo "N/A"; fi)\n"
+    echo -e "\n"
 }

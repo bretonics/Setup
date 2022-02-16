@@ -1,9 +1,13 @@
 @angular/cli
 @angular-devkit/schematics-cli
+@nestjs/cli
+@nrwl/cli
+auto-changelog
 aws-azure-login
 bunyan
 chalk
 eslint
 npm-check-updates
+nx
 serve
 tslint

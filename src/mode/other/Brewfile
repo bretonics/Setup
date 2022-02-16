@@ -1,0 +1,3 @@
+cask "amazon-music"
+cask "cloudflare-warp"
+cask "zoom"

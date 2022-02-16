@@ -1,0 +1,3 @@
+brew "cowsay"
+brew "fortune"
+brew "lolcat"
