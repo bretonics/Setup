@@ -3,20 +3,22 @@
 #===============================================================================================
 # RESOURCES
 #===============================================================================================
-NPM_PACKAGES_FILE="./npm.txt"
-VS_CODE_EXTENSIONS_FILE="./vscode.txt"
+BASE_PATH="$(dirname ${BASH_SOURCE})"
+DEV_BREW_FILE="${BASE_PATH}/Brewfile"
+NPM_PACKAGES_FILE="${BASE_PATH}/npm.txt"
+VS_CODE_EXTENSIONS_FILE="${BASE_PATH}/vscode.txt"
 
-# MODE_BREW_CASKS_FILE="${MODE_SOURCE_PATH}casks.txt"
-# MODE_BREW_FORMULAE_FILE="${MODE_SOURCE_PATH}formulae.txt"
-# MODE_BREW_TAPS_FILE="${MODE_SOURCE_PATH}taps.txt"
-# MODE_MAC_APPS_FILE="${MODE_SOURCE_PATH}apps.txt"
-# MODE_NPM_PACKAGES_FILE="${MODE_SOURCE_PATH}npm.txt"
-# MODE_VS_CODE_EXTENSIONS_FILE="${MODE_SOURCE_PATH}vscode.txt"
+# Set parent path when executing this mode's install.sh directly
+if [ -z $SETUP_TYPE ]; then
+    PARENT_PATH="${BASE_PATH}/../../.."
+fi
+source ${PARENT_PATH}/lib/functions
 
 #-----------------------------------------------------------------------------------------------
 # MODE INSTALLATION
-# - Install all Formulae, Taps, and Mac Apps specified by $MODE_BREW_FILE 
-brew bundle --file ${MODE_BREW_FILE}
+# - Install all Formulae, Taps, and Mac Apps specified by $MODE_BREW_FILE
+section "Dev Installation"
+brew bundle --file ${MODE_BREW_FILE:-${DEV_BREW_FILE}}
 
 #-----------------------------------------------------------------------------------------------
 # INSTALL CORE RESOURCES

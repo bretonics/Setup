@@ -6,7 +6,7 @@
 
 # Global Variables
 BASE_PATH="$(dirname $(dirname $0))"
-source ${BASE_PATH}/lib/globals
+source ${PARENT_PATH}/lib/globals
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Adds Bash Completions

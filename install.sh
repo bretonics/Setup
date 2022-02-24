@@ -3,8 +3,9 @@
 #===============================================================================================
 # PRE-LAUNCH SETUP
 #===============================================================================================
-source ./lib/functions
-source ./lib/getopts
+PARENT_PATH=$(dirname "${BASH_SOURCE[0]}") # relative script path from execution location, same as "${BASH_SOURCE%/*}" or "${BASH_SOURCE}"
+source ${PARENT_PATH}/lib/functions
+source ${PARENT_PATH}/lib/getopts
 
 preFlightChecks
 handle_getopts "$@"

@@ -10,13 +10,16 @@ DEFAULTS=false
 ICLOUD_HOME_PATH="~/Library/Mobile\ Documents/com~apple~CloudDocs"
 RESTORE_BACKUP=false
 RUN_SECONDARY=false
-SECONDARY_FILE="./secondary.sh"
+SECONDARY_FILE="${PARENT_PATH}/secondary.sh"
 SET_DEFAULT_SYSTEM_PREFERENCES=false
 SETUP_TYPE="MAIN"  # DEFAULT: Main setup - installs everything in Brewfile and secondary.sh
 USER_NAME=$(id -F) # Complete user's name, e.g. Andrés Bretón
 
 # Setup File Paths
-SOURCE_PATH="./src/"
+SOURCE_PATH="${PARENT_PATH}/src/"
+LIBS_PATH="${PARENT_PATH}/lib/"
+MODE_DIR_PATH="${SOURCE_PATH}mode/"
+
 BREW_CASKS_FILE="${SOURCE_PATH}casks.txt"
 BREW_FILE="${SOURCE_PATH}Brewfile"
 BREW_FORMULAE_FILE="${SOURCE_PATH}formulae.txt"
