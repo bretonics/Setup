@@ -418,6 +418,14 @@ installNodePackages() {
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Install Shell Prompts
+installShellPrompts() {
+    subsection "Shell Prompts"
+    installStarshipPrompt
+    installSpaceshipPrompt
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs Spaceship Prompt
 installSpaceshipPrompt() {
     isZsh

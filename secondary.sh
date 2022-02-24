@@ -22,8 +22,7 @@ copyFiles
 setSettings
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 installOMZ
-installSpaceshipPrompt
-installStarshipPrompt
+installShellPrompts
 addShellCompletions
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 configureGit
