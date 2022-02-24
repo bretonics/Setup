@@ -574,6 +574,12 @@ setDefaultShell() {
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Set Global Git Default Branch to 'main' or passed argument
+setGitDefaultBranch() {
+    git config --global init.defaultBranch ${1:-'main'}
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Sets Mac Settings
 setSettings() {
     if [ $SET_DEFAULT_SYSTEM_PREFERENCES != true ]; then return; fi

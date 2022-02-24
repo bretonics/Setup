@@ -25,3 +25,4 @@ brew bundle --file ${MODE_BREW_FILE:-${DEV_BREW_FILE}}
 section "Installing ${MODE} Resources"
 installNodePackages ${NPM_PACKAGES_FILE}
 installVSCodeExt ${VS_CODE_EXTENSIONS_FILE}
+setGitDefaultBranch
