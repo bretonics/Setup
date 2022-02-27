@@ -36,8 +36,6 @@ case "${OSTYPE}" in
         ;;
 esac
 
-eval "$(starship init bash)" # Starship Prompt
-
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # EXPORTS
 export GPG_TTY=$(tty)
