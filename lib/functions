@@ -83,6 +83,7 @@ addZshCompletions() {
     isZsh
     if [ $? -ne 0 ]; then return; fi
 
+    # TODO: leave this to the files
     # Setup appropriate sourcing
     mkdir ~/.zsh_completions
     echo "export FPATH=$FPATH:~/.zsh_completions/" >> ${SHELL_RC_FILE}
@@ -93,7 +94,7 @@ addZshCompletions() {
 
     # TODO: Do we need more configs to setup autocomplete in Zsh?
     rm ~/.zcompdump # clean up
-    source .zshrc
+    source ~/${ZSH_RC_FILE}
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -456,7 +457,7 @@ installStarshipPrompt() {
     echo -e "\nInstalling FiraCode Nerd font\n"
     brew install font-fira-code-nerd-font
 
-    echo -e "Installing Startship Prompt\n"
+    echo -e "Installing Starship Prompt\n"
     brew install starship
 
     # Add to Shell's .rc
@@ -557,7 +558,7 @@ restoreBackups() {
 # Section Header
 section() {
     title=$(echo ${1} | tr [:lower:] [:upper:])
-    echo -e "\n\n| ${title}\n================================================================================\n\n"
+    echo -e "\n\n|- ${title}\n================================================================================\n"
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
