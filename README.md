@@ -18,6 +18,19 @@
 [![GitHub](https://img.shields.io/github/followers/bretonics?label=Follow%20%40bretonics&style=social)](https://github.com/bretonics)
 [![Twitter](https://img.shields.io/twitter/follow/bretonics?style=social)](https://twitter.com/bretonics)
 
+- [Setup](#setup)
+  - [Automate Mac Setup](#automate-mac-setup)
+  - [Installation Types](#installation-types)
+    - [Main](#main)
+    - [Essentials](#essentials)
+    - [Secondary](#secondary)
+  - [Modes](#modes)
+  - [Options](#options)
+  - [Customizable Setup](#customizable-setup)
+    - [Manual](#manual)
+  - [Useful Commands](#useful-commands)
+  - [Contribute](#contribute)
+
 ## Automate Mac Setup
 
 New Mac? Clean macOS install? Run Setup and automate it all!
