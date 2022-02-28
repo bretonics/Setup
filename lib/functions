@@ -419,11 +419,73 @@ installNodePackages() {
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Installs Pure Prompt
+installPurePrompt() {
+    isZsh
+    if [ $? -ne 0 ]; then return; fi
+
+    subsection "Pure Prompt"
+
+    ask "Install Pure Prompt" 1
+    if [ $RESPONSE != true ]; then return; fi
+
+    brew install pure
+
+    echo -e "\nType 'prompt pure' to select"
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Installs Powerlevel10K Prompt
+# https://github.com/romkatv/powerlevel10k#installation
+installPowerlevel10kPrompt() {
+    isZsh
+    if [ $? -ne 0 ]; then return; fi
+
+    subsection "Powerlevel10k Prompt"
+
+    ask "Install Powerlevel10K Prompt" 1
+    if [ $RESPONSE != true ]; then return; fi
+
+    # Use OhMyZsh or brew installation
+    if [ $OMZ_INSTALLED = true ]; then
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+    else
+        brew install romkatv/powerlevel10k/powerlevel10k
+        echo "source $(brew --prefix)/opt/powerlevel10k/powerlevel10k.zsh-theme" >>~/.zshrc
+    fi
+
+    echo -e "\nYou may consider installing the recommended font, Meslo Nerd Font patched for Powerlevel10k: https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k\n"
+    echo -e "\nType 'p10k configure' to start configuration wizard"
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Install Shell Prompts
 installShellPrompts() {
     subsection "Shell Prompts"
+    installPowerlevel10kPrompt
+    installPurePrompt
     installStarshipPrompt
     installSpaceshipPrompt
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Installs Prompt Passed
+# - $1 argument: prompt name
+installShellPrompt() {
+    case "${1}" in
+        powerlevel10k*)
+            installPowerlevel10kPrompt
+            ;;
+        pure*)
+            installPurePrompt
+            ;;
+        spaceship*)
+            installSpaceshipPrompt
+            ;;
+        starship*)
+            installStarshipPrompt
+            ;;
+    esac
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
