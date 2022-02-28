@@ -16,6 +16,7 @@ alias  vi="vim"
 
 # Beautify $PATH
 alias path='echo $PATH | tr -s ":" "\n"'
+alias path='echo $FPATH | tr -s ":" "\n"'
 
 # Git
 alias  gs="git status"

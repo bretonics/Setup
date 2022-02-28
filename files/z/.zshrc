@@ -2,8 +2,8 @@
 # ZSH
 
 # Oh My Zsh Installation
-if [ -d "/Users/${USER}/.oh-my-zsh" ]; then
-    source "/Users/${USER}/.omzsh"
+if [ -d "${HOME}/.oh-my-zsh" ]; then
+    source "${HOME}/.omzsh"
     unset LESS
 fi
 

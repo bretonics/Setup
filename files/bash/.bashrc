@@ -15,6 +15,10 @@ if [ -f ~/.bash_functions ]; then
     . ~/.bash_functions
 fi
 
+# Aliases
+source ~/.alias
+
+# Completions
 case "${OSTYPE}" in
     darwin*)
         # All Bash Completions
@@ -29,7 +33,7 @@ case "${OSTYPE}" in
 esac
 
 #-----------------------------------------------------------------------------------------------
-# USER SPECIFIC
+# PROMPT
 
 # Starship Prompt
 eval "$(starship init bash)"
@@ -43,40 +47,5 @@ HISTFILESIZE=99999999
 HISTCONTROL=ignoreboth           # both ignorespace and ignoredups
 HISTTIMEFORMAT="[%m/%d/%y %T] "  # timestamp format
 
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# ALIASES
-case "${OSTYPE}" in
-    darwin*)
-        alias  ls="ls -GFh"
-        alias  ll="ls -laGFh"
-        ;;
-    linux*)
-        alias  ls="ls -GFh --color=yes"
-        alias  ll="ls -GFhla --color=yes"
-        ;;
-esac
-
-alias  cp="cp -i"
-alias  rm="rm -i"
-alias  mv="mv -i"
-alias  vi="vim"
-
-# Beautify $PATH
-alias path='echo $PATH | tr -s ":" "\n"'
-
-# Git
-alias  gs="git status"
-alias  gc="git commit"
-
-# Remote Access
-alias  mini=""
-alias  server=""
-alias  macbook=""
-alias  bretonics=""
-alias  node0=""
-alias  node1=""
-alias  node2=""
-alias  node3=""
-
 #-------------------------------------------------------------------------------
-# GLOBAL
+# OTHER
