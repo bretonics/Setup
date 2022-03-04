@@ -539,6 +539,13 @@ installVSCodeExt() {
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Install Developer XCode CLI Tools
+installXcodeCLITools() {
+    subsection "Installing XCode Developer CLI Tools"
+    xcode-select --install
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Is Default Shell Bash?
 isBash() {
     if [ "${DEFAULT_SHELL}" = "bash" ]; then

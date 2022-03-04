@@ -92,9 +92,9 @@ if [ "$RESPONSE" = true ]; then
     defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 fi
 
-ask "Set a blazingly fast keyboard repeat rate"
+ask "Set a fast keyboard repeat rate"
 if [ "$RESPONSE" = true ]; then
-    defaults write NSGlobalDomain KeyRepeat -float 0.000000000001
+    defaults write NSGlobalDomain KeyRepeat -int 2
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
