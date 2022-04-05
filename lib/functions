@@ -330,13 +330,19 @@ installApps() {
 installHomebrew() {
     subsection "Installing Homebrew Package Manager"
 
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    addHomebrewPath
+    if [ $(commandExists "brew") -ne 0 ]; then
 
-    # Automatically run cleanup every 7 days
-    brew autoupdate start 604800 --cleanup
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        addHomebrewPath
 
-    message "DONE installing Homebrew"
+        # Automatically run cleanup every 7 days
+        brew autoupdate start 604800 --cleanup
+
+        message "DONE installing Homebrew, skipping..."
+    else
+        message "info" "Homebrew already installed"
+    fi
+
     sleep 2
 }
 
