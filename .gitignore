@@ -1,4 +1,3 @@
 /tests
-*test*.sh
 *.log
 .vscode
