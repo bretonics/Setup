@@ -118,5 +118,5 @@ usage() {
     print_option "Brewfile" "Path to Brew bundle file (Default: '${BREW_FILE}')"
     echo -e "\n"
     1>&2
-    exit 1
+    exit
 }
