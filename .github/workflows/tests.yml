@@ -15,4 +15,5 @@ jobs:
       matrix:
         os: [macos-latest, macos-10.15]
     steps:
+      - uses: actions/checkout@v3.0.0
       - run: bash tests.sh
