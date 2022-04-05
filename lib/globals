@@ -5,7 +5,7 @@
 #===============================================================================================
 
 # General
-ADMIN=$(dsmemberutil checkmembership -U $(whoami) -G admin | grep "not")
+ADMIN=$(dsmemberutil checkmembership -U $(whoami) -G admin | grep "not" || echo true)
 DEFAULTS=false
 ICLOUD_HOME_PATH="~/Library/Mobile\ Documents/com~apple~CloudDocs"
 RESTORE_BACKUP=false
@@ -43,7 +43,10 @@ ZSH_RC_PATH="${HOME}/${ZSH_RC_FILE}"
 SHELL_PROFILE_FILE="${ZSH_PROFILE_PATH}"
 
 # macOS Version
-IS_APPLE_CPU=$(sysctl -n machdep.cpu.brand_string | grep -i "apple") # Apple M1 Hardware = "Apple processor"
+IS_APPLE_CPU=$(sysctl -n machdep.cpu.brand_string | grep -i "apple" || echo false) # Apple M1 Hardware = "Apple processor"
+IS_BIG_SUR=false
+IS_CATALINA=false
+OS_UNSUPPORTED=false
 MAC_OS_VERSION=$(sw_vers -productVersion)
 OS_MAJOR_VERSION=$(echo $MAC_OS_VERSION | sed -E 's/([0-9]+)\.([0-9]+)\.?([0-9]+)?/\1/')
 OS_MINOR_VERSION=$(echo $MAC_OS_VERSION | sed -E 's/([0-9]+)\.([0-9]+)\.?([0-9]+)?/\2/')
@@ -64,7 +67,7 @@ else
 fi
 
 # Shell Defaults
-# ! Order is important - determined by macOS version above
+# !NOTE: Order is important - determined by macOS version above
 SHELL_RC_FILE="${HOME}/.${DEFAULT_SHELL}rc"
 
 # Setup Configuration Variables
@@ -72,6 +75,7 @@ GITHUB_KEYS_URL="https://github.com/settings/keys"
 GITHUB_RSA_NAME="github_rsa"
 
 # Color Outputs
+BLUE="\033[0;34m"
 GREEN="\033[0;32m"
 RED="\033[0;31m"
 YELLOW="\033[0;33m"
