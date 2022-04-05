@@ -84,5 +84,13 @@ echo "ZSH_RC_FILE=${ZSH_RC_FILE}"
 echo "ZSH_RC_PATH=${ZSH_RC_PATH}"
 message "Passed!"
 
+#-----------------------------------------------------------------------------------------------
+# Install Help
+bash ./install -h
+
+#-----------------------------------------------------------------------------------------------
+# Install (No Options)
+bash ./install
+
 message "~~~~~ ALL TESTS PASSED ~~~~~"
 trap : 0
