@@ -701,12 +701,14 @@ welcome() {
     echo -e "${m[@]}"
     echo -e "This script will automate a lot of processes.\n"
     echo -e "Though not recommended interrupting, exit this script at any time with Ctrl-C.\n"
+    echo "Running '${SETUP_TYPE}' install:"
+    echo -e "\t- Brewfile: ${BREW_FILE}"
+    echo -e "\t- Mode: $(if [ -n "${MODE}" ]; then echo "${MODE}"; else echo "N/A"; fi)"
+    echo -e "\t- Secondary: $(if [ ${RUN_SECONDARY} = "true" ]; then echo "Yes"; else echo "No"; fi)\n"
     sleep 2
     echo -e "Press Ctrl-C now to STOP ${EMOJI_STOP} setup if you ${RED}don't${NC} wish to proceed.\n"
     echo -en "Starting in 5 seconds... "
     for t in {5..1}; do echo -n "${t} "; sleep 1; done
-    echo -e "\n\nStarting automated install:\n"
-    echo -e "Type: ${SETUP_TYPE}\n"
-    echo -e "Mode: $(if [ -n "${MODE}" ]; then echo "${MODE}"; else echo "N/A"; fi)\n"
+    echo -e "\n\nStarting automated install\n"
     echo -e "\n"
 }
