@@ -23,11 +23,6 @@ handle_arguments() {
 handle_getopts() {
     OPTIONS=":BDEFhi:m:s"
 
-    # No Arguments Runs MAIN Install
-    if [ $# -eq 0 ]; then
-        RUN_SECONDARY=true
-    fi
-
     # Handle Options
     while getopts ${OPTIONS} option; do
         case "${option}" in
