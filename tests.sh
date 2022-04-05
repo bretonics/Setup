@@ -86,11 +86,11 @@ message "Passed!"
 
 #-----------------------------------------------------------------------------------------------
 # Install Help
-bash ./install -h
+bash ./install.sh -h
 
 #-----------------------------------------------------------------------------------------------
 # Install (No Options)
-bash ./install
+bash ./install.sh
 
 message "~~~~~ ALL TESTS PASSED ~~~~~"
 trap : 0
