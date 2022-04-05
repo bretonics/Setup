@@ -50,6 +50,11 @@ killall Dock
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # FINDER
+ask "Show Path bar"
+if [ "$RESPONSE" = true ]; then
+    defaults write com.apple.finder ShowPathbar -bool true
+fi
+
 ask "Show the ~/Library folder"
 if [ "$RESPONSE" = true ]; then
     chflags nohidden ~/Library
@@ -74,6 +79,8 @@ defaults write com.apple.finder FXInfoPanesExpanded -dict \
     General -bool true \
     OpenWith -bool true \
     Privileges -bool true
+
+killall Finder
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # OTHER
