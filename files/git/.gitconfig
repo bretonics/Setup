@@ -1,2 +1,27 @@
+[init]
+	defaultBranch = main
+	templatedir = ~/.git_template
 [alias]
-    l = log --pretty=short -n 50 --graph --abbrev-commit
+	l = log --pretty=short -n 50 --graph --abbrev-commit
+	cdiff = "diff -w -G'^[^#]'"
+	# Look at a pretty graph of all history that has been dropped, e.g.) dropped stashes: https://stackoverflow.com/questions/89332/how-to-recover-a-dropped-stash-in-git
+	graph-dropped = "git log --graph --decorate --oneline $(git fsck --no-reflogs | awk '/dangling commit/ {print $3}')"
+[pull]
+	rebase = true
+[core]
+	pager = /usr/local/Cellar/git/2.35.1/share/git-core/contrib/diff-highlight/diff-highlight | less
+[pager]
+	# show = diff-highlight
+	# diff = diff-highlight
+[color]
+	ui = always
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
