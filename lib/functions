@@ -71,7 +71,7 @@ addShellCompletions() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Add and Source Homebrew Install
 addHomebrewPath() {
-    if [ ${IS_APPLE_CPU} ]; then
+    if [ ${IS_APPLE_CPU} != "false" ]; then
         echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ${SHELL_PROFILE_FILE}
         eval "$(/opt/homebrew/bin/brew shellenv)"
     fi
@@ -145,7 +145,6 @@ configureGit() {
     ask "Configure Git"
     if [ $RESPONSE != true ]; then return; fi
 
-    # git config --global pull.rebase true
     ask "Using name: '${USER_NAME}'. Is this correct" 1
     if [ "$RESPONSE" = true ]; then
         git config --global user.name "${USER_NAME}"
@@ -569,7 +568,7 @@ loggers() {
 # Run Pre-flight Checks
 # - Is masOS supported?
 preFlightChecks() {
-    if [ ! -z $OS_UNSUPPORTED ]; then
+    if [ ${OS_UNSUPPORTED} == true ]; then
         message "error" "Unsupported macOS Version"
         exit 1
     fi
@@ -580,9 +579,9 @@ preFlightChecks() {
 # - Display Nicely Formatted Message
 message() {
     if [ "$1" = "info" ]; then
-        local msg="\n\n${EMOJI_INFO} - ${RED}${2}${NC}\n\n\n"
+        local msg="\n\n${EMOJI_INFO} - ${BLUE}${2}${NC}\n\n\n"
     elif [ "$1" = "warning" ]; then
-        local msg="\n\n${EMOJI_WARNING} - ${RED}${2}${NC}\n\n\n"
+        local msg="\n\n${EMOJI_WARNING} - ${YELLOW}${2}${NC}\n\n\n"
     elif [ "$1" = "fail" ]; then
         local msg="\n\n${EMOJI_FAIL} - ${RED}${2}${NC}\n\n\n"
     elif [ "$1" = "error" ]; then
@@ -703,9 +702,10 @@ welcome() {
     echo -e "This script will automate a lot of processes.\n"
     echo -e "Though not recommended interrupting, exit this script at any time with Ctrl-C.\n"
     sleep 2
-    echo -e "Press Ctrl-C to STOP ${EMOJI_STOP} now if you ${RED}don't${NC} wish to proceed. Starting in 5 seconds...\n"
-    sleep 5
-    echo -e "Starting automated install:\n"
+    echo -e "Press Ctrl-C now to STOP ${EMOJI_STOP} setup if you ${RED}don't${NC} wish to proceed.\n"
+    echo -en "Starting in 5 seconds... "
+    for t in {5..1}; do echo -n "${t} "; sleep 1; done
+    echo -e "\n\nStarting automated install:\n"
     echo -e "Type: ${SETUP_TYPE}\n"
     echo -e "Mode: $(if [ -n "${MODE}" ]; then echo "${MODE}"; else echo "N/A"; fi)\n"
     echo -e "\n"
