@@ -5,7 +5,7 @@
 #===============================================================================================
 
 # General
-ADMIN=$(dsmemberutil checkmembership -U $(whoami) -G admin | grep "not" || echo true)
+ADMIN=$(dsmemberutil checkmembership -U $(whoami) -G admin | grep "not" && echo "false" || echo true)
 DEFAULTS=false
 ICLOUD_HOME_PATH="~/Library/Mobile\ Documents/com~apple~CloudDocs"
 RESTORE_BACKUP=false
@@ -43,7 +43,7 @@ ZSH_RC_PATH="${HOME}/${ZSH_RC_FILE}"
 SHELL_PROFILE_FILE="${ZSH_PROFILE_PATH}"
 
 # macOS Version
-IS_APPLE_CPU=$(sysctl -n machdep.cpu.brand_string | grep -i "apple" || echo false) # Apple M1 Hardware = "Apple processor"
+IS_APPLE_CPU=$(sysctl -n machdep.cpu.brand_string | grep -i "apple" && echo "true" || echo false) # Apple M1 Hardware = "Apple processor"
 IS_BIG_SUR=false
 IS_CATALINA=false
 OS_UNSUPPORTED=false

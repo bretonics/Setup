@@ -183,7 +183,7 @@ configureGPG() {
     if [ $RESPONSE != true ]; then return; fi
 
     gpg --gen-key
-    GPGkey=$(gpg --list-secret-keys --keyid-format LONG | sed -nE 's/sec.*rsa2048\/([a-zA-Z0-9]+).*/\1/p')
+    GPGkey=$(gpg --list-secret-keys --keyid-format LONG | sed -nE 's/sec.*rsa3072\/([a-zA-Z0-9]+).*/\1/p')
 
     echo -e "\nConfiguring GPG Key with resources\n"
     git config --global user.signingkey ${GPGkey} # configure Git to use GPG
@@ -640,7 +640,7 @@ setDefaultShell() {
     if [ $? -ne 0 ]; then return; fi
 
     echo "The default interactive shell is now Zsh"
-    ask "Update your account to use Bash instead"
+    ask "Update your account to use Bash instead" 1
     if [ $RESPONSE != true ]; then return; fi
 
     chsh -s /bin/bash
