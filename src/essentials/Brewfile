@@ -1,9 +1,5 @@
 tap "homebrew/autoupdate"
 tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/cask-fonts"
-tap "homebrew/cask-versions"
-tap "homebrew/core"
 tap "homebrew/services"
 brew "glances"
 brew "help2man"
@@ -15,32 +11,43 @@ cask "dropbox"
 cask "flux"
 cask "google-chrome"
 cask "nordvpn"
+# App to write, plan, collaborate, and get organised
+cask "notion"
+# Calendar for professionals and teams
+cask "notion-calendar"
+# Screenshot measurement and annotation tool
+cask "shottr"
 cask "spotify"
-mas "1Password 7", id: 1333542190
+# Video communication and virtual meeting platform
+cask "zoom"
+# Mac App Store Applications
+mas "1Password for Safari", id: 1569813296
 mas "Amphetamine", id: 937984704
-mas "Annotate", id: 918207447
 mas "Blurred", id: 1497527363
 mas "Calendar 366 II", id: 1265895169
 mas "CloudMounter", id: 1130254674
+mas "Commander One PRO", id: 1035237815
 mas "Deliveries", id: 290986013
 mas "Due", id: 524373870
-mas "Evernote", id: 406056744
-mas "Evernote Web Clipper", id: 1481669779
 mas "Gelatin", id: 468374949
+mas "Hidden Bar", id: 1452453066
 mas "Home Assistant", id: 1099568401
 mas "iStat Menus", id: 1319778037
 mas "Magnet", id: 441258766
 mas "Meeter", id: 1510445899
 mas "Monity", id: 915542151
-mas "Overlays!", id: 868499627
+mas "PDF Reader Pro", id: 919472673
 mas "PDF Toolkit", id: 405219581
 mas "PDFGenius", id: 522090209
 mas "PopClip", id: 445189367
+mas "Recipes", id: 875752727
 mas "RunCat", id: 1429033973
 mas "ScreenBrush", id: 1233965871
 mas "ScreenFloat", id: 414528154
 mas "Slack", id: 803453959
 mas "Snap", id: 418073146
-mas "Tot", id: 1491071483
+mas "Tab Space", id: 1473726602
+mas "TinyNotepad", id: 1449415412
+mas "Trend Micro Ad Blocker", id: 1491889901
 mas "Weather for Status Bar", id: 1448031908
 mas "Yoink", id: 457622435
