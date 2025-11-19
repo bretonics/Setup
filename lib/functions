@@ -160,6 +160,13 @@ configureGit() {
     echo -e "Name: $(git config --get user.name)"
     echo -e "Email: $(git config --get user.email)\n"
 
+    ask "Configure Git hooks templates"
+    if [ $RESPONSE = true ]; then
+        mkdir -p ~/.git_templates/hooks
+        cp -r ${BASE_PATH}/files/git/hooks ~/.git_templates/hooks
+        chmod +x ~/.git_templates/hooks/*
+    fi
+
     if [ $BASH_COMPLETIONS_INSTALLED = true ]; then
         ask "Do you want to enable Git prompt status (PS1)"
         if [ $RESPONSE != true ]; then return; fi
@@ -182,13 +189,15 @@ configureGPG() {
     ask "Create GPG Key"
     if [ $RESPONSE != true ]; then return; fi
 
-    gpg --gen-key
-    GPGkey=$(gpg --list-secret-keys --keyid-format LONG | sed -nE 's/sec.*rsa3072\/([a-zA-Z0-9]+).*/\1/p')
+    gpg --full-generate-key
+    GPGkey=$(gpg --list-secret-keys --keyid-format LONG | sed -nE 's/sec.*\/([a-zA-Z0-9]+).*/\1/p')
 
     echo -e "\nConfiguring GPG Key with resources\n"
     git config --global user.signingkey ${GPGkey} # configure Git to use GPG
-    gpg --armor --export ${GPGkey} | pbcopy
+    git config --global commit.gpgsign true
 
+
+    gpg --armor --export ${GPGkey} | pbcopy
     echo -e "\n\nGPG key copied to clipboard.\n"
     unset GPGkey
     echo -e "GitHub will now open. Paste GPG key copied to your clipboard and come back here to continue.\n"
@@ -196,6 +205,7 @@ configureGPG() {
     open ${GITHUB_KEYS_URL}
     read -p "Waiting on user to return. Press to continue... "
     pbcopy < /dev/null # clear clipboard
+    unset GPGKey
 
     message "Done running workspace personalizations"
     sleep 2
@@ -335,8 +345,9 @@ installHomebrew() {
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         addHomebrewPath
 
-        # Automatically run cleanup every 7 days
-        brew autoupdate start 604800 --cleanup
+        # Automatically run cleanup every 7 days (604800 seconds)
+        brew autoupdate start 604800 --upgrade --cleanup --immediate
+        brew autoupdate status
 
         message "DONE installing Homebrew, skipping..."
     else
