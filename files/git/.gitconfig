@@ -1,6 +1,6 @@
 [init]
 	defaultBranch = main
-	templatedir = ~/.git_template
+	templatedir = ~/.git_templates
 [alias]
 	l = log --pretty=short -n 50 --graph --abbrev-commit
 	cdiff = "diff -w -G'^[^#]'"
@@ -9,7 +9,7 @@
 [pull]
 	rebase = true
 [core]
-	pager = /usr/local/Cellar/git/2.35.1/share/git-core/contrib/diff-highlight/diff-highlight | less
+	pager = /usr/local/Cellar/git/2.*/share/git-core/contrib/diff-highlight/diff-highlight | less
 [pager]
 	# show = diff-highlight
 	# diff = diff-highlight
@@ -25,3 +25,5 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[commit]
+	gpgsign = true
