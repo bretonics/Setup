@@ -1,0 +1,423 @@
+tap "brewsci/bio"
+tap "brewsci/science"
+tap "heroku/brew"
+tap "homebrew/autoupdate"
+tap "homebrew/bundle"
+tap "homebrew/services"
+tap "localstack/tap"
+tap "mongodb/brew"
+# C/C++ resolver library and DNS resolver utilities
+brew "adns"
+# Asciicast to GIF converter
+brew "agg"
+# General-purpose data compression with high compression ratio
+brew "xz"
+# Image format providing lossless and lossy compression for web images
+brew "webp"
+# Record and share terminal sessions
+brew "asciinema"
+# Automatic configure script builder
+brew "autoconf"
+# Tool for generating GNU Standards-compliant Makefiles
+brew "automake"
+# Command-line interface for SQLite
+brew "sqlite"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.13"
+# Official Amazon AWS command-line interface
+brew "awscli"
+# Programmable completion for Bash 3.2
+brew "bash-completion"
+# C library implementing the SSH2 protocol
+brew "libssh2"
+# Clone of cat(1) with syntax highlighting and Git integration
+brew "bat"
+# XML-based font configuration API for X Windows
+brew "fontconfig"
+# Core application library for C
+brew "glib"
+# Vector graphics library with cross-device output support
+brew "cairo"
+# Console Matrix
+brew "cmatrix"
+# Apjanke's fork of the classic cowsay project
+brew "cowsay"
+# Convert text between DOS, UNIX, and Mac formats
+brew "dos2unix"
+# Generate documentation for several programming languages
+brew "doxygen"
+# Validating, recursive, caching DNS resolver
+brew "unbound"
+# GNU Transport Layer Security (TLS) Library
+brew "gnutls"
+# OpenType text shaping engine
+brew "harfbuzz"
+# C library SSHv1/SSHv2 client and server protocols
+brew "libssh"
+# Framework for layout and rendering of i18n text
+brew "pango"
+# Play, record, convert, and stream audio and video
+brew "ffmpeg"
+# Integer Set Library for the polyhedral model
+brew "isl"
+# C library for multiple-precision floating-point computations
+brew "mpfr"
+# C library for the arithmetic of high precision complex numbers
+brew "libmpc"
+# GNU compiler collection
+brew "gcc"
+# High performance message passing library
+brew "open-mpi"
+# C routines to compute the Discrete Fourier Transform
+brew "fftw"
+# Infamous electronic fortune-cookie generator
+brew "fortune"
+# Graphics library to dynamically manipulate images
+brew "gd"
+# GNU database manager
+brew "gdbm"
+# Toolkit for image loading and pixel buffer manipulation
+brew "gdk-pixbuf"
+# Generate C code to parse command-line arguments via getopt_long
+brew "gengetopt"
+# GitHub command-line tool
+brew "gh"
+# Distributed revision control system
+brew "git"
+# AVH edition of git-flow
+brew "git-flow-avh"
+# Git extension for versioning large files
+brew "git-lfs"
+# Painless self-hosted all-in-one software development service
+brew "gitea"
+# Alternative to top/htop
+brew "glances"
+# GNU Pretty Good Privacy (PGP) package
+brew "gnupg"
+# Open source programming language to build simple/reliable/efficient software
+brew "go"
+# Generate introspection data for GObject libraries
+brew "gobject-introspection"
+# GNU Ubiquitous Intelligent Language for Extensions
+brew "guile"
+# File format designed to store large amounts of data
+brew "hdf5"
+# Kubernetes package manager
+brew "helm"
+# Automatically generate simple man pages
+brew "help2man"
+# Improved top (interactive process viewer)
+brew "htop"
+# C library for high-throughput sequencing data formats
+brew "htslib"
+# Configurable static site generator
+brew "hugo"
+# Spell checker and morphological analyzer
+brew "hunspell"
+# Database of common MIME types
+brew "shared-mime-info"
+# ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
+brew "libheif"
+# Tools and libraries to manipulate images in many formats
+brew "imagemagick"
+# Lightweight and flexible command-line JSON processor
+brew "jq"
+# Helps you navigate your file system faster by learning your habits
+brew "jump"
+# Kubernetes CLI To Manage Your Clusters In Style!
+brew "k9s"
+# Package manager for kubectl plugins
+brew "krew"
+# Tool that can switch between kubectl contexts easily and create aliases
+brew "kubectx"
+# Kuma control plane command-line utility
+brew "kumactl"
+# I/O abstraction library for dealing with structured file formats
+brew "libgsf"
+# C library for reading and writing MATLAB MAT files
+brew "libmatio"
+# Library to render SVG files using Cairo
+brew "librsvg"
+# General purpose TCP-IP emulator
+brew "libslirp"
+# GNOME XML library
+brew "libxml2"
+# Rainbows and unicorns in your console!
+brew "lolcat"
+# Mac App Store command-line interface
+brew "mas"
+# Run a Kubernetes cluster locally
+brew "minikube"
+# Cryptography and SSL/TLS Toolkit
+brew "openssl@1.1"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.9"
+# Get, set, and list display resolution
+brew "screenresolution"
+# Fast, highly customisable system info script
+brew "neofetch"
+# HTTP/2 C Library
+brew "nghttp2"
+# C library to read whole-slide images (a.k.a. virtual slides)
+brew "openslide"
+# Swiss-army knife of markup format conversion
+brew "pandoc"
+# Display directories as trees (with optional color/HTML output)
+brew "tree"
+# Password manager
+brew "pass"
+# Tool for managing OCI containers and pods
+brew "podman"
+# PDF rendering library (based on the xpdf-3.0 code base)
+brew "poppler"
+# Object-relational database system
+brew "postgresql@14", restart_service: :changed
+# Cloud native development platform
+brew "pulumi"
+# Pretty, minimal and fast ZSH prompt
+brew "pure"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.10"
+# Generic machine emulator and virtualizer
+brew "qemu"
+# Cross-platform application and UI framework
+brew "qt"
+# Perl-powered file rename script with many helpful built-ins
+brew "rename"
+# Safe, concurrent, practical language
+brew "rust"
+# Command-line interface for https://speedtest.net bandwidth tests
+brew "speedtest-cli"
+# Add a public key to a remote machine's authorized_keys file
+brew "ssh-copy-id"
+# Cross-shell prompt for astronauts
+brew "starship"
+# Feature-rich console based todo list manager
+brew "task"
+# Tool Command Language
+brew "tcl-tk"
+# Send macOS User Notifications from the command-line
+brew "terminal-notifier"
+# Define your dev environment as code. For microservice apps on Kubernetes
+brew "tilt"
+# Image processing library
+brew "vips"
+# JavaScript toolchain manager for reproducible environments
+brew "volta"
+# Internet file retriever
+brew "wget"
+# Command-line interface for WordPress
+brew "wp-cli"
+# Personal information dashboard for your terminal
+brew "wtfutil"
+# Fish-like fast/unobtrusive autosuggestions for zsh
+brew "zsh-autosuggestions"
+# Additional completion definitions for zsh
+brew "zsh-completions"
+# Fish shell like syntax highlighting for zsh
+brew "zsh-syntax-highlighting"
+# Everything you need to get started with Heroku
+brew "heroku/brew/heroku"
+# Localstack cli packaged using pyinstaller
+brew "localstack/tap/localstack-cli"
+# Application launcher and productivity software
+cask "alfred"
+# Desktop client for Amazon Music
+cask "amazon-music"
+# Web browser focusing on privacy
+cask "brave-browser"
+# Databases and SQL IDE
+cask "datagrip"
+# Universal database tool and SQL client
+cask "dbeaver-community"
+# Voice and text chat software
+cask "discord"
+# App to build and share containerised applications and microservices
+cask "docker-desktop"
+# Online diagram software
+cask "drawio"
+# Client for the Dropbox cloud storage service
+cask "dropbox"
+cask "font-fira-code-nerd-font"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-powerline-symbols"
+# GIT client
+cask "fork"
+# Set of tools to manage resources and applications hosted on Google Cloud
+cask "gcloud-cli"
+# Terminal emulator that uses platform-native UI and GPU acceleration
+cask "ghostty"
+# Free and open-source image editor
+cask "gimp"
+# Desktop client for GitHub repositories
+cask "github"
+# GitHub notifications on your menu bar
+cask "gitify"
+# Web browser
+cask "google-chrome"
+# Terminal built on web technologies
+cask "hyper"
+# Note taking and to-do application with synchronisation capabilities
+cask "joplin"
+# Kubernetes IDE
+cask "lens"
+# Full TeX Live distribution with GUI applications
+cask "mactex"
+# Web development solution with Apache, Nginx, PHP & MySQL
+cask "mamp"
+# VPN client for secure internet access and private browsing
+cask "nordvpn"
+# App to write, plan, collaborate, and get organised
+cask "notion"
+# Calendar for professionals and teams
+cask "notion-calendar"
+# Browse, manage, inspect containers and images
+cask "podman-desktop"
+# Collaboration platform for API development
+cask "postman"
+# All-in-one bookmark manager
+cask "raindropio"
+# Screenshot measurement and annotation tool
+cask "shottr"
+# Music streaming service
+cask "spotify"
+# Open-source code editor
+cask "visual-studio-code"
+# Rust-based terminal
+cask "warp"
+# Video communication and virtual meeting platform
+cask "zoom"
+mas "1Password for Safari", id: 1569813296
+mas "4Plan", id: 1570446253
+mas "Amphetamine", id: 937984704
+mas "Bitwarden", id: 1352778147
+mas "Blurred", id: 1497527363
+mas "Calendar 366 II", id: 1265895169
+mas "Canva", id: 897446215
+mas "CloudMounter", id: 1130254674
+mas "Commander One PRO", id: 1035237815
+mas "Deliveries", id: 290986013
+mas "DuckDuckGo Privacy for Safari", id: 1482920575
+mas "Due", id: 524373870
+mas "Gelatin", id: 468374949
+mas "Hidden Bar", id: 1452453066
+mas "Home Assistant", id: 1099568401
+mas "House Builder", id: 884938506
+mas "House Designer", id: 779363176
+mas "iStat Menus", id: 1319778037
+mas "Mactracker", id: 430255202
+mas "Magnet", id: 441258766
+mas "Meeter", id: 1510445899
+mas "Mini Design Bundle", id: 642385433
+mas "Monity", id: 915542151
+mas "PayPal Honey", id: 1472777122
+mas "PDF Reader Pro", id: 919472673
+mas "PDF Toolkit", id: 405219581
+mas "PDFGenius", id: 522090209
+mas "PopClip", id: 445189367
+mas "Recipes", id: 875752727
+mas "RunCat", id: 1429033973
+mas "ScreenBrush", id: 1233965871
+mas "ScreenFloat", id: 414528154
+mas "Sip", id: 507257563
+mas "Slack", id: 803453959
+mas "Snap", id: 418073146
+mas "Snip", id: 1527428847
+mas "Snippet", id: 1613020051
+mas "Tab Space", id: 1473726602
+mas "TinyNotepad", id: 1449415412
+mas "Tot", id: 1491071483
+mas "Trend Micro Ad Blocker", id: 1491889901
+mas "Weather for Status Bar", id: 1448031908
+mas "Widgy", id: 1524540481
+mas "Yoink", id: 457622435
+vscode "aaron-bond.better-comments"
+vscode "adam-watters.vscode-color-pick"
+vscode "adpyke.codesnap"
+vscode "akamud.vscode-theme-onedark"
+vscode "alefragnani.bookmarks"
+vscode "amazonwebservices.aws-toolkit-vscode"
+vscode "andrew-codes.cypress-snippets"
+vscode "azemoh.one-monokai"
+vscode "be5invis.toml"
+vscode "bierner.github-markdown-preview"
+vscode "bierner.markdown-checkbox"
+vscode "bierner.markdown-emoji"
+vscode "bierner.markdown-footnotes"
+vscode "bierner.markdown-mermaid"
+vscode "bierner.markdown-preview-github-styles"
+vscode "bpruitt-goddard.mermaid-markdown-syntax-highlighting"
+vscode "budparr.language-hugo-vscode"
+vscode "chakrounanas.turbo-console-log"
+vscode "christian-kohler.path-intellisense"
+vscode "cliffordfajardo.highlight-line-vscode"
+vscode "crystal-spider.jsdoc-generator"
+vscode "davidanson.vscode-markdownlint"
+vscode "daylerees.rainglow"
+vscode "dbaeumer.vscode-eslint"
+vscode "docker.docker"
+vscode "eamodio.gitlens"
+vscode "ecmel.vscode-html-css"
+vscode "emmanuelbeziat.vscode-great-icons"
+vscode "esbenp.prettier-vscode"
+vscode "exodiusstudios.comment-anchors"
+vscode "firsttris.vscode-jest-runner"
+vscode "formulahendry.auto-rename-tag"
+vscode "foxundermoon.shell-format"
+vscode "github.codespaces"
+vscode "github.copilot"
+vscode "github.copilot-chat"
+vscode "github.github-vscode-theme"
+vscode "github.remotehub"
+vscode "github.vscode-github-actions"
+vscode "github.vscode-pull-request-github"
+vscode "gruntfuggly.todo-tree"
+vscode "gxl.git-graph-3"
+vscode "humao.rest-client"
+vscode "ibm.output-colorizer"
+vscode "janne252.fontawesome-autocomplete"
+vscode "jdinhlife.gruvbox"
+vscode "jolaleye.horizon-theme-vscode"
+vscode "kamikillerto.vscode-colorize"
+vscode "kuscamara.electron"
+vscode "mariusalchimavicius.json-to-ts"
+vscode "mdickin.markdown-shortcuts"
+vscode "mhutchie.git-graph"
+vscode "mikemcbride.electron-highlighter"
+vscode "monokai.theme-monokai-pro-vscode"
+vscode "ms-azuretools.vscode-containers"
+vscode "ms-azuretools.vscode-docker"
+vscode "ms-kubernetes-tools.vscode-kubernetes-tools"
+vscode "ms-vscode-remote.remote-containers"
+vscode "ms-vscode.azure-repos"
+vscode "ms-vscode.remote-repositories"
+vscode "ms-vscode.vscode-typescript-next"
+vscode "ms-vsliveshare.vsliveshare"
+vscode "ms-vsliveshare.vsliveshare-pack"
+vscode "mujichok.vscode-project-name-in-statusbar"
+vscode "oderwat.indent-rainbow"
+vscode "pkief.material-icon-theme"
+vscode "pranaygp.vscode-css-peek"
+vscode "pulumi.pulumi-lsp-client"
+vscode "pulumi.pulumi-vscode-copilot"
+vscode "pulumi.pulumi-vscode-tools"
+vscode "rangav.vscode-thunder-client"
+vscode "redhat.vscode-yaml"
+vscode "remisa.shellman"
+vscode "rid9.datetime"
+vscode "royaction.color-manager"
+vscode "snyk-security.snyk-vulnerability-scanner"
+vscode "steoates.autoimport"
+vscode "streetsidesoftware.code-spell-checker"
+vscode "taniarascia.new-moon-blue-vscode"
+vscode "taniarascia.new-moon-vscode"
+vscode "thenikso.github-plus-theme"
+vscode "tomoyukim.vscode-mermaid-editor"
+vscode "tyriar.sort-lines"
+vscode "vivaxy.vscode-conventional-commits"
+vscode "vscode-icons-team.vscode-icons"
+vscode "vsls-contrib.codetour"
+vscode "wayou.vscode-todo-highlight"
+vscode "weaveworks.vscode-gitops-tools"
+vscode "wix.vscode-import-cost"
+vscode "yzhang.markdown-all-in-one"
