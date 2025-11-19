@@ -26,3 +26,15 @@ section "Installing ${MODE} Resources"
 installNodePackages ${NPM_PACKAGES_FILE}
 installVSCodeExt ${VS_CODE_EXTENSIONS_FILE}
 setGitDefaultBranch
+
+#-----------------------------------------------------------------------------------------------
+# SHELL COMPLETIONS
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Docker
+mkdir -p ~/.docker/completions && docker completion zsh > ~/.docker/completions/_docker
+mkdir -p ~/.local/share/bash-completion/completions && docker completion bash > ~/.local/share/bash-completion/completions/docker
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Kubernetes
+kubectl completion zsh > "${fpath[1]}/_kubectl"
+kubectl completion zsh > /usr/local/share/zsh/site-functions/kubectl 

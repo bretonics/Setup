@@ -1,55 +1,123 @@
 tap "heroku/brew"
+tap "localstack/tap"
 tap "mongodb/brew"
+# Asciicast to GIF converter
+brew "agg"
+# Record and share terminal sessions
+brew "asciinema"
+# Automatic configure script builder
 brew "autoconf"
+# Tool for generating GNU Standards-compliant Makefiles
 brew "automake"
+# Official Amazon AWS command-line interface
 brew "awscli"
+# Clone of cat(1) with syntax highlighting and Git integration
+brew "bat"
+# Programmable completion for Bash 3.2
 brew "bash-completion"
-brew "k9s"
+# Convert text between DOS, UNIX, and Mac formats
 brew "dos2unix"
-brew "gengetopt"
-brew "gh"
-brew "git-flow-avh"
-brew "git-lfs"
-brew "gpg"
-brew "helm"
-brew "heroku/brew/heroku"
-brew "heroku"
-brew "htop"
-brew "hugo"
-brew "imagemagick"
-brew "krew"
-brew "kubectl"
-brew "kubectx"
-brew "kumactl"
-brew "minikube"
-brew "mongodb/brew/mongodb-community"
-brew "node"
-brew "openssl"
-brew "pandoc"
-brew "podman"
-brew "pulumi"
-brew "pure"
-brew "python"
-brew "readline"
-brew "rename"
-brew "rust"
-brew "ssh-copy-id"
-brew "starship"
-brew "tree"
-brew "webp"
-brew "wget"
-brew "wtfutil"
-brew "xz"
-brew "zsh-autosuggestions"
-brew "zsh-syntax-highlighting"
-cask "datagrip"
-cask "devdocs"
-cask "docker"
+# Font: Fira Code Nerd Font
 cask "font-fira-code-nerd-font"
+# Generate C code to parse command-line arguments via getopt_long
+brew "gengetopt"
+# GitHub command-line tool
+brew "gh"
+# Distributed revision control system
+brew "git"
+# AVH edition of git-flow
+brew "git-flow-avh"
+# Git extension for versioning large files
+brew "git-lfs"
+# Painless self-hosted all-in-one software development service
+brew "gitea"
+# Alternative to top/htop
+brew "glances"
+# Kubernetes package manager
+brew "helm"
+# Automatically generate simple man pages
+brew "help2man"
+# Improved top (interactive process viewer)
+brew "htop"
+# Everything you need to get started with Heroku
+brew "heroku"
+brew "heroku/brew/heroku"
+# Configurable static site generator
+brew "hugo"
+# Tools and libraries to manipulate images in many formats
+brew "imagemagick"
+# Lightweight and flexible command-line JSON processor
+brew "jq"
+# Helps you navigate your file system faster by learning your habits
+brew "jump"
+# Kubernetes CLI To Manage Your Clusters In Style!
+brew "k9s"
+# Package manager for kubectl plugins
+brew "krew"
+# Tool that can switch between kubectl contexts easily and create aliases
+brew "kubectx"
+# Kuma control plane command-line utility
+brew "kumactl"
+# Localstack cli packaged using pyinstaller
+brew "localstack/tap/localstack-cli"
+# Run a Kubernetes cluster locally
+brew "minikube"
+# MongoDB Community Edition
+brew "mongodb/brew/mongodb-community"
+# Tool for managing OCI containers and pods
+brew "podman"
+# Cloud native development platform
+brew "pulumi"
+# Python 3 interpreter
+brew "python"
+# Safe, concurrent, practical language
+brew "rust"
+# Cross-shell prompt for astronauts
+brew "starship"
+# Define your dev environment as code. For microservice apps on Kubernetes
+brew "tilt"
+# JavaScript toolchain manager for reproducible environments
+brew "volta"
+# Image format providing lossless and lossy compression for web images
+brew "webp"
+# Internet file retriever
+brew "wget"
+# Command-line interface for WordPress
+brew "wp-cli"
+# Personal information dashboard for your terminal
+brew "wtfutil"
+# General-purpose data compression with high compression ratio
+brew "xz"
+# Fish-like fast/unobtrusive autosuggestions for zsh
+brew "zsh-autosuggestions"
+# Additional completion definitions for zsh
+brew "zsh-completions"
+# Fish shell like syntax highlighting for zsh
+brew "zsh-syntax-highlighting"
+# Databases and SQL IDE
+cask "datagrip"
+# Universal database tool and SQL client
+cask "dbeaver-community"
+# App to build and share containerised applications and microservices
+cask "docker-desktop"
+# Online diagram software
+cask "drawio"
+# GIT client
 cask "fork"
+# Set of tools to manage resources and applications hosted on Google Cloud
+cask "gcloud-cli"
+# Desktop client for GitHub repositories
 cask "github"
+# GitHub notifications on your menu bar
 cask "gitify"
+# Kubernetes IDE
 cask "lens"
+# Web development solution with Apache, Nginx, PHP & MySQL
+cask "mamp"
+# Browse, manage, inspect containers and images
+cask "podman-desktop"
+# Collaboration platform for API development
+cask "postman"
 cask "qlcolorcode"
 cask "qlimagesize"
 cask "qlmarkdown"
@@ -57,7 +125,8 @@ cask "qlstephen"
 cask "qlvideo"
 cask "quicklook-json"
 cask "quicklookase"
+# Open-source code editor
 cask "visual-studio-code"
-mas "PopHub", id: 928494006
-mas "PullRequestMenu", id: 919797974
-mas "Sip", id: 507257563
+# Mac App Store Applications
+mas "Snip", id: 1527428847
+mas "Snippet", id: 1613020051
