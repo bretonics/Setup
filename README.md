@@ -1,20 +1,26 @@
 # Setup
 
-[![GitHub Version](https://badge.fury.io/gh/bretonics%2FSetup.svg)](http://badge.fury.io/gh/bretonics%2Fsetup)
+[![GitHub Version](https://badge.fury.io/gh/bretonics%2FSetup.svg)](http://badge.fury.io/gh/bretonics%2FSetup)
+![GitHub Release](https://img.shields.io/github/v/release/bretonics/setup)
 ![Release Date](https://img.shields.io/github/release-date/bretonics/Setup?color=success)
 [![MIT License](https://img.shields.io/badge/License-MIT-red.svg)](https://bretonics.mit-license.org/)
 ![Used By](https://img.shields.io/sourcegraph/rrc/github.com/bretonics/Setup?color=blue)
 [![](https://img.shields.io/github/license/bretonics/Setup?color=blue)](https://github.com/bretonics/Setup/blob/main/LICENSE.md)
+![GitHub License](https://img.shields.io/github/license/bretonics/Setup)
 
 ![Commits Since](https://img.shields.io/github/commits-since/bretonics/Setup/latest)
-![GitHub last commit](https://img.shields.io/github/last-commit/bretonics/Setup?color=lightgrey)
+![GitHub Last Commit](https://img.shields.io/github/last-commit/bretonics/Setup?color=lightgrey)
 ![GitHub Commit Activity](https://img.shields.io/github/commit-activity/m/bretonics/Setup?color=yellow)
-![GitHub repo Size](https://img.shields.io/github/repo-size/bretonics/Setup?color=orange)
-![Lines of Code](https://img.shields.io/tokei/lines/github/bretonics/Setup)
+![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/bretonics/Setup)
+![GitHub Repo Size](https://img.shields.io/github/repo-size/bretonics/Setup?color=orange)
+![Lines of Code](https://img.shields.io/endpoint?url=https%3A%2F%2Fghloc.vercel.app%2Fapi%2Fbretonics%2FSetup%2Fbadge?format=human)
 
-[![GitHub Issues](https://img.shields.io/github/issues/bretonics/setup)](https://GitHub.com/bretonics/setup/issues/)
-[![GitHub Pull-Requests](https://img.shields.io/github/issues-pr/bretonics/Setup.svg)](https://GitHub.com/bretonics/setup/pull/)
+[![GitHub Issues](https://img.shields.io/github/issues/bretonics/Setup)](https://github.com/bretonics/Setup/issues/)
+[![GitHub Pull-Requests](https://img.shields.io/github/issues-pr/bretonics/Setup.svg)](https://github.com/bretonics/Setup/pull/)
 ![Tests Workflow](https://github.com/bretonics/Setup/actions/workflows/tests.yml/badge.svg?branch=main)
+
+![GitHub Repo stars](https://img.shields.io/github/stars/bretonics/Setup)
+![GitHub watchers](https://img.shields.io/github/watchers/bretonics/Setup)
 
 [![GitHub](https://img.shields.io/github/followers/bretonics?label=Follow%20%40bretonics&style=social)](https://github.com/bretonics)
 [![Twitter](https://img.shields.io/twitter/follow/bretonics?style=social)](https://twitter.com/bretonics)
@@ -30,7 +36,7 @@
   - [Customizable Setup](#customizable-setup)
     - [Manual](#manual)
   - [Useful Commands](#useful-commands)
-  - [Contribute](#contribute)
+  - [Contribute7c60a5](#contribute7c60a5)
 
 ## Automate Mac Setup
 
@@ -158,9 +164,12 @@ mas list | sort -fk 2
 
 # Create Brewfile
 brew bundle dump
+
+# List & Copy VS Code Extensions
+code --list-extensions | pbcopy
 ```
 
-## Contribute
+## Contribute7c60a5
 
 Have a particular set of configurations to add? Feel free to create a PR!
 
