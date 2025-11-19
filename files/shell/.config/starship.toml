@@ -1,0 +1,76 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+$username\
+$hostname\
+$localip\
+$shlvl\
+$git_status\
+$git_branch\
+$fill $aws\
+$line_break\
+$directory\
+$character
+"""
+right_format = """
+$pulumi\
+$nodejs\
+$docker_context\
+$direnv\
+$time
+"""
+
+[fill]
+symbol = ' '
+# style = 'bold black'
+disabled = false
+
+[aws]
+force_display = true
+style = "214"
+
+[directory]
+style = "cyan"
+format = '[$path]($style)[$read_only]($read_only_style) '
+truncate_to_repo = false
+
+[docker_context]
+only_with_files = true
+
+[line_break]
+disabled = false
+
+[git_branch]
+style = "11"
+
+[hostname]
+disabled = false
+style = "bold green"
+
+[localip]
+disabled = false
+
+[nodejs]
+format = "[$symbol($version )]($style)"
+
+[pulumi]
+format = "via [$symbol($username@)$stack]($style) "
+style = "208"
+
+[username]
+format = "[$user]($style) "
+style_user = "purple"
+#format = "in [$symbol($username@)$stack]($style) "
+
+[shell]
+disabled = false
+
+[shlvl]
+disabled = false
+style = "bold cyan"
+
+[time]
+disabled = false
+format = '| [$time]($style)'
+style = "242"

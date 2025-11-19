@@ -36,13 +36,7 @@
 PATH=/bin:/usr/bin:/usr/local/bin:
 
 # Upgrade and update packages monthly on 1st and 15th
-0 12 1,15 * * brew upgrade --cleanup
-# 0 12 1,15 * * brew cask upgrade # not great since we can't pin casks
-0 12 1,15 * * brew cask cleanup --outdated
-0 12 1,15 * * apm update --confirm false
+0 12 1,15 * * brew autoupdate delete && brew autoupdate start 604800 --upgrade --cleanup --immediate
 
 # Update Mac apps every Monday
 0 10 * * 1 mas upgrade
-
-# Automate 10x run analysis
-0 22 * * * ~/launch10x

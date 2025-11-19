@@ -13,6 +13,7 @@ alias  cp="cp -i"
 alias  rm="rm -i"
 alias  mv="mv -i"
 alias  vi="vim"
+alias  cat="bat --style=plain --paging=never"
 
 # Beautify $PATH
 alias path='echo $PATH | tr -s ":" "\n"'
