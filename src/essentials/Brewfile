@@ -1,36 +1,47 @@
 tap "homebrew/autoupdate"
 tap "homebrew/bundle"
 tap "homebrew/services"
+# Alternative to top/htop
 brew "glances"
-brew "gpg"
+# Automatically generate simple man pages
 brew "help2man"
+# Improved top (interactive process viewer)
 brew "htop"
+# Tools and libraries to manipulate images in many formats
 brew "imagemagick"
+# Helps you navigate your file system faster by learning your habits
 brew "jump"
+# Mac App Store command-line interface
 brew "mas"
-brew "neofetch"
-brew "openssl"
+# Swiss-army knife of markup format conversion
 brew "pandoc"
+# Library for command-line editing
 brew "readline"
+# Perl-powered file rename script with many helpful built-ins
 brew "rename"
-brew "screenresolution"
+# Command-line interface for https://speedtest.net bandwidth tests
 brew "speedtest-cli"
+# Add a public key to a remote machine's authorized_keys file
 brew "ssh-copy-id"
+# Display directories as trees (with optional color/HTML output)
 brew "tree"
+# Internet file retriever
 brew "wget"
-brew "xz"
+# Application launcher and productivity software
 cask "alfred"
+# Web browser focusing on privacy
 cask "brave-browser"
+# Client for the Dropbox cloud storage service
 cask "dropbox"
+# Screen colour temperature controller
 cask "flux"
+# Web browser developed by Google
 cask "google-chrome"
-cask "nordvpn"
-# App to write, plan, collaborate, and get organised
+# App to write, plan, collaborate, and get organized
 cask "notion"
-# Calendar for professionals and teams
-cask "notion-calendar"
 # Screenshot measurement and annotation tool
 cask "shottr"
+# Music streaming service
 cask "spotify"
 # Video communication and virtual meeting platform
 cask "zoom"

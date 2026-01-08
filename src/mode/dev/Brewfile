@@ -110,6 +110,10 @@ cask "gcloud-cli"
 cask "github"
 # GitHub notifications on your menu bar
 cask "gitify"
+# GNU Privacy Guard - encryption and signing tool
+brew "gpg"
+# Install and manage multiple versions of OpenSSL
+brew "openssl"
 # Kubernetes IDE
 cask "lens"
 # Web development solution with Apache, Nginx, PHP & MySQL

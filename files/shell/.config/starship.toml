@@ -31,8 +31,8 @@ force_display = true
 style = "214"
 
 [directory]
-style = "cyan"
 format = '[$path]($style)[$read_only]($read_only_style) '
+style = "cyan"
 truncate_to_repo = false
 
 [docker_context]

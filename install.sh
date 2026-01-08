@@ -3,7 +3,19 @@
 #===============================================================================================
 # PRE-LAUNCH SETUP
 #===============================================================================================
-PARENT_PATH=$(dirname "${BASH_SOURCE[0]}") # relative script path from execution location, same as "${BASH_SOURCE%/*}" or "${BASH_SOURCE}"
+# Determine the full path to the base directory from executing script location
+# Example: Three levels up from `src/mode/dev/install.sh` to `src/`
+# ~/Dev/Setup/src/mode/dev ❯ bash ../../../install.sh
+# BASE_FULL_DIR_PATH === "~/Dev/Setup/src"
+BASE_FULL_DIR_PATH=$(cd -- "$(dirname $(dirname -- "${BASH_SOURCE[0]}"))" &>/dev/null && pwd)
+
+# Determine relative script path from execution location, same as "${BASH_SOURCE%/*}" or "${BASH_SOURCE}"
+# Example: Three levels up from `src/mode/dev/install.sh` to `src/`
+# ~/Dev/Setup/src/mode/dev ❯ bash ../../../install.sh
+# PARENT_PATH === "../../.."
+PARENT_PATH=$(dirname "${BASH_SOURCE[0]}")
+echo "PARENT_PATH: ${PARENT_PATH}"
+exit 0
 source ${PARENT_PATH}/lib/functions
 source ${PARENT_PATH}/lib/getopts
 
