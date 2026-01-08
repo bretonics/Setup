@@ -27,6 +27,11 @@ installNodePackages ${NPM_PACKAGES_FILE}
 installVSCodeExt ${VS_CODE_EXTENSIONS_FILE}
 setGitDefaultBranch
 
+# Setup Git Hooks
+mkdir -p ~/.git_templates/hooks
+cp -r ${BASE_PATH}/files/git/hooks ~/.git_templates/hooks
+chmod +x ~/.git_templates/hooks/*
+
 #-----------------------------------------------------------------------------------------------
 # SHELL COMPLETIONS
 

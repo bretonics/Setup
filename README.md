@@ -5,8 +5,8 @@
 ![Release Date](https://img.shields.io/github/release-date/bretonics/Setup?color=success)
 [![MIT License](https://img.shields.io/badge/License-MIT-red.svg)](https://bretonics.mit-license.org/)
 ![Used By](https://img.shields.io/sourcegraph/rrc/github.com/bretonics/Setup?color=blue)
-[![](https://img.shields.io/github/license/bretonics/Setup?color=blue)](https://github.com/bretonics/Setup/blob/main/LICENSE.md)
-![GitHub License](https://img.shields.io/github/license/bretonics/Setup)
+[![](https://img.shields.io/github/license/bretonics/Setup)](https://github.com/bretonics/Setup/blob/main/LICENSE.md)
+![License](https://img.shields.io/github/license/bretonics/Setup)
 
 ![Commits Since](https://img.shields.io/github/commits-since/bretonics/Setup/latest)
 ![GitHub Last Commit](https://img.shields.io/github/last-commit/bretonics/Setup?color=lightgrey)
@@ -23,7 +23,7 @@
 ![GitHub watchers](https://img.shields.io/github/watchers/bretonics/Setup)
 
 [![GitHub](https://img.shields.io/github/followers/bretonics?label=Follow%20%40bretonics&style=social)](https://github.com/bretonics)
-[![Twitter](https://img.shields.io/twitter/follow/bretonics?style=social)](https://twitter.com/bretonics)
+![Bluesky followers](https://img.shields.io/bluesky/followers/bretonics.bsky.social)
 
 - [Setup](#setup)
   - [Automate Mac Setup](#automate-mac-setup)
@@ -36,7 +36,7 @@
   - [Customizable Setup](#customizable-setup)
     - [Manual](#manual)
   - [Useful Commands](#useful-commands)
-  - [Contribute7c60a5](#contribute7c60a5)
+  - [Contribute](#contribute)
 
 ## Automate Mac Setup
 
@@ -169,7 +169,7 @@ brew bundle dump
 code --list-extensions | pbcopy
 ```
 
-## Contribute7c60a5
+## Contribute
 
 Have a particular set of configurations to add? Feel free to create a PR!
 

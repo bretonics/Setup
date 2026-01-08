@@ -160,13 +160,6 @@ configureGit() {
     echo -e "Name: $(git config --get user.name)"
     echo -e "Email: $(git config --get user.email)\n"
 
-    ask "Configure Git hooks templates"
-    if [ $RESPONSE = true ]; then
-        mkdir -p ~/.git_templates/hooks
-        cp -r ${BASE_PATH}/files/git/hooks ~/.git_templates/hooks
-        chmod +x ~/.git_templates/hooks/*
-    fi
-
     if [ $BASH_COMPLETIONS_INSTALLED = true ]; then
         ask "Do you want to enable Git prompt status (PS1)"
         if [ $RESPONSE != true ]; then return; fi
@@ -195,7 +188,6 @@ configureGPG() {
     echo -e "\nConfiguring GPG Key with resources\n"
     git config --global user.signingkey ${GPGkey} # configure Git to use GPG
     git config --global commit.gpgsign true
-
 
     gpg --armor --export ${GPGkey} | pbcopy
     echo -e "\n\nGPG key copied to clipboard.\n"

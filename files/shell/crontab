@@ -2,7 +2,7 @@
 
 # Template from https://gist.github.com/bretonics/9a48a3b9ef32d93d15f45c3f007550b4
 
-# Andrés Bretón ~ http://andresbreton.com, dev@andresbreton.com
+# Andrés Bretón ~ https://andresbreton.com, dev@andresbreton.com
 
 # ==============================================================================
 # MIN(0-59) HOUR(0-23) DOM(1-31) M(1-12) DOW(0-6)   CMD
@@ -34,9 +34,6 @@
 
 # Set Path
 PATH=/bin:/usr/bin:/usr/local/bin:
-
-# Upgrade and update packages monthly on 1st and 15th
-0 12 1,15 * * brew autoupdate delete && brew autoupdate start 604800 --upgrade --cleanup --immediate
 
 # Update Mac apps every Monday
 0 10 * * 1 mas upgrade

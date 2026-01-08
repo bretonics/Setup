@@ -1,9 +1,7 @@
-@angular/cli
-@angular-devkit/schematics-cli
-@nestjs/cli
 auto-changelog
 chalk
 eslint
 npm-check-updates
 nx
+prettier
 serve
