@@ -14,8 +14,6 @@ BASE_FULL_DIR_PATH=$(cd -- "$(dirname $(dirname -- "${BASH_SOURCE[0]}"))" &>/dev
 # ~/Dev/Setup/src/mode/dev ❯ bash ../../../install.sh
 # PARENT_PATH === "../../.."
 PARENT_PATH=$(dirname "${BASH_SOURCE[0]}")
-echo "PARENT_PATH: ${PARENT_PATH}"
-exit 0
 source ${PARENT_PATH}/lib/functions
 source ${PARENT_PATH}/lib/getopts
 
@@ -38,8 +36,9 @@ installHomebrew
 # MAIN INSTALL (DEFAULT)
 # - Install all Formulae, Taps, and Mac Apps specified by $BREW_FILE 
 if [ "$SETUP_TYPE" = "MAIN" ]; then
-    section "Main Installing: '${BREW_FILE}'"
-    brew bundle --file ${BREW_FILE}
+    section "Main Installation: '${BREW_FILE}'"
+    brew bundle --verbose --file ${BREW_FILE}
+    message "DONE Homebrew install for Main using '${BREW_FILE}'"
 
 #-----------------------------------------------------------------------------------------------
 # ESSENTIALS INSTALL
@@ -79,6 +78,8 @@ footer "Primary"
 
 #-----------------------------------------------------------------------------------------------
 # SECONDARY INSTALL
+echo "RUN_SECONDARY: ${RUN_SECONDARY}"
+echo "SECONDARY_FILE: ${SECONDARY_FILE}"
 if [ $RUN_SECONDARY = true ]; then 
     section "Running Secondary Install"
     # Execute secondary script in the current shell without forking a sub shell

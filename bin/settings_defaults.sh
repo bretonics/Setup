@@ -1,3 +1,8 @@
+#!/usr/bin/env bash
+
+PARENT_PATH=$(cd -- "$(dirname $(dirname -- "${BASH_SOURCE[0]}"))" &>/dev/null && pwd)
+source ${PARENT_PATH}/lib/functions
+
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # SETTINGS
 ask "Adjust Keyboard settings"
@@ -43,8 +48,11 @@ if [ "$RESPONSE" = true ]; then
     defaults write com.apple.dock mru-spaces -bool false
 fi
 
-ask "Set the icon size of Dock items to 63 pixels"
-defaults write com.apple.dock tilesize -int 63
+ask "Set the icon size of Dock items to 63 pixels (Macbook)"
+defaults write com.apple.dock tilesize -int 63 # 77 for non-laptop
+
+ask "Set the icon size of Dock items to 77 pixels (External Monitor)"
+defaults write com.apple.dock tilesize -int 77
 
 killall Dock
 
@@ -89,9 +97,16 @@ if [ "$RESPONSE" = true ]; then
     ln -s "${ICLOUD_HOME_PATH}" ~/iCloud
 fi
 
-ask "Disable local Time Machine backups"
+ask "Create Dropbox shortcut"
 if [ "$RESPONSE" = true ]; then
-    hash tmutil &> /dev/null && sudo tmutil disablelocal
+    ln -s "${DROPBOX_BASE_PATH}" ~/Dropbox
+fi
+
+if [ ${OS_MAJOR_VERSION} -lt 15 ]; then
+    ask "Disable local Time Machine backups"
+    if [ "$RESPONSE" = true ]; then
+        hash tmutil &> /dev/null && sudo tmutil disablelocal
+    fi
 fi
 
 ask "Disable auto-correct"

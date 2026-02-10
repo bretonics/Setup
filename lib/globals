@@ -6,13 +6,14 @@
 
 # General
 ADMIN=$(dsmemberutil checkmembership -U $(whoami) -G admin | grep "not" && echo "false" || echo true)
-DEFAULTS=false
+DEFAULTS=${DEFAULTS:-false}
+DROPBOX_BASE_PATH="/Users/${USER}/Library/CloudStorage/Dropbox"
 ICLOUD_HOME_PATH="~/Library/Mobile\ Documents/com~apple~CloudDocs"
-RESTORE_BACKUP=false
-RUN_SECONDARY=false
+RESTORE_BACKUP=${RESTORE_BACKUP:-false}
+RUN_SECONDARY=${RUN_SECONDARY:-false}
 SECONDARY_FILE="${PARENT_PATH}/secondary.sh"
-SET_DEFAULT_SYSTEM_PREFERENCES=false
-SETUP_TYPE="MAIN"  # DEFAULT: Main setup - installs everything in Brewfile and secondary.sh
+SET_DEFAULT_SYSTEM_PREFERENCES=${SET_DEFAULT_SYSTEM_PREFERENCES:-false}
+SETUP_TYPE=${SETUP_TYPE:-"MAIN"}  # DEFAULT: Main setup - installs everything in Brewfile and secondary.sh
 USER_NAME=$(id -F) # Complete user's name, e.g. Andrés Bretón
 
 # Setup File Paths

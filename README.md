@@ -27,6 +27,7 @@
 
 - [Setup](#setup)
   - [Automate Mac Setup](#automate-mac-setup)
+    - [Running](#running)
   - [Installation Types](#installation-types)
     - [Main](#main)
     - [Essentials](#essentials)
@@ -53,15 +54,17 @@ Get most of the tedious configurations, application installs, and other settings
   
 Start with a [Customizable Setup](#customizable-setup) run.
 
----
+### Running
 
-``` bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup.sh)"
+> [!NOTE]
+> Cancel the auto run with `Ctrl-C` if you want to modify [apps.txt](https://github.com/bretonics/Setup/blob/main/src/apps.txt), [formulae.txt](https://github.com/bretonics/Setup/blob/main/src/formulae.txt), [casks.txt](https://github.com/bretonics/Setup/blob/main/src/casks.txt), and/or [Brewfile](https://github.com/bretonics/Setup/blob/main/src/Brewfile).
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup.sh)" "" -M -D -P -m dev
 ```
 
-> Cancel the auto run with `Ctrl-C` if you want to modify [apps.txt](https://github.com/bretonics/Setup/blob/main/src/apps.txt), [formulae.txt](https://github.com/bretonics/Setup/blob/main/src/formulae.txt), [casks.txt](https://github.com/bretonics/Setup/blob/main/src/casks.txt), and/or [Brewfile](https://github.com/bretonics/Setup/blob/main/src/Brewfile).
->
-> See [Customizable Setup](#customizable-setup) for a better way to utilize a custom Setup.
+> [!TIP]
+> See [Customizable Setup](#customizable-setup) for a better way to utilize a custom Setup and not use the exact configurations set as default (above command)
 
 ## Installation Types
 
@@ -124,7 +127,9 @@ Arguments:
 
 ## Customizable Setup
 
-I suggest using your own Brewfile. If you don't have one, see [Useful Commands](#useful-commands) to create one before running Setup, and pass this to the program as followed:
+I suggest using your own Brewfile.
+
+If you don't have one, see [Useful Commands](#useful-commands) to create one before running Setup, and pass this to the program as followed:
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bretonics/Setup/HEAD/setup.sh)" "" ~/absolute/path/to/Brewfile
@@ -163,7 +168,7 @@ Modify the `./src/Brewfile` and run `bash install`, or pass your own: `bash inst
 mas list | sort -fk 2
 
 # Create Brewfile
-brew bundle dump
+brew bundle dump --describe
 
 # List & Copy VS Code Extensions
 code --list-extensions | pbcopy
