@@ -2,8 +2,6 @@ tap "brewsci/bio"
 tap "brewsci/science"
 tap "heroku/brew"
 tap "homebrew/autoupdate"
-tap "homebrew/bundle"
-tap "homebrew/services"
 tap "localstack/tap"
 tap "mongodb/brew"
 # C/C++ resolver library and DNS resolver utilities
@@ -265,8 +263,6 @@ cask "lens"
 cask "mactex"
 # Web development solution with Apache, Nginx, PHP & MySQL
 cask "mamp"
-# VPN client for secure internet access and private browsing
-cask "nordvpn"
 # App to write, plan, collaborate, and get organised
 cask "notion"
 # Calendar for professionals and teams
@@ -299,23 +295,15 @@ mas "Commander One PRO", id: 1035237815
 mas "Deliveries", id: 290986013
 mas "DuckDuckGo Privacy for Safari", id: 1482920575
 mas "Due", id: 524373870
-mas "Gelatin", id: 468374949
 mas "Hidden Bar", id: 1452453066
 mas "Home Assistant", id: 1099568401
 mas "House Builder", id: 884938506
 mas "House Designer", id: 779363176
-mas "iStat Menus", id: 1319778037
-mas "Mactracker", id: 430255202
 mas "Magnet", id: 441258766
-mas "Meeter", id: 1510445899
 mas "Mini Design Bundle", id: 642385433
-mas "Monity", id: 915542151
 mas "PayPal Honey", id: 1472777122
 mas "PDF Reader Pro", id: 919472673
-mas "PDF Toolkit", id: 405219581
 mas "PDFGenius", id: 522090209
-mas "PopClip", id: 445189367
-mas "Recipes", id: 875752727
 mas "RunCat", id: 1429033973
 mas "ScreenBrush", id: 1233965871
 mas "ScreenFloat", id: 414528154
@@ -324,12 +312,9 @@ mas "Slack", id: 803453959
 mas "Snap", id: 418073146
 mas "Snip", id: 1527428847
 mas "Snippet", id: 1613020051
-mas "Tab Space", id: 1473726602
-mas "TinyNotepad", id: 1449415412
 mas "Tot", id: 1491071483
 mas "Trend Micro Ad Blocker", id: 1491889901
 mas "Weather for Status Bar", id: 1448031908
-mas "Widgy", id: 1524540481
 mas "Yoink", id: 457622435
 vscode "aaron-bond.better-comments"
 vscode "adam-watters.vscode-color-pick"
@@ -382,11 +367,11 @@ vscode "kamikillerto.vscode-colorize"
 vscode "kuscamara.electron"
 vscode "mariusalchimavicius.json-to-ts"
 vscode "mdickin.markdown-shortcuts"
-vscode "mhutchie.git-graph"
+vscode "gxl.git-graph-3"
 vscode "mikemcbride.electron-highlighter"
 vscode "monokai.theme-monokai-pro-vscode"
 vscode "ms-azuretools.vscode-containers"
-vscode "ms-azuretools.vscode-docker"
+vscode "docker.docker"
 vscode "ms-kubernetes-tools.vscode-kubernetes-tools"
 vscode "ms-vscode-remote.remote-containers"
 vscode "ms-vscode.azure-repos"

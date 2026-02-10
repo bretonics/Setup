@@ -1,4 +1,6 @@
 brew "cowsay"
+# Infamous electronic fortune-cookie generator
 brew "fortune"
+# Rainbows and unicorns in your console!
 brew "lolcat"
 brew "neofetch"

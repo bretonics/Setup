@@ -25,8 +25,6 @@ brew "gengetopt"
 brew "gh"
 # Distributed revision control system
 brew "git"
-# AVH edition of git-flow
-brew "git-flow-avh"
 # Git extension for versioning large files
 brew "git-lfs"
 # Painless self-hosted all-in-one software development service
@@ -70,8 +68,16 @@ brew "podman"
 brew "pulumi"
 # Python 3 interpreter
 brew "python"
+# Perl-powered file rename script with many helpful built-ins
+brew "rename"
+# Library for command-line editing
+brew "readline"
 # Safe, concurrent, practical language
 brew "rust"
+# Command-line interface for https://speedtest.net bandwidth tests
+brew "speedtest-cli"
+# Add a public key to a remote machine's authorized_keys file
+brew "ssh-copy-id"
 # Cross-shell prompt for astronauts
 brew "starship"
 # Define your dev environment as code. For microservice apps on Kubernetes
@@ -94,8 +100,8 @@ brew "zsh-autosuggestions"
 brew "zsh-completions"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
-# Databases and SQL IDE
-cask "datagrip"
+# Object-relational database system
+brew "postgresql@14", restart_service: :changed
 # Universal database tool and SQL client
 cask "dbeaver-community"
 # App to build and share containerised applications and microservices
@@ -112,25 +118,43 @@ cask "github"
 cask "gitify"
 # GNU Privacy Guard - encryption and signing tool
 brew "gpg"
+# GNU Pretty Good Privacy (PGP) package
+brew "gnupg"
+# Open source programming language to build simple/reliable/efficient software
+brew "go"
 # Install and manage multiple versions of OpenSSL
 brew "openssl"
-# Kubernetes IDE
-cask "lens"
+# Validating, recursive, caching DNS resolver
+brew "unbound"
+# Play, record, convert, and stream audio and video
+brew "ffmpeg"
+# GNU compiler collection
+# brew "gcc"
+# Generate C code to parse command-line arguments via getopt_long
+brew "gengetopt"
+# Mac App Store command-line interface
+brew "mas"
+# Swiss-army knife of markup format conversion
+brew "pandoc"
+# Display directories as trees (with optional color/HTML output)
+brew "tree"
+# Password manager
+brew "pass"
+# Full TeX Live distribution with GUI applications
+# cask "mactex"
 # Web development solution with Apache, Nginx, PHP & MySQL
-cask "mamp"
+# cask "mamp"
 # Browse, manage, inspect containers and images
-cask "podman-desktop"
+# cask "podman-desktop"
 # Collaboration platform for API development
-cask "postman"
-cask "qlcolorcode"
-cask "qlimagesize"
-cask "qlmarkdown"
-cask "qlstephen"
-cask "qlvideo"
-cask "quicklook-json"
-cask "quicklookase"
+# cask "postman"
 # Open-source code editor
 cask "visual-studio-code"
+# Kubernetes IDE
+# cask "lens"
+# Fira Code Nerd Font
+cask "font-fira-code-nerd-font"
 # Mac App Store Applications
 mas "Snip", id: 1527428847
 mas "Snippet", id: 1613020051
+mas "Sip", id: 507257563

@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
 
+if [ -z $1 ]; then
+    echo "Usage: restore_backup.sh <backup_path>"
+    exit 1
+fi
+
+PARENT_PATH=$(cd -- "$(dirname $(dirname -- "${BASH_SOURCE[0]}"))" &>/dev/null && pwd)
+source ${PARENT_PATH}/lib/functions
+
 DIRECTORIES=('Movies' 'Music' 'Pictures')
 BACKUP_PATH=${1}
 
 BIN_PATH="$(dirname ${BASH_SOURCE})"
 DIR_PATH="$(dirname $BIN_PATH)"
-
-source ${DIR_PATH}/lib/functions
-
-# If called directly, copy to current directory
-if [ $# -eq 0 ]; then
-    BACKUP_PATH=${PWD}
-fi
 
 # Ensure properly formatted path - spaces to '\ ' and no forward slash
 BACKUP_PATH=$(echo ${BACKUP_PATH} | sed 's/[[:space:]]/\\ /g')
@@ -30,5 +31,6 @@ for DIR in ${DIRECTORIES[@]}; do
 done
 
 # Assert Time Machine Backups Use Same Backup Folder
-sudo tmutil inheritbackup /Volumes/Backups/Backups.backupdb/Mac\ mini
-sudo tmutil associatedisk -a /Volumes/Backups /Volumes/Backups/Backups.backupdb/Mac\ mini/Latest/Macintosh\ HD
+COMPUTER_NAME=$(scutil --get ComputerName)
+sudo tmutil inheritbackup /Volumes/Backups/Backups.backupdb/${COMPUTER_NAME}
+sudo tmutil associatedisk -a /Volumes/Backups /Volumes/Backups/Backups.backupdb/${COMPUTER_NAME}/Latest/Macintosh\ HD

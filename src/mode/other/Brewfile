@@ -1,4 +1,5 @@
-brew "screenresolution"
-cask "amazon-music"
+# Free and open-source image editor
+cask "gimp"
 cask "cloudflare-warp"
+# Video communication and virtual meeting platform
 cask "zoom"

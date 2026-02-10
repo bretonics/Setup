@@ -83,8 +83,8 @@ addZshCompletions() {
     isZsh
     if [ $? -ne 0 ]; then return; fi
 
-    # Setup appropriate sourcing
-    echo "autoload -Uz compinit && compinit" >> ${ZSH_RC_PATH}
+    # Fixes insecure directories warning
+    chmod -R 755 /usr/local/share
 
     # Hugo
     hugo completion zsh > /usr/local/share/zsh/site-functions/_hugo
@@ -128,13 +128,12 @@ cleanUp() {
     rm -rf $(brew --cache) # delete all
 
     message "DONE cleaning up"
-    sleep 2
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Does Command Exist?
 commandExists() {
-	command -v "$1" >/dev/null 2>&1 || message error "$1 is required but it's not installed." >&2; false;
+	command -v "$1" >/dev/null 2>&1 && return 0 || message error "$1 is required but it's not installed." >&2; return 1;
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -229,20 +228,58 @@ configureSSH() {
 copyFiles() {
     subsection "Files"
 
-    ask "Copy .bash_profile"
+    isZsh
+    if [ $? -eq 0 ]; then
+        ask "Copy .zprofile"
+        if [ "$RESPONSE" = true ]; then
+            cp ./files/z/.zprofile ~/
+        fi
+
+        ask "Copy .zshrc"
+        if [ "$RESPONSE" = true ]; then
+            cp ./files/z/.zshrc ~/
+        fi
+
+        echo -e "Sourcing .zshrc\n"
+        source ${ZSH_PROFILE_PATH}
+    fi
+
+    isBash
+    if [ $? -eq 0 ]; then
+        ask "Copy .bash_profile"
+        if [ "$RESPONSE" = true ]; then
+            cp ./files/bash/.bash_profile ~/
+            cp ./files/shell/.shell_colors ~/
+        fi
+
+        ask "Copy .bashrc"
+        if [ "$RESPONSE" = true ]; then
+            cp ./files/bash/.bashrc ~/
+        fi
+
+        ask "Copy .bash_functions"
+        if [ "$RESPONSE" = true ]; then
+            cp ./files/bash/.bash_functions ~/
+        fi
+
+        echo -e "Sourcing .bash_profile\n"
+        source ${BASH_PROFILE_PATH}
+    fi
+
+    ask "Copy .alias"
     if [ "$RESPONSE" = true ]; then
-        cp ./files/bash/.bash_profile ~/
+        cp ./files/shell/.alias ~/
+    fi
+
+    ask "Copy .shell_colors"
+    if [ "$RESPONSE" = true ]; then
         cp ./files/shell/.shell_colors ~/
     fi
 
-    ask "Copy .bashrc"
+    ask "Copy ssh_config"
     if [ "$RESPONSE" = true ]; then
-        cp ./files/bash/.bashrc ~/
-    fi
-
-    ask "Copy .bash_functions"
-    if [ "$RESPONSE" = true ]; then
-        cp ./files/bash/.bash_functions ~/
+        mkdir -p ~/.ssh
+        cp ./files/shell/ssh_config ~/.ssh/config
     fi
 
     ask "Initialize crontab"
@@ -250,8 +287,6 @@ copyFiles() {
         crontab ./files/shell/crontab
     fi
 
-    echo -e "Sourcing .bash_profile\n"
-    source ${BASH_PROFILE_PATH}
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -330,9 +365,9 @@ installApps() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs Homebrew Package Manager
 installHomebrew() {
-    subsection "Installing Homebrew Package Manager"
+    if [ $(commandExists "brew") ]; then
 
-    if [ $(commandExists "brew") -ne 0 ]; then
+        subsection "Installing Homebrew Package Manager"
 
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         addHomebrewPath
@@ -341,9 +376,9 @@ installHomebrew() {
         brew autoupdate start 604800 --upgrade --cleanup --immediate
         brew autoupdate status
 
-        message "DONE installing Homebrew, skipping..."
+        message "DONE installing Homebrew"
     else
-        message "info" "Homebrew already installed"
+        message "info" "Homebrew already installed, skipping..."
     fi
 
     sleep 2
@@ -414,7 +449,7 @@ installNodePackages() {
     # fi
 
     while read -r package; do
-        echo -e "\n\nInstalling ${package}"
+        echo -e "\n\nInstalling '${package}'"
         npm install -g ${package}
     done < ${1}
 
@@ -631,7 +666,7 @@ restoreBackups() {
 # Section Header
 section() {
     title=$(echo ${1} | tr [:lower:] [:upper:])
-    echo -e "\n\n|- ${title}\n================================================================================\n"
+    echo -e "\n\n================================================================================\n|- ${title}\n================================================================================\n"
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

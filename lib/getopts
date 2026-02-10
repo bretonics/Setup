@@ -21,7 +21,7 @@ handle_arguments() {
 
 # Bash Builtin Getopts
 handle_getopts() {
-    OPTIONS=":BDEFhi:m:s"
+    OPTIONS=":BDEFMPhi:m:s"
 
     # Handle Options
     while getopts ${OPTIONS} option; do

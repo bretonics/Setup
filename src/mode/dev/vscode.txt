@@ -4,7 +4,6 @@ adpyke.codesnap
 akamud.vscode-theme-onedark
 alefragnani.bookmarks
 amazonwebservices.aws-toolkit-vscode
-andrew-codes.cypress-snippets
 azemoh.one-monokai
 be5invis.toml
 bierner.github-markdown-preview
@@ -26,7 +25,6 @@ ecmel.vscode-html-css
 emmanuelbeziat.vscode-great-icons
 esbenp.prettier-vscode
 exodiusstudios.comment-anchors
-firsttris.vscode-jest-runner
 formulahendry.auto-rename-tag
 foxundermoon.shell-format
 github.codespaces
@@ -48,11 +46,11 @@ kuscamara.electron
 mariusalchimavicius.json-to-ts
 mdickin.markdown-shortcuts
 mermaidchart.vscode-mermaid-chart
-mhutchie.git-graph
+gxl.git-graph-3
 mikemcbride.electron-highlighter
 monokai.theme-monokai-pro-vscode
 ms-azuretools.vscode-containers
-ms-azuretools.vscode-docker
+docker.docker
 ms-kubernetes-tools.vscode-kubernetes-tools
 ms-vscode-remote.remote-containers
 ms-vscode.azure-repos
