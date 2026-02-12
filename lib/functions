@@ -755,9 +755,17 @@ welcome() {
     echo "Running '${SETUP_TYPE}' install:"
     echo -e "\t- Brewfile: ${BREW_FILE}"
     echo -e "\t- Mode: $(if [ -n "${MODE}" ]; then echo "${MODE}"; else echo "N/A"; fi)"
-    echo -e "\t- Secondary: $(if [ ${RUN_SECONDARY} = "true" ]; then echo "Yes"; else echo "No"; fi)\n"
+    echo -e "\t- Secondary: $(if [ ${RUN_SECONDARY} = true ]; then echo "Yes"; else echo "No"; fi)"
+
+    if [ ${DOWNLOAD_ONLY_SETUP} = true ]; then
+        message "Download only option enabled. Exiting..."
+        echo -e "To run the setup, run 'bash install.sh' from the unzipped directory."
+        message info "See README for more details and available options"
+        exit 0
+    fi
+
     sleep 2
-    echo -e "Press Ctrl-C now to STOP ${EMOJI_STOP} setup if you ${RED}don't${NC} wish to proceed.\n"
+    echo -e "\nPress Ctrl-C now to STOP ${EMOJI_STOP} setup if you ${RED}don't${NC} wish to proceed.\n"
     echo -en "Starting in 5 seconds... "
     for t in {5..1}; do echo -n "${t} "; sleep 1; done
     echo -e "\n\nStarting automated install\n"

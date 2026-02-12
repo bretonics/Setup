@@ -8,6 +8,7 @@
 ADMIN=$(dsmemberutil checkmembership -U $(whoami) -G admin | grep "not" && echo "false" || echo true)
 DEFAULTS=${DEFAULTS:-false}
 DROPBOX_BASE_PATH="/Users/${USER}/Library/CloudStorage/Dropbox"
+DOWNLOAD_ONLY_SETUP=${DOWNLOAD_ONLY_SETUP:-false}
 ICLOUD_HOME_PATH="~/Library/Mobile\ Documents/com~apple~CloudDocs"
 RESTORE_BACKUP=${RESTORE_BACKUP:-false}
 RUN_SECONDARY=${RUN_SECONDARY:-false}
