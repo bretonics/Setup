@@ -67,7 +67,7 @@ handle_getopts() {
             # If additional mode indicated, set globals
             MODE=$(echo ${OPTARG} | tr [:upper:] [:lower:])
             if [ -n "${MODE}" ]; then
-                MODE_SOURCE_PATH="${MODE_DIR_PATH}${MODE}/"
+                MODE_SOURCE_PATH="${MODE_DIR_PATH}/${MODE}/"
                 MODE_INSTALL_FILE="${MODE_SOURCE_PATH}install.sh"
                 MODE_BREW_FILE="${MODE_SOURCE_PATH}Brewfile"
             fi

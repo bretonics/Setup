@@ -15,7 +15,7 @@ source ${PARENT_PATH}/lib/functions
 #-----------------------------------------------------------------------------------------------
 # FUN INSTALLATION
 # - Install all Formulae, Taps, and Mac Apps specified by $MODE_BREW_FILE
-section "Fun Installation"
+subsection "Fun Installation"
 brew bundle --verbose --file ${MODE_BREW_FILE:-${FUN_BREW_FILE}}
 message "DONE Homebrew install for 'Fun' mode using '${MODE_BREW_FILE:-${FUN_BREW_FILE}}'"
 

@@ -19,7 +19,7 @@ USER_NAME=$(id -F) # Complete user's name, e.g. Andrés Bretón
 # Setup File Paths
 SOURCE_PATH="${PARENT_PATH}/src/"
 LIBS_PATH="${PARENT_PATH}/lib/"
-MODE_DIR_PATH="${SOURCE_PATH}mode/"
+MODE_DIR_PATH="${SOURCE_PATH}mode"
 
 BREW_CASKS_FILE="${SOURCE_PATH}casks.txt"
 BREW_FILE="${SOURCE_PATH}Brewfile"

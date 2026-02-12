@@ -17,13 +17,13 @@ source ${PARENT_PATH}/lib/functions
 #-----------------------------------------------------------------------------------------------
 # MODE INSTALLATION
 # - Install all Formulae, Taps, and Mac Apps specified by $MODE_BREW_FILE
-section "Dev Installation"
+subsection "Dev Installation"
 brew bundle --verbose --file ${MODE_BREW_FILE:-${DEV_BREW_FILE}}
 message "DONE Homebrew install for 'Dev' mode using '${MODE_BREW_FILE:-${DEV_BREW_FILE}}'"
 
 #-----------------------------------------------------------------------------------------------
 # INSTALL CORE RESOURCES
-section "Installing ${MODE} Resources"
+subsection "Installing ${MODE} Resources"
 installNodePackages ${NPM_PACKAGES_FILE}
 installVSCodeExt ${VS_CODE_EXTENSIONS_FILE}
 setGitDefaultBranch
@@ -33,8 +33,6 @@ mkdir -p ~/.git_templates/hooks
 cp -r ${BASE_PATH}/files/git/hooks ~/.git_templates/hooks
 chmod +x ~/.git_templates/hooks/*
 
-# Instantiate Volta
-volta install node
 
 #-----------------------------------------------------------------------------------------------
 # SHELL COMPLETIONS

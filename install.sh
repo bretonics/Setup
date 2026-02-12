@@ -78,8 +78,6 @@ footer "Primary"
 
 #-----------------------------------------------------------------------------------------------
 # SECONDARY INSTALL
-echo "RUN_SECONDARY: ${RUN_SECONDARY}"
-echo "SECONDARY_FILE: ${SECONDARY_FILE}"
 if [ $RUN_SECONDARY = true ]; then 
     section "Running Secondary Install"
     # Execute secondary script in the current shell without forking a sub shell

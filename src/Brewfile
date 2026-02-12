@@ -1,3 +1,5 @@
+#Command-line interface for 1Password
+brew "1password-cli"
 # Application launcher and productivity software
 cask "alfred"
 # Web browser focusing on privacy
@@ -20,6 +22,7 @@ mas "Calendar 366 II", id: 1265895169
 mas "CloudMounter", id: 1130254674
 mas "Commander One PRO", id: 1035237815
 mas "Due", id: 524373870
+mas "Fantastical - Calendar", id: 975937182 
 mas "Hidden Bar", id: 1452453066
 mas "Home Assistant", id: 1099568401
 mas "Magnet", id: 441258766

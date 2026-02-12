@@ -1,6 +1,8 @@
 tap "heroku/brew"
 tap "localstack/tap"
 tap "mongodb/brew"
+#Command-line interface for 1Password
+brew "1password-cli"
 # Asciicast to GIF converter
 brew "agg"
 # Record and share terminal sessions
@@ -89,7 +91,7 @@ brew "webp"
 # Internet file retriever
 brew "wget"
 # Command-line interface for WordPress
-brew "wp-cli"
+# brew "wp-cli"
 # Personal information dashboard for your terminal
 brew "wtfutil"
 # General-purpose data compression with high compression ratio

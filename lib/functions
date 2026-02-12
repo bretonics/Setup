@@ -84,7 +84,7 @@ addZshCompletions() {
     if [ $? -ne 0 ]; then return; fi
 
     # Fixes insecure directories warning
-    chmod -R 755 /usr/local/share
+    chmod -R 755 $(brew --prefix)/share
 
     # Hugo
     hugo completion zsh > /usr/local/share/zsh/site-functions/_hugo
@@ -226,17 +226,40 @@ configureSSH() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Copy Files
 copyFiles() {
-    subsection "Files"
+    subsection "Shell Config Files"
+
+    ask "Copy .alias"
+    if [ "$RESPONSE" = true ]; then
+        cp ./files/shell/.alias ~/
+    fi
+
+    ask "Copy .shell_colors"
+    if [ "$RESPONSE" = true ]; then
+        cp ./files/shell/.shell_colors ~/
+    fi
+
+    ask "Copy ssh_config"
+    if [ "$RESPONSE" = true ]; then
+        mkdir -p ~/.ssh
+        cp ./files/shell/ssh_config ~/.ssh/config
+    fi
+
+    ask "Initialize crontab"
+    if [ "$RESPONSE" = true ]; then
+        crontab ./files/shell/crontab
+    fi
 
     isZsh
     if [ $? -eq 0 ]; then
         ask "Copy .zprofile"
         if [ "$RESPONSE" = true ]; then
+            echo -e "Copying .zprofile\n"
             cp ./files/z/.zprofile ~/
         fi
 
         ask "Copy .zshrc"
         if [ "$RESPONSE" = true ]; then
+            echo -e "Copying .zshrc\n"
             cp ./files/z/.zshrc ~/
         fi
 
@@ -265,28 +288,6 @@ copyFiles() {
         echo -e "Sourcing .bash_profile\n"
         source ${BASH_PROFILE_PATH}
     fi
-
-    ask "Copy .alias"
-    if [ "$RESPONSE" = true ]; then
-        cp ./files/shell/.alias ~/
-    fi
-
-    ask "Copy .shell_colors"
-    if [ "$RESPONSE" = true ]; then
-        cp ./files/shell/.shell_colors ~/
-    fi
-
-    ask "Copy ssh_config"
-    if [ "$RESPONSE" = true ]; then
-        mkdir -p ~/.ssh
-        cp ./files/shell/ssh_config ~/.ssh/config
-    fi
-
-    ask "Initialize crontab"
-    if [ "$RESPONSE" = true ]; then
-        crontab ./files/shell/crontab
-    fi
-
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -365,7 +366,7 @@ installApps() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs Homebrew Package Manager
 installHomebrew() {
-    if [ $(commandExists "brew") ]; then
+    if [ ! $(commandExists "brew") ]; then
 
         subsection "Installing Homebrew Package Manager"
 
@@ -448,9 +449,12 @@ installNodePackages() {
     #     npm config set prefix /usr/local
     # fi
 
+    # Instantiate Volta
+    volta install node
+
     while read -r package; do
         echo -e "\n\nInstalling '${package}'"
-        npm install -g ${package}
+        volta install ${package}
     done < ${1}
 
     message "DONE installing NPM packages"
@@ -565,6 +569,9 @@ installStarshipPrompt() {
     echo -e "\n# Starship Prompt" >> ${SHELL_RC_FILE}
     echo "eval \"\$(starship init ${DEFAULT_SHELL})\"" >> ${SHELL_RC_FILE}
 
+    # TODO: copy starship config
+    cp -v ./files/config/starship.toml ~/.config/starship.toml
+
     STARSHIP_PROMPT_INSTALLED=true
 }
 
@@ -579,13 +586,6 @@ installVSCodeExt() {
         code --install-extension ${extension}
     done < ${1}
     sleep 2
-}
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Install Developer XCode CLI Tools
-installXcodeCLITools() {
-    subsection "Installing XCode Developer CLI Tools"
-    xcode-select --install
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
