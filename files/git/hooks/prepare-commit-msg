@@ -15,9 +15,9 @@ if [ $COMMIT_SOURCE = "merge" ] || [ $COMMIT_SOURCE = "commit" ]; then
     exit
 fi
 
-# Ex.) feature/TICKET-1234
+# Ex.) TICKET-1234 || something/TICKET-1234 || TICKET-1234-something
 # - ISSUE_KEY = "TICKET-1234"
-ISSUE_KEY=`git branch | grep -o "\* \(.*/\)*[A-Z]\{2,\}-[0-9]\+" | grep -o "[A-Z]\{2,\}-[0-9]\+"`
+ISSUE_KEY=$(git branch | grep -io "\* .*\([A-Z]\{2,\}-[0-9]\+\)" | sed -nE 's/^\* ([a-z]+\/)?([a-z]+-[0-9]+)/\2/ip')
 
 # If no issue key in branch, use the default message
 if [ -z $ISSUE_KEY ]; then

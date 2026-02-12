@@ -1,3 +1,5 @@
 emulate sh
-source ~/.profile
+if [ -f ~/.profile ]; then
+    source ~/.profile
+fi
 emulate zsh
