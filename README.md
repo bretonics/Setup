@@ -1,14 +1,11 @@
 # Setup
 
-[![GitHub Version](https://badge.fury.io/gh/bretonics%2FSetup.svg)](http://badge.fury.io/gh/bretonics%2FSetup)
 ![GitHub Release](https://img.shields.io/github/v/release/bretonics/setup)
 ![Release Date](https://img.shields.io/github/release-date/bretonics/Setup?color=success)
-[![MIT License](https://img.shields.io/badge/License-MIT-red.svg)](https://bretonics.mit-license.org/)
+[![License](https://img.shields.io/github/license/bretonics/Setup)](https://github.com/bretonics/Setup/blob/main/LICENSE.md)
 ![Used By](https://img.shields.io/sourcegraph/rrc/github.com/bretonics/Setup?color=blue)
-[![](https://img.shields.io/github/license/bretonics/Setup)](https://github.com/bretonics/Setup/blob/main/LICENSE.md)
-![License](https://img.shields.io/github/license/bretonics/Setup)
 
-![Commits Since](https://img.shields.io/github/commits-since/bretonics/Setup/latest)
+![Commits Since](https://img.shields.io/github/commits-since/bretonics/Setup/latest?sort=semver)
 ![GitHub Last Commit](https://img.shields.io/github/last-commit/bretonics/Setup?color=lightgrey)
 ![GitHub Commit Activity](https://img.shields.io/github/commit-activity/m/bretonics/Setup?color=yellow)
 ![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/bretonics/Setup)
