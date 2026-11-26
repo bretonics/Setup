@@ -21,7 +21,7 @@ handle_arguments() {
 
 # Bash Builtin Getopts
 handle_getopts() {
-    OPTIONS=":BDEFMPhi:m:s"
+    OPTIONS=":BDEFMPhi:l:m:s"
 
     # Handle Options
     while getopts ${OPTIONS} option; do
@@ -62,6 +62,9 @@ handle_getopts() {
                     usage
                     ;;
             esac
+            ;;
+        l)
+            LOGGING=$(echo ${OPTARG} | tr [:upper:] [:lower:])
             ;;
         m)
             # If additional mode indicated, set globals
@@ -111,6 +114,7 @@ usage() {
     print_option "-M" "Main install setup (-s=true)"
     print_option "-S" "Set Mac setting system preference defaults (Default: false)"
     print_option "-i [main|essentials]" "Explicit install type declaration, i.e. -M or -E)"
+    print_option "-l" "Enable logging <true|false> (Default: true)"
     print_option "-m <mode>" "Run additional specified mode installation"
     print_option "-s" "Run secondary installation (Default: false)"
     print_option "-h" "Prints this usage message"

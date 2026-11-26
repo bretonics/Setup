@@ -3,21 +3,36 @@
 #===============================================================================================
 # GLOBAL ENVIRONMENT VARIABLES
 #===============================================================================================
+LOGGING=${LOGGING:-true}
+
+# OS SPECIFIC FLAGS
+IS_MACOS=true
+IS_LINUX=false
+OS=$(uname)
+OS_UNSUPPORTED=false
+
+if [ "${OS}" = "Darwin" ]; then
+    ADMIN=$(dsmemberutil checkmembership -U $(whoami) -G admin | grep "not" && echo "false" || echo true)
+    ICLOUD_HOME_PATH="~/Library/Mobile\ Documents/com\~apple\~CloudDocs"
+    USER_NAME=$(id -F) # Complete user's name, e.g. Andrés Bretón
+else
+    IS_LINUX=true
+    IS_MACOS=false
+    LINUX_SCRIPT="${PARENT_PATH}/linux.sh"
+fi
 
 # General
-ADMIN=$(dsmemberutil checkmembership -U $(whoami) -G admin | grep "not" && echo "false" || echo true)
 DEFAULTS=${DEFAULTS:-false}
 DROPBOX_BASE_PATH="/Users/${USER}/Library/CloudStorage/Dropbox"
 DOWNLOAD_ONLY_SETUP=${DOWNLOAD_ONLY_SETUP:-false}
-ICLOUD_HOME_PATH="~/Library/Mobile\ Documents/com~apple~CloudDocs"
 RESTORE_BACKUP=${RESTORE_BACKUP:-false}
 RUN_SECONDARY=${RUN_SECONDARY:-false}
 SECONDARY_FILE="${PARENT_PATH}/secondary.sh"
 SET_DEFAULT_SYSTEM_PREFERENCES=${SET_DEFAULT_SYSTEM_PREFERENCES:-false}
 SETUP_TYPE=${SETUP_TYPE:-"MAIN"}  # DEFAULT: Main setup - installs everything in Brewfile and secondary.sh
-USER_NAME=$(id -F) # Complete user's name, e.g. Andrés Bretón
 
 # Setup File Paths
+DOTFILES_PATH="${PARENT_PATH}/files"
 SOURCE_PATH="${PARENT_PATH}/src/"
 LIBS_PATH="${PARENT_PATH}/lib/"
 MODE_DIR_PATH="${SOURCE_PATH}mode"
@@ -42,35 +57,18 @@ BASH_PROFILE_PATH="${HOME}/${BASH_PROFILE_FILE}"
 BASH_RC_PATH="${HOME}/${BASH_RC_FILE}"
 ZSH_PROFILE_PATH="${HOME}/${ZSH_PROFILE_FILE}"
 ZSH_RC_PATH="${HOME}/${ZSH_RC_FILE}"
-SHELL_PROFILE_FILE="${ZSH_PROFILE_PATH}"
+SHELL_RC_FILE="${ZSH_RC_PATH}"
+SHELL_PROFILE_FILE="${ZSH_PROFILE_PATH}" # defaulting to zsh
 
 # macOS Version
-IS_APPLE_CPU=$(sysctl -n machdep.cpu.brand_string | grep -i "apple" && echo "true" || echo false) # Apple M1 Hardware = "Apple processor"
-IS_BIG_SUR=false
-IS_CATALINA=false
-OS_UNSUPPORTED=false
-MAC_OS_VERSION=$(sw_vers -productVersion)
-OS_MAJOR_VERSION=$(echo $MAC_OS_VERSION | sed -E 's/([0-9]+)\.([0-9]+)\.?([0-9]+)?/\1/')
-OS_MINOR_VERSION=$(echo $MAC_OS_VERSION | sed -E 's/([0-9]+)\.([0-9]+)\.?([0-9]+)?/\2/')
-if [ ${OS_MAJOR_VERSION} -ge 11 ]; then
-    IS_BIG_SUR=true
-elif [ ${OS_MAJOR_VERSION} -eq 10 ]; then
-    if [ ${OS_MINOR_VERSION} -gt 14 ]; then
-        IS_CATALINA=true # 15 (Catalina)
-    elif [ ${OS_MINOR_VERSION} -eq 14 ]; then
-        IS_CATALINA=false # 14 (Mojave)
-        DEFAULT_SHELL="bash"
-        SHELL_PROFILE_FILE="${BASH_PROFILE_PATH}"
-    else
-        OS_UNSUPPORTED=true
-    fi
-else
-    OS_UNSUPPORTED=true
+if [ "${IS_MACOS}" = "true" ]; then
+    IS_APPLE_CPU=$(sysctl -n machdep.cpu.brand_string | grep -i "apple" && echo "true" || echo false) # Apple M1 Hardware = "Apple processor"
+    IS_BIG_SUR=false
+    IS_CATALINA=false
+    MAC_OS_VERSION=$(sw_vers -productVersion)
+    OS_MAJOR_VERSION=$(echo $MAC_OS_VERSION | sed -E 's/([0-9]+)\.([0-9]+)\.?([0-9]+)?/\1/')
+    OS_MINOR_VERSION=$(echo $MAC_OS_VERSION | sed -E 's/([0-9]+)\.([0-9]+)\.?([0-9]+)?/\2/')
 fi
-
-# Shell Defaults
-# !NOTE: Order is important - determined by macOS version above
-SHELL_RC_FILE="${HOME}/.${DEFAULT_SHELL}rc"
 
 # Setup Configuration Variables
 GITHUB_KEYS_URL="https://github.com/settings/keys"

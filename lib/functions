@@ -10,6 +10,7 @@ source ${PARENT_PATH}/lib/globals
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Adds Bash Completions
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 addBashCompletions() {
     isBash
     if [ $? -ne 0 ]; then return; fi
@@ -36,7 +37,8 @@ addBashCompletions() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Adds Homebrew Taps
-# - List in $BREW_TAPS_FILE
+# - List defined by $BREW_TAPS_FILE
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 addTaps() {
     subsection "Adding Homebrew Taps"
 
@@ -51,6 +53,7 @@ addTaps() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Adds Appropriate Shell Completions
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 addShellCompletions() {
     subsection "Shell Completions"
 
@@ -70,6 +73,7 @@ addShellCompletions() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Add and Source Homebrew Install
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 addHomebrewPath() {
     if [ ${IS_APPLE_CPU} != "false" ]; then
         echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ${SHELL_PROFILE_FILE}
@@ -79,6 +83,7 @@ addHomebrewPath() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Adds Zsh Completions
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 addZshCompletions() {
     isZsh
     if [ $? -ne 0 ]; then return; fi
@@ -96,6 +101,7 @@ addZshCompletions() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Ask User Response
 # - $2: If anything truthy passed (1), explicitly ask
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ask() {
     if [ "${DEFAULTS}" == true ] && [ -z ${2} ]; then
         RESPONSE=true
@@ -117,6 +123,7 @@ ask() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Clean Up
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 cleanUp() {
     subsection "Cleaning up system"
 
@@ -132,12 +139,23 @@ cleanUp() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Does Command Exist?
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 commandExists() {
 	command -v "$1" >/dev/null 2>&1 && return 0 || message error "$1 is required but it's not installed." >&2; return 1;
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Configure Diff Highlight
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+configureDiffHighlight() {
+    cd /usr/share/doc/git/contrib/diff-highlight
+    sudo make
+    sudo ln -s /usr/share/doc/git/contrib/diff-highlight/diff-highlight /usr/local/bin/diff-highlight
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Configure Git
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 configureGit() {
     subsection "Git"
 
@@ -167,14 +185,20 @@ configureGit() {
             ln -s ${GIT_PROMPT_PATH} ~/
             echo -e "\nAdd \"__git_ps1 ' (%s)'\" in your PS1 where you'd like to see the git status"
         fi
-
-        # TODO: figure out which way is best for Zsh
-        # NOTE: already taken care of with Starship/Spaceship prompts. Is this gratuitous?
     fi
+
+    # Setup Git Hooks
+    mkdir -p ~/.git_templates/hooks
+    cp -rv ${DOTFILES_PATH}/git/hooks ~/.git_templates/hooks
+    chmod +x ~/.git_templates/hooks/*
+    gh config set git_protocol ssh
+
+    ln -s /opt/homebrew/share/git-core/contrib/diff-highlight/diff-highlight /usr/local/bin/diff-highlight
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Configure GPG - OpenPGP Encryption
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 configureGPG() {
     subsection "GPG Key"
 
@@ -187,6 +211,7 @@ configureGPG() {
     echo -e "\nConfiguring GPG Key with resources\n"
     git config --global user.signingkey ${GPGkey} # configure Git to use GPG
     git config --global commit.gpgsign true
+    git config --global tag.gpgsign true
 
     gpg --armor --export ${GPGkey} | pbcopy
     echo -e "\n\nGPG key copied to clipboard.\n"
@@ -203,7 +228,28 @@ configureGPG() {
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Configure Moonrepo CLI
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+configureMoonCLI() {
+    if [ $(commandExists "moon") ]; then
+
+        isZsh
+        if [ $? -eq 0 ]; then
+            moon completions --shell zsh | sudo tee /usr/local/share/zsh/site-functions/_moon > /dev/null
+            sudo chmod 755 /usr/local/share/zsh/site-functions/_moon
+        fi
+
+        isBash
+        if [ $? -eq 0 ]; then
+            moon completions --shell bash | sudo tee /usr/share/bash-completion/completions/_moon > /dev/null
+            sudo chmod 755 /usr/share/bash-completion/completions/_moon
+        fi
+    fi
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Configure SSH
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 configureSSH() {
     subsection "SSH Keys"
 
@@ -211,7 +257,7 @@ configureSSH() {
     if [ $RESPONSE != true ]; then return; fi
 
     mkdir ~/.ssh
-    cp -v ./files/shell/ssh_config ~/.ssh/config
+    cp -v ${DOTFILES_PATH}/shell/ssh_config ~/.ssh/config
     ssh-keygen -t rsa -f ~/.ssh/${GITHUB_RSA_NAME}
     cat ~/.ssh/${GITHUB_RSA_NAME}.pub | pbcopy
 
@@ -224,29 +270,37 @@ configureSSH() {
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Configure Starship Prompt
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+configureStarshipPrompt() {
+    cp -v ${DOTFILES_PATH}/shell/.config/starship.toml ~/.config/starship.toml
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Copy Files
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 copyFiles() {
     subsection "Shell Config Files"
 
     ask "Copy .alias"
     if [ "$RESPONSE" = true ]; then
-        cp ./files/shell/.alias ~/
+        cp -v ${DOTFILES_PATH}/shell/.alias ~/
     fi
 
     ask "Copy .shell_colors"
     if [ "$RESPONSE" = true ]; then
-        cp ./files/shell/.shell_colors ~/
+        cp -v ${DOTFILES_PATH}/shell/.shell_colors ~/
     fi
 
     ask "Copy ssh_config"
     if [ "$RESPONSE" = true ]; then
         mkdir -p ~/.ssh
-        cp ./files/shell/ssh_config ~/.ssh/config
+        cp -v ${DOTFILES_PATH}/shell/ssh_config ~/.ssh/config
     fi
 
     ask "Initialize crontab"
     if [ "$RESPONSE" = true ]; then
-        crontab ./files/shell/crontab
+        crontab ${DOTFILES_PATH}/shell/crontab
     fi
 
     isZsh
@@ -254,13 +308,13 @@ copyFiles() {
         ask "Copy .zprofile"
         if [ "$RESPONSE" = true ]; then
             echo -e "Copying .zprofile\n"
-            cp ./files/z/.zprofile ~/
+            cp -v ${DOTFILES_PATH}/zsh/.zprofile ~/
         fi
 
         ask "Copy .zshrc"
         if [ "$RESPONSE" = true ]; then
             echo -e "Copying .zshrc\n"
-            cp ./files/z/.zshrc ~/
+            cp -v ${DOTFILES_PATH}/zsh/.zshrc ~/
         fi
 
         echo -e "Sourcing .zshrc\n"
@@ -271,18 +325,17 @@ copyFiles() {
     if [ $? -eq 0 ]; then
         ask "Copy .bash_profile"
         if [ "$RESPONSE" = true ]; then
-            cp ./files/bash/.bash_profile ~/
-            cp ./files/shell/.shell_colors ~/
+            cp -v ${DOTFILES_PATH}/bash/.bash_profile ~/
         fi
 
         ask "Copy .bashrc"
         if [ "$RESPONSE" = true ]; then
-            cp ./files/bash/.bashrc ~/
+            cp -v ${DOTFILES_PATH}/bash/.bashrc ~/
         fi
 
         ask "Copy .bash_functions"
         if [ "$RESPONSE" = true ]; then
-            cp ./files/bash/.bash_functions ~/
+            cp -v ${DOTFILES_PATH}/bash/.bash_functions ~/
         fi
 
         echo -e "Sourcing .bash_profile\n"
@@ -292,18 +345,21 @@ copyFiles() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Divider Block Divider
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 divider() {
     echo -e "\n\n${1}\n--------------------------------------------------------------------------------\n"
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Get Apple ID Username (email)
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 getAccountId() {
     defaults read MobileMeAccounts Accounts | sed -n -e 's/.*AccountID = \"\(.*\)\"\;/\1/p'
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Completed Message
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 footer() {
     echo ""
     echo ""
@@ -314,6 +370,7 @@ footer() {
     echo "| Date:      $(date)"
     echo "| PWD:       $(pwd)"
     echo "| PID:       $$"
+    echo "| OS:        ${OS}"
     echo "================================================================================"
     echo ""
     echo ""
@@ -321,6 +378,7 @@ footer() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Header Message
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 header() {
     echo ""
     echo ""
@@ -332,6 +390,8 @@ header() {
     echo "| PID:       $$"
     echo "|"
     echo "| Running '${SETUP_TYPE}' install..."
+    echo "|     - OS: ${OS}"
+    echo "|     - Dev Container: ${REMOTE_CONTAINERS}"
     echo "|     - Brewfile: ${BREW_FILE}"
     echo "|     - Mode: $(if [ -n "${MODE}" ]; then echo "${MODE}"; else echo "N/A"; fi)"
     echo "|     - Secondary: $(if [ ${RUN_SECONDARY} = "true" ]; then echo "Yes"; else echo "No"; fi)"
@@ -345,6 +405,7 @@ header() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs Mac App Store Applications
 # - $1 argument: path to file listing Mac apps
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # TODO: mojave install mas from tap for Mojave
 installApps() {
     subsection "Installing Apps From Mac App Store"
@@ -365,6 +426,7 @@ installApps() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs Homebrew Package Manager
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 installHomebrew() {
     if [ ! $(commandExists "brew") ]; then
 
@@ -388,6 +450,7 @@ installHomebrew() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs Homebrew Casks
 # - $1 argument: path to file listing Homebrew casks
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 installCasks() {
     subsection "Installing Casks (3rd party apps)"
 
@@ -404,6 +467,7 @@ installCasks() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs Homebrew Formulae
 # - $1 argument: path to file listing Homebrew formulae
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 installFormulae() {
     subsection "Installing Homebrew Formulae"
 
@@ -419,6 +483,7 @@ installFormulae() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs Oh My Zsh Framework
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 installOMZ() {
     isZsh
     if [ $? -ne 0 ]; then return; fi
@@ -438,6 +503,7 @@ installOMZ() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs NPM Packages
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # - $1 argument: path to file listing npm packages
 installNodePackages() {
     subsection "Installing Global NPM Packages"
@@ -462,7 +528,15 @@ installNodePackages() {
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Installs Linux Packages
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+installLinuxPackages() {
+    sudo apt-get install -y "${1[*]}"
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs Pure Prompt
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 installPurePrompt() {
     isZsh
     if [ $? -ne 0 ]; then return; fi
@@ -480,6 +554,7 @@ installPurePrompt() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs Powerlevel10K Prompt
 # https://github.com/romkatv/powerlevel10k#installation
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 installPowerlevel10kPrompt() {
     isZsh
     if [ $? -ne 0 ]; then return; fi
@@ -503,6 +578,7 @@ installPowerlevel10kPrompt() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Install Shell Prompts
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 installShellPrompts() {
     subsection "Shell Prompts"
     installPowerlevel10kPrompt
@@ -514,6 +590,7 @@ installShellPrompts() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs Prompt Passed
 # - $1 argument: prompt name
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 installShellPrompt() {
     case "${1}" in
         powerlevel10k*)
@@ -533,6 +610,7 @@ installShellPrompt() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs Spaceship Prompt
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 installSpaceshipPrompt() {
     isZsh
     if [ $? -ne 0 ]; then return; fi
@@ -553,6 +631,7 @@ installSpaceshipPrompt() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs Starship Prompt
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 installStarshipPrompt() {
     subsection "Starship Prompt"
 
@@ -569,15 +648,15 @@ installStarshipPrompt() {
     echo -e "\n# Starship Prompt" >> ${SHELL_RC_FILE}
     echo "eval \"\$(starship init ${DEFAULT_SHELL})\"" >> ${SHELL_RC_FILE}
 
-    # TODO: copy starship config
-    cp -v ./files/config/starship.toml ~/.config/starship.toml
-
     STARSHIP_PROMPT_INSTALLED=true
+
+    configureStarshipPrompt
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Installs VS Code Extensions
 # - $1 argument: path to file listing VS Code extensions
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 installVSCodeExt() {
     subsection "Installing VS Code Extensions"
 
@@ -590,6 +669,7 @@ installVSCodeExt() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Is Default Shell Bash?
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 isBash() {
     if [ "${DEFAULT_SHELL}" = "bash" ]; then
         return
@@ -599,6 +679,7 @@ isBash() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Is Default Shell Zsh?
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 isZsh() {
     if [ "${DEFAULT_SHELL}" = "zsh" ]; then
         return
@@ -610,6 +691,7 @@ isZsh() {
 # Logs
 # - The first line redirects and appends (-a) everything from the standard output stream to the log file and prints it to the screen.
 # - The second line redirects the standard error to log file.
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 loggers() {
     exec 1>> >(tee -a setup.log)
     exec 2>> error.log
@@ -618,6 +700,7 @@ loggers() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Run Pre-flight Checks
 # - Is masOS supported?
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 preFlightChecks() {
     if [ ${OS_UNSUPPORTED} == true ]; then
         message "error" "Unsupported macOS Version"
@@ -628,6 +711,7 @@ preFlightChecks() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Completion Messages
 # - Display Nicely Formatted Message
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 message() {
     if [ "$1" = "info" ]; then
         local msg="\n\n${EMOJI_INFO} - ${BLUE}${2}${NC}\n\n\n"
@@ -648,6 +732,7 @@ message() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Restore Backups
 # - Copies over Time Machine backups
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 restoreBackups() {
     if [ $RESTORE_BACKUP != true ]; then
         echo -e "\nNot restoring backup\n"
@@ -664,6 +749,7 @@ restoreBackups() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Section Header
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 section() {
     title=$(echo ${1} | tr [:lower:] [:upper:])
     echo -e "\n\n================================================================================\n|- ${title}\n================================================================================\n"
@@ -671,6 +757,7 @@ section() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Determine and Set Default Shell
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 setDefaultShell() {
     subsection "Default Shell"
 
@@ -692,12 +779,14 @@ setDefaultShell() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Set Global Git Default Branch to 'main' or passed argument
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 setGitDefaultBranch() {
     git config --global init.defaultBranch ${1:-'main'}
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Sets Mac Settings
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 setSettings() {
     if [ $SET_DEFAULT_SYSTEM_PREFERENCES != true ]; then return; fi
 
@@ -711,6 +800,7 @@ setSettings() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Subs Section Header
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 subsection() {
     title=$(echo ${1} | tr [:lower:] [:upper:])
     echo -e "\n\n| ${title}\n--------------------------------------------------------------------------------\n"
@@ -721,6 +811,7 @@ subsection() {
 # - General Helper Functions
 # - Global Environment Variables
 # - CLI Argument Options
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 source_libs() {
     for file in ./lib/*; do
         source $file
@@ -729,6 +820,7 @@ source_libs() {
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Update Mac OS
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 updateMacOS() {
     subsection "Running Updates"
 
@@ -742,7 +834,17 @@ updateMacOS() {
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Update Current OS
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+updateOS() {
+    subsection "Updating OS (${OS})"
+    if [ "${IS_MACOS}" = "true" ]; then updateMacOS; fi 
+    if [ "${IS_LINUX}" = "true" ]; then sudo apt-get update; fi 
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Welcome Message
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 welcome() {
     m[0]="\n${YELLOW}  ___  ____  ____  __  __  ____\n"
     m[1]="/ __)( ___)(_  _)(  )(  )(  _ \\ \n"
@@ -753,9 +855,11 @@ welcome() {
     echo -e "This script will automate a lot of processes.\n"
     echo -e "Though not recommended interrupting, exit this script at any time with Ctrl-C.\n"
     echo "Running '${SETUP_TYPE}' install:"
+    echo -e "\t- OS: ${OS}"
+    echo -e "\t- Dev Container: ${REMOTE_CONTAINERS}"
     echo -e "\t- Brewfile: ${BREW_FILE}"
     echo -e "\t- Mode: $(if [ -n "${MODE}" ]; then echo "${MODE}"; else echo "N/A"; fi)"
-    echo -e "\t- Secondary: $(if [ ${RUN_SECONDARY} = true ]; then echo "Yes"; else echo "No"; fi)"
+    echo -e "\t- Secondary: $(if [ ${RUN_SECONDARY} = "true" ]; then echo "Yes"; else echo "No"; fi)\n"
 
     if [ ${DOWNLOAD_ONLY_SETUP} = true ]; then
         message "Download only option enabled. Exiting..."
@@ -764,10 +868,13 @@ welcome() {
         exit 0
     fi
 
-    sleep 2
-    echo -e "\nPress Ctrl-C now to STOP ${EMOJI_STOP} setup if you ${RED}don't${NC} wish to proceed.\n"
-    echo -en "Starting in 5 seconds... "
-    for t in {5..1}; do echo -n "${t} "; sleep 1; done
+    if [ "${REMOTE_CONTAINERS}" != "true" ]; then
+        sleep 2
+        echo -e "Press Ctrl-C now to STOP ${EMOJI_STOP} setup if you ${RED}don't${NC} wish to proceed.\n"
+        echo -en "Starting in 5 seconds... "
+        for t in {5..1}; do echo -n "${t} "; sleep 1; done
+    fi
+
     echo -e "\n\nStarting automated install\n"
     echo -e "\n"
 }
