@@ -1,18 +1,24 @@
+[user]
+	name = Andrés Bretón
+	email = bretonics@users.noreply.github.com
+[commit]
+	gpgsign = true
 [init]
 	defaultBranch = main
 	templatedir = ~/.git_templates
 [alias]
-	l = log --pretty=short -n 50 --graph --abbrev-commit
 	cdiff = "diff -w -G'^[^#]'"
 	# Look at a pretty graph of all history that has been dropped, e.g.) dropped stashes: https://stackoverflow.com/questions/89332/how-to-recover-a-dropped-stash-in-git
 	graph-dropped = "git log --graph --decorate --oneline $(git fsck --no-reflogs | awk '/dangling commit/ {print $3}')"
+	log-pretty = "log --pretty=short -n 50 --graph --abbrev-commit"
 [pull]
 	rebase = true
 [core]
-	pager = /usr/local/Cellar/git/2.*/share/git-core/contrib/diff-highlight/diff-highlight | less
+	pager = diff-highlight | less -FRX
+	editor = vim
 [pager]
-	# show = diff-highlight
-	# diff = diff-highlight
+	show = diff-highlight
+	diff = diff-highlight
 [color]
 	ui = always
 [color "diff-highlight"]
@@ -25,5 +31,19 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
-[commit]
-	gpgsign = true
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[hooks]
+	prepare-commit-msg = true
+[push]
+	autoSetupRemote = true
+#===============================================================================================
+# macOS-specific Configs
+#===============================================================================================
+[includeIf "gitdir:/Users/"]
+    path = ~/.gitconfig-macos
+#===============================================================================================
+# Linux/macOS formats (starts with /), load Unix config
+#===============================================================================================
+[includeIf "gitdir:/"]
+    path = ~/.gitconfig-unix

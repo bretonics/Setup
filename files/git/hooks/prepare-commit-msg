@@ -1,29 +1,146 @@
 #!/bin/sh
-#
-# Adapted from original source: https://bitbucket.org/snippets/atlassian/qedp7d
+
+# ===============================================================================================
+# GIT HOOK - Automatically format commit messages
+# Checks for present conventional commit format in commit message and/or current branch name.
 # Docs: https://git-scm.com/docs/githooks
-#
-# git prepare-commit-msg hook for automatically prepending an issue key
-# from the start of the current branch name to commit messages.
+# ===============================================================================================
+# FILE:           prepare-commit-msg
+# USAGE:          git config --global hooks.prepare-commit-msg true
+# LICENSE:        MIT
+# ===============================================================================================
+# CAPITAN:        Andrés Bretón ~ dev@andresbreton.com
+# REPO:           https://github.com/bretonics/
+# ===============================================================================================
 
-COMMIT_MSG_FILE=$1 # $1 is the file name containing log message
-COMMIT_SOURCE=$2 # $2 is the commit message source (message | template | squash | commit)
-SHA1=$3 # $3 is the commit SHA-1
+# Exit early if running in CI environment
+# NOTE: Prevents future automated commit issues in CI, but we may want to enable it down the line.
+# For now, we skip and will tackle use-cases when appropriate.
+if [ -n "$CI" ]; then exit 0; fi
 
-# Check a commit amend
-if [ $COMMIT_SOURCE = "merge" ] || [ $COMMIT_SOURCE = "commit" ]; then
-    exit
+# Opt-in for automatic commit message formatting
+# Configure the following git setting, `hooks.prepare-commit-msg`:
+# For for all your repos, configure a global setting: `git config --global hooks.prepare-commit-msg true`
+# For specific repos, configure a local setting in desired repository: `git config --local hooks.prepare-commit-msg true`
+OPT_IN=$(git config --type=bool --default=false hooks.prepare-commit-msg)
+# Exit early if the user has not opted in for automatic commit message formatting
+if [ "${OPT_IN}" = "false" ]; then
+    echo "\nAutomatic commit message formatting is disabled. To enable, set \`hooks.prepare-commit-msg\` to true.\n"
+    exit 0
 fi
 
-# Ex.) TICKET-1234 || something/TICKET-1234 || TICKET-1234-something
-# - ISSUE_KEY = "TICKET-1234"
-ISSUE_KEY=$(git branch | grep -io "\* .*\([A-Z]\{2,\}-[0-9]\+\)" | sed -nE 's/^\* ([a-z]+\/)?([a-z]+-[0-9]+)/\2/ip')
+COMMIT_MSG_FILE=$1  # $1 is the file name containing log message
+COMMIT_SOURCE=$2    # $2 is the commit message source (message | template | squash | commit)
+SHA1=${3:-""}       # $3 is the commit SHA-1
 
-# If no issue key in branch, use the default message
-if [ -z $ISSUE_KEY ]; then
-    exit
+# Skip for merge, commit amend/cherry-pick, and squash (git merge --squash / commit --squash)
+if [ "${COMMIT_SOURCE}" = "merge" ] || [ "${COMMIT_SOURCE}" = "commit" ] || [ "${COMMIT_SOURCE}" = "squash" ]; then
+    exit 0
 fi
 
-# Issue key matched from branch prefix
-# Prepend ticket ID to commit message
-sed -i -e "1s/^/$ISSUE_KEY: /" $COMMIT_MSG_FILE
+# Try to get the absolute path to the rebase directory
+# If found, skip while rebasing to avoid corrupting commit messages, e.g. after conflicts
+if [ -d "$(git rev-parse --git-path rebase-merge)" ] || [ -d "$(git rev-parse --git-path rebase-apply)" ]; then
+    exit 0
+fi
+
+# Skip fixup!, squash!, amend! subjects in commit messages
+# Otherwise `git rebase --autosquash` no longer recognizes them
+SUBJECT_LINE=$(head -n 1 "$COMMIT_MSG_FILE")
+case "${SUBJECT_LINE}" in
+    "fixup! "*|"squash! "*|"amend! "*|"Merge "*|"Revert "*) exit 0 ;;
+esac
+
+#-----------------------------------------------------------------------------------------------
+# CONVENTIONAL COMMIT FORMAT FROM COMMIT MESSAGE
+# - Process commit message passed from the command line, i.e. -m "commit message"
+#-----------------------------------------------------------------------------------------------
+if [ "${COMMIT_SOURCE}" = "message" ]; then
+# Extract the type, scope, and message from the commit message
+# E.g.) "feat(scope): commit message" will be split into
+# - COMMIT_MESSAGE_TYPE="feat"
+# - COMMIT_MESSAGE_SCOPE="scope"
+# - COMMIT_MESSAGE="commit message"
+# !IMPORTANT: Format is important here, as it ensures proper parsing of commit messages in shell
+IFS='|' read -r COMMIT_MESSAGE_PREFIX COMMIT_MESSAGE_TYPE COMMIT_MESSAGE_SCOPE COMMIT_MESSAGE <<EOF
+$(echo "${SUBJECT_LINE}" | sed -nE 's/^(([A-Za-z]+)(\(([A-Za-z0-9_.-]+)\)!?)?!?):[[:space:]]*(.*)$/\1|\2|\3|\5/ip')
+EOF
+unset IFS
+
+# Only fall back to the no-scope pattern below if the scoped pattern above didn't
+# match, otherwise it would clobber the type/message already parsed with empties.
+if [ -z "$COMMIT_MESSAGE_TYPE" ]; then
+# Extract commit message without scope
+# E.g.) "feat: commit message" will be split into
+# - COMMIT_MESSAGE_TYPE="feat"
+# - COMMIT_MESSAGE="commit message"
+IFS='|' read -r COMMIT_MESSAGE_TYPE COMMIT_MESSAGE <<EOF
+$(echo "${SUBJECT_LINE}" | sed -nE 's/([A-Za-z]+)\:(.+)/\1|\2/ip')
+EOF
+unset IFS
+fi
+fi
+
+#-----------------------------------------------------------------------------------------------
+# CONVENTIONAL COMMIT FORMAT FROM BRANCH NAME
+# - Process branch name to extract issue type and scope, e.g. TICKET-1234 or feat/TICKET-1234
+#-----------------------------------------------------------------------------------------------
+BRANCH_NAME=$(git branch --show-current)
+
+# Check if a ticket issue key is present in the branch name
+# If the branch name is the issue ID itself, use that as the scope
+# e.g.) TICKET-1234 || TICKET-1234-something
+# - ISSUE_SCOPE = "TICKET-1234"
+# 
+# If the branch name has a BRANCH_TYPE/BRANCH_SCOPE pattern, extract it both type and scope
+# e.g.) feat/TICKET-1234, fix/TICKET-5678, other/TICKET-1234
+# - ISSUE_TYPE = "feat || fix || other"
+# - ISSUE_SCOPE = "TICKET-1234"
+# !IMPORTANT: Format is important here, as it ensures proper parsing of commit messages in shell
+IFS='|' read -r BRANCH_TYPE BRANCH_SCOPE <<EOF
+$(echo "${BRANCH_NAME}" | sed -nE 's/^([A-Za-z]+)?\/?(([A-Za-z]+-[0-9]+|.*)?)$/\1|(\2)/ip')
+EOF
+unset IFS
+
+# Sanitize Commit Variables - Commit message passed take precedence, branch name used as fallback
+COMMIT_TYPE="${COMMIT_MESSAGE_TYPE:-${BRANCH_TYPE}}"
+COMMIT_SCOPE="${COMMIT_MESSAGE_SCOPE:-${BRANCH_SCOPE}}"
+case "${COMMIT_MESSAGE_PREFIX}" in
+    *\(*\)!)
+        # Commit message prefix has scope and ends with '!', skip...
+        ;;
+    *[a-zA-Z]*!)
+        # Commit message prefix contains letters and ends with '!', but has no scope, so we modify correctly
+        COMMIT_MESSAGE_PREFIX=$(echo $COMMIT_MESSAGE_PREFIX | sed -E "s/(.*[^"'!'"])("'!'")?$/\1${COMMIT_SCOPE}\2/")
+        ;;
+    *)
+        # Commit message prefix does not end with '!', so we format type and scope
+        COMMIT_MESSAGE_PREFIX="${COMMIT_TYPE}${COMMIT_SCOPE}"
+        ;;
+esac
+
+# Exit early if no commit type or scope in commit message
+# This will use the use the default message passed or the open editor
+if [ -z "$COMMIT_TYPE" ] && [ -z "$COMMIT_SCOPE" ]; then exit 0; fi
+
+# Write formatted commit message to the commit message file for writing
+if [ -z "$COMMIT_TYPE" ]; then
+    echo "Using commit scope as prefix"
+    # No issue type determined, use the issue scope as the prefix
+    sed -i -e "1s/^[A-Za-z]+\:/$COMMIT_SCOPE:/; 1s/^/$COMMIT_SCOPE: /" $COMMIT_MSG_FILE
+elif [ -z "$COMMIT_SCOPE" ]; then
+    echo "Using commit type as prefix"
+    # No issue scope determined, use the issue type as the prefix
+    sed -i -e "1s/^[A-Za-z]+\:/$COMMIT_TYPE:/" $COMMIT_MSG_FILE
+else
+    echo "Using commit type + scope as prefix"
+    # Both issue type and issue scope determined, use the full conventional commit format.
+    # Match an existing "type:" or "type(scope):" prefix so matching this against an
+    # already-conventional message, replaces it instead of double-prefixing.
+    sed -i -E "1s/^|^.*\: /$COMMIT_MESSAGE_PREFIX: /" $COMMIT_MSG_FILE
+fi
+
+if [ "$COMMIT_TYPE" = "WIP" ]; then
+    echo "WIP...adding [skip ci]"
+    sed -i -e "1s/$/ [skip ci]/" $COMMIT_MSG_FILE
+fi
