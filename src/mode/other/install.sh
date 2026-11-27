@@ -12,12 +12,13 @@ if [ -z $SETUP_TYPE ]; then
 fi
 source ${PARENT_PATH}/lib/functions
 
-#-----------------------------------------------------------------------------------------------
+#===============================================================================================
 # OTHER INSTALLATION
 # - Install all Formulae, Taps, and Mac Apps specified by $MODE_BREW_FILE
+#===============================================================================================
 subsection "Other Installation"
 brew bundle --verbose --file ${MODE_BREW_FILE:-${OTHER_BREW_FILE}}
 message "DONE Homebrew install for 'Other' mode using '${MODE_BREW_FILE:-${OTHER_BREW_FILE}}'"
-
 #-----------------------------------------------------------------------------------------------
 # INSTALL CORE RESOURCES
+#-----------------------------------------------------------------------------------------------

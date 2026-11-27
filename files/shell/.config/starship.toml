@@ -1,76 +1,360 @@
+#===============================================================================================
+# MAIN CONFIGURATIONS
+#===============================================================================================
 # Get editor completions based on the config schema
 "$schema" = 'https://starship.rs/config-schema.json'
+# Use Specific Color Palette
+palette = 'andres'
+command_timeout = 800
 
+#-----------------------------------------------------------------------------------------------
+# DEFAULT PROMPT FORMAT
+#-----------------------------------------------------------------------------------------------
+# format = """
+# [┌](fg:cyan) \
+# $directory\
+# $username\
+# $hostname\
+# $localip\
+# $container\
+# $fill\
+# $pulumi\
+# $nodejs\
+# $kubernetes\
+# $docker_context\
+# $aws\
+# $shlvl\
+# $line_break\
+# [└](fg:cyan) \
+# $git_branch\
+# $git_state\
+# $git_status\
+# $os\
+# $character
+# """
+# right_format = """
+# $direnv\
+# $time\
+# $battery\
+# """
+
+#-----------------------------------------------------------------------------------------------
+# CONTAINER PROMPT FORMAT
+# - Uncomment to use more concise container prompt format, and comment out the default format above.
+#-----------------------------------------------------------------------------------------------
 format = """
-$username\
-$hostname\
-$localip\
-$shlvl\
-$git_status\
-$git_branch\
-$fill $aws\
-$line_break\
+[┌](fg:cyan) \
 $directory\
+$container\
+$fill\
+$pulumi\
+$nodejs\
+$kubernetes\
+$docker_context\
+$aws\
+$shlvl\
+$line_break\
+[└](fg:cyan) \
+$git_branch\
+$git_state\
+$git_status\
 $character
 """
 right_format = """
-$pulumi\
-$nodejs\
-$docker_context\
 $direnv\
-$time
+$time\
+$battery\
 """
+
+#===============================================================================================
+# MODULE CONFIGURATIONS
+# - https://starship.rs/config/
+#===============================================================================================
+[aws]
+disabled = false
+expiration_symbol = "" # nf-oct-cloud_offline (\uf4ad)
+force_display = true
+format = ' [$symbol - \[$profile$duration\] (\($region\))]($style)'
+# style = 'bold blue'
+style = "#FF9900" # black - #252F3E
+symbol = ""
+[aws.region_aliases]
+us-east-1 = 'E1'
+us-east-2 = 'E2'
+us-west-1 = 'W1'
+us-west-2 = 'W2'
+[aws.profile_aliases]
+assets-admin = " assets-admin"
+
+[battery]
+charging_symbol = '󰂄'
+discharging_symbol = '󱟟'
+format = '  [$symbol $percentage]($style)'
+full_symbol = '󱊣'
+
+[[battery.display]]
+style = 'green'
+threshold = 100
+
+[[battery.display]] # 'bright-green' style and 󱊢 symbol when capacity is between 70% and 90%
+discharging_symbol = '󱊢'
+style = 'green'
+threshold = 90
+
+[[battery.display]] # 'bright-yellow' style and 󱊢 symbol when capacity is between 30% and 70%
+discharging_symbol = '󱊢'
+style = 'yellow'
+threshold = 70
+
+[[battery.display]] # 'bold yellow' style and 󱊢 symbol when capacity is between 10% and 30%
+discharging_symbol = '󱊡'
+style = 'bold yellow'
+threshold = 30
+
+[[battery.display]] # 'bold red' style and discharging_symbol when capacity is between 0% and 10%
+discharging_symbol = '🪫'
+style = 'bold red'
+threshold = 10
+
+[character]
+format = ' $symbol '
+disabled = false
+
+[container]
+disabled = false 
+format = '[\[$symbol $name\]]($style)'
+style = "bold #1D63ED" 
+symbol = '' # nf-oct-container (\uf4b7)
+
+[directory]
+before_repo_root_style = "fg:cyan"
+format = '[$path]($style)[$read_only ]($read_only_style)'
+repo_root_format = "[$before_root_path]($before_repo_root_style)[ $repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) "
+repo_root_style = "fg:cyan"
+truncate_to_repo = true
+# truncation_symbol = '../'
+
+[docker_context]
+disabled = false
+format = "via [$symbol$context]($style)"
+only_with_files = true
+symbol = " "
 
 [fill]
 symbol = ' '
 # style = 'bold black'
 disabled = false
 
-[aws]
-force_display = true
-style = "214"
-
-[directory]
-format = '[$path]($style)[$read_only]($read_only_style) '
-style = "cyan"
-truncate_to_repo = false
-
-[docker_context]
-only_with_files = true
-
-[line_break]
-disabled = false
-
 [git_branch]
-style = "11"
+disabled = false
+format = '[](fg:87)[$symbol $branch(:$remote_branch)]($style)[](fg:87)'
+style = "fg:0 bg:87"
+symbol = "󰘬"
+truncation_length = 30
+truncation_symbol = " ..."
+
+[git_state]
+disabled = false
+format = ' [$state( $progress_current/$progress_total)]($style)'
+merge = ' MERGING' # nf-oct-git_merge_queue (\uf4db)
+rebase = ' REBASING'  # nf-dev-gitter (\ue7ed)
+style = "fg:yellow"
+
+[git_status]
+ahead = '[$count⇡](fg:green)' # no need for EOL whitespace
+behind = '⇣${count} ' # no need for EOL whitespace
+conflicted = '󰓧(fg:bold-red)'
+deleted = '[$count󰮘](#ef3e42)'
+disabled = false
+diverged = '${ahead_count} ${behind_count} ' # no need for EOL whitespace
+format = ' ([$conflicted$ahead_behind\[$stashed$deleted$renamed$modified$typechanged$staged$untracked\]]($style))'
+modified = '[$count](215)'
+staged = '[$count󰝒](green)'
+stashed = '[$count](sapphire-light)' # nf-cod-git_stash (\uec26)
+style = "208"
+untracked = '[$count󰡯](247)'
 
 [hostname]
 disabled = false
-style = "bold green"
+style = "dimmed purple"
+ssh_only = false
+detect_env_vars = ['REMOTE_CONTAINERS']
+ssh_symbol = "󰒍"
+
+[kubernetes]
+detect_files = ['k8s']
+disabled = false
+# format = '[$symbol $cluster $context( \($user | $namespace\))]($style) in '
+format = ' $symbol [$context]($style) [\($namespace\)](#326CE5)'
+style = "#326CE5"
+symbol = "[󱃾](#326CE5)"
+
+# [[kubernetes.contexts]]
+# # "bold red" style + default symbol when Kubernetes current context name equals "production" *and* the current user
+# # equals "admin_user"
+# context_alias = "prod"
+# context_pattern = "production"
+# style = "bold red"
+# user_alias = "admin"
+# user_pattern = "admin_user"
+
+# Using Capture Groups
+# Contexts from GKE, AWS and other cloud providers usually carry additional information, like the region/zone.
+# The following entry matches on the AWS format (`arn:aws:eks:us-west-2:24253434:cluster/name`)
+# and renames every matching kube context into a more readable format (`gke-cluster-name`):
+[[kubernetes.contexts]]
+context_alias = "$cluster (225989335703)"
+context_pattern = "arn:aws:eks:(?P<region>[\\w-]+):225989335703:cluster/(?P<cluster>([\\w-]+))"
+style = "yellow"
+[[kubernetes.contexts]]
+context_alias = "$cluster[$account]"
+context_pattern = "arn:aws:eks:(?P<region>[\\w-]+):(?P<account>(\\d+)):cluster/(?P<cluster>([\\w-]+))"
+style = "red"
+[[kubernetes.contexts]]
+context_alias = "$namespace[$env]"
+context_pattern = "^(?P<namespace>\\w+)-(?P<env>(\\w+))$"
+[[kubernetes.contexts]]
+context_alias = "$cluster[dev]"
+context_pattern = "^dev-(?P<cluster>[\\w-]+)$"
+style = "yellow"
+[[kubernetes.contexts]]
+context_alias = "$cluster[prod]"
+context_pattern = "^prod-(?P<cluster>[\\w-]+)$"
+style = "red"
+
+[line_break]
+disabled = false
 
 [localip]
 disabled = false
 
 [nodejs]
-format = "[$symbol($version )]($style)"
+format = " [$symbol ($version)]($style)"
+style = "fg:green"
+symbol = ""
+
+[os]
+disabled = true
+format = ' [$symbol]($style)'
+style = 'bold blue'
+[os.symbols]
+Debian = '' # nf-linux-debian (\uf306)
+Linux = '' # nf-fa-linux (\uf17c)
+Macos = '󰀶' # nf-md-apple_finder (\udb80\udc36)
 
 [pulumi]
-format = "via [$symbol($username@)$stack]($style) "
-style = "208"
+format = "[](fg:208)[ $symbol($username@)$stack]($style)[](fg:208)"
+style = "fg:#F7BF2A"
+symbol = " "
 
 [username]
-format = "[$user]($style) "
+format = "[ $user ]($style)" # nf-fa-user (\uf007)
 style_user = "purple"
 #format = "in [$symbol($username@)$stack]($style) "
+disabled = false
+show_always = true
 
 [shell]
 disabled = false
 
 [shlvl]
 disabled = false
+format = ' [$shlvl$symbol]($style)'
+repeat = false
 style = "bold cyan"
+symbol = '󰹹'
+threshold = 2
 
 [time]
 disabled = false
-format = '| [$time]($style)'
-style = "242"
+format = '[$time]($style)'
+style = "fg:242"
+
+#===============================================================================================
+# RESOURCES
+#===============================================================================================
+
+#-----------------------------------------------------------------------------------------------
+# NERD FONT SYMBOLS
+#-----------------------------------------------------------------------------------------------
+#      nf-ple-left_half_circle_thick (\ue0b6)
+#      nf-ple-right_half_circle_thick (\ue0b4)
+#      nf-pl-left_hard_divider (\ue0b0)
+# 󱞩     nf-md-arrow_right_bottom (\udb85\udfa9)
+#      nf-fa-angle_right (\uf105)
+#      nf-oct-person (\uf415)
+#      nf-cod-kebab_vertical (\ueb10)
+
+#-----------------------------------------------------------------------------------------------
+# OTHER SYMBOLS
+#-----------------------------------------------------------------------------------------------
+# [╭╴](fg:yellow)(fg:yellow)\
+# [⎢](fg:yellow)$line_break\
+# [╰─>](fg:yellow)\
+
+#-----------------------------------------------------------------------------------------------
+# COLOR PALETTES
+#-----------------------------------------------------------------------------------------------
+[palettes.andres]
+bold-red = "bold red"
+sapphire = "#209fb5"
+sapphire-light = "#74c7ec"
+sky = "#04a5e5"
+sky-light = "#91d7e3"
+yellow = "222"
+
+[palettes.catppuccin_latte]
+base = "#eff1f5"
+blue = "#1e66f5"
+crust = "#dce0e8"
+flamingo = "#dd7878"
+green = "#40a02b"
+lavender = "#7287fd"
+mantle = "#e6e9ef"
+maroon = "#e64553"
+mauve = "#8839ef"
+overlay0 = "#9ca0b0"
+overlay1 = "#8c8fa1"
+overlay2 = "#7c7f93"
+peach = "#fe640b"
+pink = "#ea76cb"
+red = "#d20f39"
+rosewater = "#dc8a78"
+sapphire = "#209fb5"
+sky = "#04a5e5"
+subtext0 = "#6c6f85"
+subtext1 = "#5c5f77"
+surface0 = "#ccd0da"
+surface1 = "#bcc0cc"
+surface2 = "#acb0be"
+teal = "#179299"
+text = "#4c4f69"
+# yellow = "#df8e1d"
+
+[palettes.catppuccin_macchiato]
+base = "#24273a"
+blue = "#8aadf4"
+crust = "#181926"
+flamingo = "#f0c6c6"
+green = "#a6da95"
+lavender = "#b7bdf8"
+mantle = "#1e2030"
+maroon = "#ee99a0"
+mauve = "#c6a0f6"
+overlay0 = "#6e738d"
+overlay1 = "#8087a2"
+overlay2 = "#939ab7"
+peach = "#f5a97f"
+pink = "#f5bde6"
+red = "#ed8796"
+rosewater = "#f4dbd6"
+sapphire = "#7dc4e4"
+sky = "#91d7e3"
+subtext0 = "#a5adcb"
+subtext1 = "#b8c0e0"
+surface0 = "#363a4f"
+surface1 = "#494d64"
+surface2 = "#5b6078"
+teal = "#8bd5ca"
+text = "#cad3f5"
+# yellow = "#eed49f"

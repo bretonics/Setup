@@ -1,8 +1,13 @@
-# Crontab - Crontab template to automate virtual world
-
-# Template from https://gist.github.com/bretonics/9a48a3b9ef32d93d15f45c3f007550b4
-
-# Andrés Bretón ~ https://andresbreton.com, dev@andresbreton.com
+# ===============================================================================================
+# CRONTAB SCHEDULER
+# ===============================================================================================
+# FILE:           crontab
+# USAGE:          crontab -e
+# LICENSE:        MIT
+# ===============================================================================================
+# CAPITAN:        Andrés Bretón ~ dev@andresbreton.com
+# REPO:           https://github.com/bretonics/
+# ===============================================================================================
 
 # ==============================================================================
 # MIN(0-59) HOUR(0-23) DOM(1-31) M(1-12) DOW(0-6)   CMD

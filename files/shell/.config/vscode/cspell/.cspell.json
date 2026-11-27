@@ -1,0 +1,17 @@
+{
+    "language": "en",
+    "enabled": true,
+    "dictionaries": [
+        "aws",
+        "bash",
+        "companies",
+        "css",
+        "filetypes",
+        "html",
+        "npm",
+        "node",
+        "softwareTerms",
+        "typescript"
+    ],
+    "words": []
+}

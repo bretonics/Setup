@@ -1,12 +1,13 @@
 #===============================================================================================
-# .zshrc - interactive, non-login shells
-# 
-# Andrés Bretón ~ https://www.andresbreton.com
-# 
+# Z SHELL (ZSH) CONFIGURATION - interactive, non-login shells
 #===============================================================================================
-# Z SHELL (ZSH) CONFIGURATION
+# FILE:           .zshrc
+# USAGE:          source .zshrc
 #===============================================================================================
-
+# CAPITAN:        Andrés Bretón ~ dev@andresbreton.com
+# REPO:           https://github.com/bretonics/
+# LICENSE:        MIT
+#===============================================================================================
 
 #===============================================================================================
 # ENVIRONMENT
@@ -17,7 +18,7 @@ case "${OSTYPE}" in
         ssh-add ~/.ssh/github_rsa
         ;;
     Linux*|linux*)
-
+        
         ;;
 esac
 

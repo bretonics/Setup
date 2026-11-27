@@ -187,6 +187,8 @@ configureGit() {
         fi
     fi
 
+    setGitDefaultBranch
+
     # Setup Git Hooks
     mkdir -p ~/.git_templates/hooks
     cp -rv ${DOTFILES_PATH}/git/hooks ~/.git_templates/hooks
@@ -194,6 +196,18 @@ configureGit() {
     gh config set git_protocol ssh
 
     ln -s /opt/homebrew/share/git-core/contrib/diff-highlight/diff-highlight /usr/local/bin/diff-highlight
+}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Configure GitHub's CLI
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+configureGitHubCLI() {
+    subsection "GitHub CLI"
+
+    ask "Configure GitHub CLI"
+    if [ $RESPONSE != true ]; then return; fi
+
+    cp -v ${DOTFILES_PATH}/shell/.config/gh/* ~/.config/gh/
 }
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -232,17 +246,20 @@ configureGPG() {
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 configureMoonCLI() {
     if [ $(commandExists "moon") ]; then
+        subsection "Moonrepo CLI"
 
-        isZsh
-        if [ $? -eq 0 ]; then
-            moon completions --shell zsh | sudo tee /usr/local/share/zsh/site-functions/_moon > /dev/null
-            sudo chmod 755 /usr/local/share/zsh/site-functions/_moon
-        fi
-
-        isBash
-        if [ $? -eq 0 ]; then
-            moon completions --shell bash | sudo tee /usr/share/bash-completion/completions/_moon > /dev/null
-            sudo chmod 755 /usr/share/bash-completion/completions/_moon
+        ask "Configure Moon CLI"
+        if [ $RESPONSE != true ]; then
+            isZsh
+            if [ $? -eq 0 ]; then
+                moon completions --shell zsh | sudo tee /usr/local/share/zsh/site-functions/_moon > /dev/null
+                sudo chmod 755 /usr/local/share/zsh/site-functions/_moon
+            fi
+            isBash
+            if [ $? -eq 0 ]; then
+                moon completions --shell bash | sudo tee /usr/share/bash-completion/completions/_moon > /dev/null
+                sudo chmod 755 /usr/share/bash-completion/completions/_moon
+            fi
         fi
     fi
 }
@@ -301,6 +318,13 @@ copyFiles() {
     ask "Initialize crontab"
     if [ "$RESPONSE" = true ]; then
         crontab ${DOTFILES_PATH}/shell/crontab
+    fi
+
+    if [ $(commandExists "code") ]; then
+        ask "Copy .cspell.json"
+        if [ "$RESPONSE" = true ]; then
+            cp -v ${DOTFILES_PATH}/vscode/.cspell.json ~/.config/vscode/cspell/.cspell.json
+        fi
     fi
 
     isZsh
